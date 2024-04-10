@@ -1,3 +1,3 @@
 - [x] fish shell 
-- [] database principle
-- [] 计算机网络
+- [ ] database principle
+- [ ] 计算机网络
