@@ -1,4 +1,5 @@
 ok,here are my fruit of the fish shell
+@[TOC]
 # fish语言部分  
 ## 语法预览 
 1. 所有的程序在fish中都可以看作命令command,如果该程序文件是位于$PATH的目录下，我们则可以直接通过该程序的名字调用他，否则需要包括他的目录
