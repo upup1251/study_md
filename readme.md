@@ -1,3 +1,4 @@
+- [x] anlog_circuit
 - [x] fish shell 
 - [ ] database principle
 - [ ] 计算机网络
