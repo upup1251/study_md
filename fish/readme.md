@@ -1,4 +1,7 @@
-ok,here are my fruit of the fish shell language
+ok,here are my fruit of the fish shell language   
+[fish官方文档](https://fishshell.com/docs/current/tutorial.html)
+---
+
 [toc]
 
 
@@ -73,6 +76,7 @@ ok,here are my fruit of the fish shell language
 # 2. shell变量
 `set xxx xxx`:设置变量和他的值  
 > shell变量只存在字符类型
+> 如果fish变量的值中存在空格，fish不会像其他sh一样对他们进行进一步划分，而是永远当作一个值。即不会将touch "my file"切割为my，file两个文件   
 ## 2.1 变量范围  
 > 可通过`set -u/g/f/l`设置  
 
@@ -88,14 +92,13 @@ ok,here are my fruit of the fish shell language
 - set -u / --unexport 取消设置
 
 ## 2.3 list列表
+> 列表可以存储多个字符串在一个变量中,用下标访问  
 
-列表可以存储多个字符串在一个动词中,用下标访问  
-`set variable_name value1 value2 ...`:创建list  
-如果你不使用括号，列表中所有的元素会作为分开的东西传递给命令  
-list env环境变量如果以`PATH`结尾,那么将会被认定为路径动词，其中的每一个变量认定为路径中的每一部分  
-> `cout $hi`:输出hi中的动词数量  
-> `contains variable_name $hi``echo $status`:查看hi中是否含有变量，有的话返回状态0
-对于只含有一个变量的列表，fish不会对他做切割，不会将my file切割为my，file两个文件   
+|用法|含义|
+|---|---|
+`set variable_name value1 value2 ...`|创建list  
+> `cout $hi`|输出hi中的动词数量  
+> `contains variable_name $hi``echo $status`|查看hi中是否含有变量，有的话返回状态0
 
 
 ### 2.3.1切片  
@@ -107,7 +110,58 @@ $list\[1..3]:获得list中第一个到第三个元素的值
 
 
 # 3. 控制语句
-## 3.1 条件语句
+
+## 3.1 判断条件
+
+> 就像其余shell语言，不同于编程语言，这里的条件是一条命令  
+> 如果该语句返回一个true exit status(__0__),则会执行该语句  
+
+- 普通命令条件
+> 命令是否执行取决与用于判断的命令的退出状态是多少$status
+ 
+ - test命令条件
+> 比较字符串、数字、文件信息使用test命令
+> test命令可添加参数和选项，后返回true或false
+
+|用法|为true的情况|
+|---|---|
+|目录和文件的相关操作|
+-e file|file存在
+-s file|file size大小大于0
+-b file|file是一个block device块设备
+-c file|file是一个character device字符设备
+-d file|file是一个directory目录
+-f file|file是一个regular文件（存储用户数据的文件）
+-L file|file是一个symbolic link链接文件
+-O file|file存在并且owned属于当前用户
+-G file|file存在并且和usr是一个组
+-r file|file readable可读
+-w file|file writable可写
+-x file|file exec可执行
+|目录和文件的比较操作|
+file1 -nt file2|file1 new than新于 file2,或者file1存在file2不存在
+file1 -ot file2|file1 new than老于 file2,或者file1不存在file2存在
+file1 -ef file2|file1和file2是同一个文件 
+|字符串操作|
+|string1 = string2|相等
+|string1 != string2|不相等
+-n string|strig长度is non-zero不为0
+-z string|strig长度is zero为0
+|数字操作|
+num1 -eq num2|equal,相等
+num1 -ne num2|not equal,不相等
+num1 -gt num2|greater than,大于
+num1 -ge num2|greater than or equal,大于或等于
+num1 -lt num2|less than,小于
+num1 -le num2|less than or equal,小于或等于
+|连接操作符|
+|cond1 -a cond2|and
+cond1 -o cond2|or
+!EXPRESSION|非
+(EXPRESSION)|返回表达式的值
+
+
+## 3.2条件语句
 
 |关键字|备注|
 |---|---|
@@ -115,17 +169,11 @@ $list\[1..3]:获得list中第一个到第三个元素的值
 |case|会进行字符串的匹配  
 
 
-## 3.1.1 `test`:用于条件判断
-> test命令可添加参数和选项，后返回true或false
-就像其余shell语言，不同于编程语言，这里的条件是一条命令  
-如果该语句返回一个true exit status(__0__),则会执行该语句  
-
-
-### 3.2 循环语句  
+### 3.3 循环语句  
 |关键字|备注|
 |---|---|
 |while|while执行起来就像一个重复执行的if语句  
-|for|
+|for|用于迭代列表中的每一个值
 |break和continue
 
 
