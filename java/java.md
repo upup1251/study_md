@@ -1,6 +1,39 @@
 [toc]
 
+
 # 第一章、java入门
+
+## java中的保留字
+
+- 访问控制修饰符  
+public,private,protected  
+
+- 基本类型  
+boolean,byte,char,short,int,long,float,double
+
+- 类修饰符  
+class interface abstract implements extends new 
+
+- 方法、属性、变量修饰符  
+final static native(由宿主系统实现的方法) this super(超类对象或构造函数) synchronized(线程同步) volatile(确保一个字段可以由多个线程访问) transient(标志非永久的数据) strictfp(对浮点数计算使用严格的规则) void enum default instanceof
+
+- 异常处理修饰符  
+tyr catch finally throw throws
+
+- 程序控制语句  
+if else for break continue while do switch case return  
+
+- 包相关  
+package import  
+
+- 标识符  
+null(空引用) true false  
+
+- 断言  
+assert(用来查找内部程序错误) 
+
+- 保留字  
+const(保留字，未使用) goto 
 
 # 第二章、基本数据类型与数组
 
@@ -144,7 +177,7 @@ final可以修饰
 
 ## 继承与多态 
 
-多态性就是之父类的某个方法被其子类重写时，可以各自产生自己的功能行为。
+多态性就是父类的某个方法被其子类重写时，子类对象可以各自产生自己的功能行为。
 
 ## abstract类和abstract方法
 
@@ -405,7 +438,7 @@ bufferWriterObject.newLine();
 
 
 
-## 随即流
+## 随机流
 
 既可以读文件也能写文件的流。
 
@@ -518,7 +551,7 @@ getPriority();
 
 ```java 
 //用Thrad类直接创建线程对象，该构造函数接受一个实现了Runnbale接口类的实例，当该线程对象Thrad调用start()后，会自动执行target中的run()方法。
-Thrad(Runnable target);
+Thread thread = Thread(Runnable target);
 ```
 
 
