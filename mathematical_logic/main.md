@@ -437,3 +437,4 @@ $$J_{n+1}=K_{n+1}=(Q_n*UP)+(\overline{Q_n}*DOWN)$$
 
 
 
+
