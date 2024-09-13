@@ -25,6 +25,8 @@ variable = input('提示信息')
 
 ## 选择
 
+- if
+
 ```python
 if condition1:
     # Code to execute if condition1 is true
@@ -35,6 +37,24 @@ else:
 
 ```
 > 三目运算符：value_if_true if condition else value_if_false
+
+- match
+
+```python
+match some_value:
+    case 0:                     # 匹配常量
+        pass
+    case (x, y):                # 匹配数据结构
+        pass
+    case int():                 # 匹配类型
+        pass
+    case n if n < 0:            # 带条件的匹配
+        pass
+    case _:                     # 默认情况下执行（相当于 switch 语句中的 "default"）
+        pass
+```
+> 不同于c,只有第一个匹配的模式会被执行
+
 
 
 ## 循环
@@ -48,9 +68,15 @@ for item in iterable:
 while condition:
     # Code to execute as long as condition is true
 
-# 3. break 和 continue
+# 3. break 和 continue 和 else
+在 for 循环中，else 子句会在循环成功结束最后一次迭代之后执行。
+在 while 循环中，它会在循环条件变为假值后执行。
+无论哪种循环，如果因为 break 而结束，那么 else 子句就 不会 执行。
 
 ```
+- range()：生成等差数列，可用于循环
+> 该对象只有在被迭代时才一个一个地返回所期望的列表项，并没有真正生成过一个含有全部项的列表，从而节省了空间。
+
 
 
 # 公共操作
@@ -84,6 +110,9 @@ while condition:
                     start指第一个下标的起始值
 
 ```
+
+- pass 
+ 语句不执行任何动作。语法上需要一个语句，但程序毋需执行任何动作时，可以使用该语句。
 
 
 
@@ -164,6 +193,12 @@ def function_name(parameters):
     # 函数体
     return value
 
+
+```
+
+> 函数定义在当前符号表中把函数名与函数对象关联在一起。解释器把函数名指向的对象作为用户自定义函数。还可以使用其他名称指向同一个函数对象
+
+
 # 参数形式
 定长参数：
     位置参数:函数调用时根据函数定义的参数 位置 来传递参数
@@ -172,7 +207,6 @@ def function_name(parameters):
 不定长参数:
     位置参数：def function_name(*args):         # *args：用于接收任意数量的位置参数，并将其作为一个元组传递给函数。
     关键字参数：def function_name(**kwargs):    # **kwargs：用于接收任意数量的关键字参数，并将其作为一个字典传递给函数。
-```
 
 
 > 在函数体内修改变量：直接修改重新赋值：属于局部变量  
@@ -227,3 +261,25 @@ finally:
 - 自定义异常
     - 创建自己的异常类，通常通过继承内置的 Exception 类。
     - 重新__str__方法，print打印错误提示信息
+
+
+
+# 迭代器
+定义 __iter__() 方法用于返回一个带有 __next__() 方法的对象。 如果类已定义了 __next__()，那么 __iter__() 可以简单地返回 self，随后可调用itre(variable)方法获得一个迭代器对象，在对其迭代过程中，会多次调用__next__（），知道运行至raise StopIteration语句
+
+- 生成器
+生成器的写法类似于标准函数，但当它们要返回数据时会使用 yield 语句。
+```python
+def reverse(data):
+    for index in range(len(data)-1, -1, -1):
+        yield data[index]
+
+
+>>> for char in reverse('golf'):
+...     print(char)
+...
+f
+l
+o
+g
+```
