@@ -103,6 +103,46 @@ Page({
 
 ## wxss样式文件
 
+WXSS (WeiXin Style Sheets)是一套样式语言，用于描述 WXML 的组件样式。
+
+**与CSS相比，WXSS扩展的特性有**
+- 尺寸单位
+> rpx（responsive pixel）: 可以根据屏幕宽度进行自适应。规定屏幕宽为750rpx。
+- 样式导入
+```js
+@import "common.wxss";
+```
+
+**内联样式**
+
+- style：style 接收动态的样式，在运行时会进行解析
+> 尽量避免将静态的样式写进 style 中，以免影响渲染速度。
+```js
+<view style="color:{{color}};" />
+```
+- class
+
+指定样式规则，其属性值是样式规则中类选择器名(样式类名)的集合，样式类名不需要带上.，样式类名之间用空格分隔。
+
+```js
+<view class="normal_view" />
+```
+
+**选择器**
+
+| 选择器 | 样例 | 举例描述 |
+| --- | --- | --- |
+| .class | .intro | 选择所有拥有 class="intro" 的组件 |
+| #id | #firstname | 选择拥有 id="firstname" 的组件 |
+| element[,elememt...] | view[,checkout] | 选择所有文档的 view 组件和所有的 checkbox 组件 |
+| ::after | view::after | 在 view 组件后边插入内容 |
+| ::before | view::before | 在 view 组件前边插入内容 |
+
+> 全局样式与局部样式：定义在 app.wxss 中的样式为全局样式，作用于每一个页面。在 page 的 wxss 文件中定义的样式为局部样式，只作用在对应的页面，并会覆盖 app.wxss 中相同的选择器。
+
+
+
+
 ## js脚本逻辑文件
 
 
