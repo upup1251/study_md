@@ -1,0 +1,2571 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Computer composition principles and assembly</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Computer composition principles and assembly</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="1计算机的基本概念"><a class="header" href="#1计算机的基本概念">1.计算机的基本概念</a></h1>
+<p>计算机的概念：计算机是一种能够存储程序，能够自动连续地执行程序，对各种数字化信息进行算术运算或逻辑运算的快速工具。</p>
+<ul>
+<li>冯诺依曼体制的核心要点
+<ul>
+<li>采用<code>二进制</code>代表数据和指令，及信息（护具和指令）的数字化</li>
+<li>采用<code>存储程序</code>工作方式，即事先编制程序，事先存储程序，自动、连续地执行程序</li>
+<li>由<code>存储器</code>、<code>运算器</code>、<code>控制器</code>、<code>输入设备</code>、<code>输出设备</code>等五大件组成计算机硬件结构</li>
+</ul>
+<blockquote>
+<p>冯诺依曼机的工作方式称为<code>控制流驱动方式</code>：依照指令的执行序列一次读取指令，依据指令所含的控制信息调用数据，进行运算处理。
+这一过程中逐步发出的控制信息成为一种控制信息流，简称<code>控制流</code>，一次处理的数据信息称为一种数据信息流，简称<code>数据流</code></p>
+</blockquote>
+</li>
+</ul>
+<h1 id="12信息的数字化表示"><a class="header" href="#12信息的数字化表示">1.2.信息的数字化表示</a></h1>
+<ul>
+<li>计算机中各种信息用数字代码表示</li>
+<li>用数字型电信号表示数字代码</li>
+</ul>
+<h1 id="2-计算机系统的硬软件组成"><a class="header" href="#2-计算机系统的硬软件组成">2. 计算机系统的硬、软件组成</a></h1>
+<h2 id="21-计算机硬件系统"><a class="header" href="#21-计算机硬件系统">2.1 计算机硬件系统</a></h2>
+<p>随着计算机硬件系统的发展，当代计算机的组成：</p>
+<ul>
+<li>中央处理器(CPU)=运算器+控制器
+<blockquote>
+<p>随着大规模集成电路的发展，可将运算器和控制器集成到一块芯片上，合称CPU</p>
+</blockquote>
+</li>
+<li>存储器
+<blockquote>
+<p>可分为高速缓存、主存储器、外存储器三部分。中高速缓存常集成在CPU内部，作为CPU的一个部分，也可以在CPU之外再设置一级高速缓存。通常将CPU与主存储器合在一起称为主机，主存储器（简称主存）就是因为位于主机之内而得名，有的书中又称它为内存储器（内存）。</p>
+</blockquote>
+</li>
+<li>输入设备</li>
+<li>输出设备</li>
+</ul>
+<p><img src="assets/computerStruct.png" alt="" /></p>
+<p>各组成部件的功能和相应特性</p>
+<ol>
+<li>
+<p>CPU(Central Processing Unit)<br />
+CPU即中央处理器，是硬件系统的核心部件，负责读取并执行指令，也就是执行程序。</p>
+<ul>
+<li>程序计数器PC(Program Counter)：存放当前指令所在存储单元的地址
+<blockquote>
+<p>PC就像一个指针，指引着程序的执行顺序。</p>
+</blockquote>
+</li>
+<li>算术逻辑部件ALU(Arithmetic Logic Unit)
+<blockquote>
+<p>CPU内有一个或多个ALU，按照指令要求将有关数据送入ALU，进行指定的算数或逻辑运算，然后将运算结果送到主存单元，或暂存在CPU内的寄存器内</p>
+</blockquote>
+</li>
+<li>控制器
+<blockquote>
+<p>控制整个系统的工作</p>
+<blockquote>
+<p>控制器产生的微命令可分为一下两种：</p>
+<ul>
+<li>组合逻辑控制器：组合逻辑控制器完全靠若干组合逻辑电路（即硬件）产生微命令序列，将指令代码、状态信息、时序信号等输入到这些组合逻辑电路，电路将分时产生相应的微操作命令。</li>
+<li>微程序控制器：是将微命令序列以代码形式编制成微程序,以用于执行</li>
+</ul>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>主存储器</p>
+</li>
+</ol>
+<p>主存储器存放着需要执行的程序及需要处理的数据，能由CPU直接读出或写入。</p>
+<p>主存储器划分为许多单元，通常每个单元存放8位二进制数，称为1字节。每个单元都有一个唯一的编号，称为存储单元地址，简称地址。向主存储器送出某个地址编码，就能根据地址选中对应的一个单元。</p>
+<blockquote>
+<p>。程序的最终（可执行）形态是指令序列，通常它们按照执行顺序依次存放在连续的存储单元中，通过程序计数器PC提供的指令地址，就可以逐条地读取指令。一条指令按其长度不同可存放在一个或相邻的几个单元中。有的指令需要处理的数据（又称为操作数）存放在主存的一个或相邻的几个单元中，指
+令执行时，就提供地址去寻找对应单元，从中读取操作数。</p>
+</blockquote>
+<p>可见主存储器的一项重要特性是：能按地址（单元编号）存放或读取内容，也就是允许CPU直接编址访问，通常以字节为编址单位。对主存储器来说，寻找存储单元（寻址）的依据是地址码，所存取的内容是指令或数据。</p>
+<ol start="3">
+<li>外存储器</li>
+</ol>
+<p>外存储器用来存放那些需要联机存放，但暂不执行的程序和数据，当需要运行它们时再由外存调入主存。</p>
+<blockquote>
+<p>由于外存储器不由CPU直接编址访问，也就是说不需要按字节地从外存储器读取或写入，因此外存储器中的内容一般都按文件的形式进行组织，一个文件常分解为若干数据块，可以包含许多字节的信息。用户按文件名进行调用，CPU找到该文件在外存中的存放位置，以数据块为单位进行读写</p>
+</blockquote>
+<ol start="4">
+<li>
+<p>输入输出设备</p>
+</li>
+<li>
+<p>总线</p>
+</li>
+</ol>
+<p>总线是指一组能为多个部件分时共享的信息传输线。</p>
+<blockquote>
+<p>某个时刻只能有一个部件或设备向总线发送数据，如果有两个或两个以上的部件同时向总线发送数据，就会产生冲突，使数据混乱，这就是分时共享的含义。</p>
+</blockquote>
+<ul>
+<li>地址总线</li>
+<li>数据总线</li>
+<li>控制总线</li>
+</ul>
+<ol start="6">
+<li>接口</li>
+</ol>
+<p>用于连接系统总线与I/O设备之间的一些逻辑部件</p>
+<hr />
+<p>概括的说，计算机硬件系统是由三大子系统组成：</p>
+<ul>
+<li>CPU</li>
+<li>存储系统（包括高速缓存、主存和外存）</li>
+<li>输入/输出系统（输入/输出设备和接口）</li>
+</ul>
+<h2 id="22-计算机软件组成"><a class="header" href="#22-计算机软件组成">2.2 计算机软件组成</a></h2>
+<h3 id="系统软件"><a class="header" href="#系统软件">系统软件</a></h3>
+<p>系统软件是负责计算机系统的调度管理，提供程序的运行环境和开发环境，向用户提供各种服务的一类软件。</p>
+<ul>
+<li>操作系统</li>
+</ul>
+<p>操作系统负责管理和控制计算机系统硬、软件资源及运行的程序，它合理地组织计算机的工作流程，是用户与计算机之间的接口，为用户提供软件的开发环境和运行环境。</p>
+<ul>
+<li>编译程序和解释程序</li>
+</ul>
+<p>大多数情况下，用户采用高级程序设计语言编写程序，个别情况采用汇编语言编写程序。言编写出的程序叫做源程序。将源程序输入计算机后，计算机先执行一种语言处理程序，将源程序转换为机器语言代码序列，即机器语言程序，然后由计算机硬件执行这些用机器语言代码表示的指令序列，从而完成用户程序的执行过程。</p>
+<pre><code>- 解释方式：边解释边执行
+- 编译方式：先将源程序全部翻译成目标程序（目标代码）的机器语言指令序列再执行
+</code></pre>
+<ul>
+<li>各类软件平台</li>
+</ul>
+<p>将开发及运行过程中所需的各种软件集成为一个综合的软件系统，称为软件平台</p>
+<h3 id="应用软件"><a class="header" href="#应用软件">应用软件</a></h3>
+<p>应用软件是指用户在各自应用领域中为解决各类问题而编写的程序，也就是直接面向用户需要的一类软件。</p>
+<blockquote>
+<p>从功能角度看，系统软件是负责系统调度管理，提供开发环境和运行环境，向用户提供各种服务的一类软件；而应用软件是用户在各自应用领域中为解决各类问题所编写的程序。从配置角度看，系统软件是用户购置的系统资源之一；而应用软件是用户自身开发的，直接面向应用需要的程序。</p>
+</blockquote>
+<h1 id="3-层次结构模型"><a class="header" href="#3-层次结构模型">3. 层次结构模型</a></h1>
+<h2 id="31-从计算机系统组成角度划分层次结构"><a class="header" href="#31-从计算机系统组成角度划分层次结构">3.1 从计算机系统组成角度划分层次结构</a></h2>
+<p><img src="assets/layer_composition.png" alt="" /></p>
+<ul>
+<li>微体系结构</li>
+</ul>
+<p>微体系结构层主要从寄存器级观察CPU的结构，分析CPU执行指令的详细过程。</p>
+<pre><code>- 微程序控制器：由微程序产生的控制信号控制的，相应的控制部件称为微程序控制器；
+- 组合逻辑控制器：直接由硬件产生的控制信号来控制的，相应的控制部件称为组合逻辑控制器。
+</code></pre>
+<blockquote>
+<p>从硬件组成的角度进一步分析微体系结构层中寄存器、ALU、控制电路等部件的构成就可以看到，几种数字逻辑单元（与、或、非门）组合成了这一层的部件。</p>
+</blockquote>
+<ul>
+<li>指令系统层</li>
+</ul>
+<p>指令系统（又称指令集）是指一台计算机所能执行的全部指令的集合。其指令是由微体系结构层的微程序解释执行或硬件电路直接执行的。</p>
+<ul>
+<li>操作系统层</li>
+</ul>
+<p>操作系统是一个在指令系统层提供的指令和特性之上又增加了新指令（系统调用）和特性的程序。这一层有新的指令集，有不同的存储器结构，有同时运行两个或多个程序的能力，以及其他一些特性。</p>
+<ul>
+<li>
+<p>汇编语言层</p>
+</li>
+<li>
+<p>面向问题（高级）语言层</p>
+</li>
+</ul>
+<h2 id="从语言功能角度划分层次结构"><a class="header" href="#从语言功能角度划分层次结构">从语言功能角度划分层次结构</a></h2>
+<p>计算机硬件的物理功能是执行机器语言，称为机器语言物理机，从这一级看到的是一台实际的机器。而用户看到的是能执行某种语言程序的虚拟机，即通过配置某种语言处理程序后所形成的一台计算机。</p>
+<p><img src="assets/layer_languageFunction.png" alt="" /></p>
+<h2 id="软硬件在逻辑上的等价"><a class="header" href="#软硬件在逻辑上的等价">软、硬件在逻辑上的等价</a></h2>
+<p>有许多功能既可以直接由硬件实现，也可以在硬件支持下靠软件实现，对用户来说在功能上是等价的，我们称为软、硬件在功能上的逻辑等价。</p>
+<h1 id="计算机的工作过程"><a class="header" href="#计算机的工作过程">计算机的工作过程</a></h1>
+<h2 id="处理问题的步骤"><a class="header" href="#处理问题的步骤">处理问题的步骤</a></h2>
+<ul>
+<li>系统分析</li>
+</ul>
+<p>如果要构造一个比较复杂的应用系统，首先要进行需求分析；确定该系统应具备哪些功能并据此划分功能模块；了解需存储、处理哪些数据、数据量、调用数据时的流向等。然后根据需求分析结果选择硬件平台和软件平台。如果准备购置的平台不能完全满足需要，可能需要自己设计一些硬件部件和系统软件模块。总体设计中的这些分析工作常称为系统分析。</p>
+<ul>
+<li>建立数学模型和设计算法</li>
+</ul>
+<p>应用计算机求解、处理问题的方法，被泛称为算法。</p>
+<ul>
+<li>编写应用程序</li>
+</ul>
+<p>在建立数学模型与设计算法之后，关键的技术问题已基本解决，这时就可以选择合适的程序设计语言和开发工具，着手编写应用程序。</p>
+<ul>
+<li>
+<p>编译为目标代码</p>
+</li>
+<li>
+<p>由硬件执行目标程序</p>
+</li>
+</ul>
+<p>通常先将目标程序存储在磁盘中，用户需执行时给出文件名，操作系统按文件名调出目标程序并送入主存，然后将它在主存中的首址送入程序计数器PC之中，从该地址开始依序执行目标程序。</p>
+<h2 id="指令执行过程"><a class="header" href="#指令执行过程">指令执行过程</a></h2>
+<ul>
+<li>取指令与指令分析</li>
+</ul>
+<p>CPU中有一个程序计数器PC，它存放着当前指令（取指时）所在主存单元的地址码。因此每当读取指令时，就先将PC的内容送入主存储器的地址寄存器中，据此访问主存单元，从中读出指令，送入指令寄存器IR。一条指令代码可能要分别存放在几个地址连续的主存单元中，每读出一个单元的指令代码，PC内容就相应地加1，如果这条指令占n 个主存单元，那么在该指令代码都读取后，PC内容就加了n ，这时PC指示的就是下一条指令在主存的位置。</p>
+<p>当指令代码读入到IR之后，相应的逻辑电路（可称为指令译码器）就自动地分析</p>
+<ul>
+<li>
+<p>读取操作数</p>
+<ul>
+<li>源操作数：从主存中读出的信息具有复制性质，不影响原来的内容。这种操作数称为源操作数。</li>
+<li>目的操作数：既是一个操作数的来源地，又是存放运算结果的目的地，所以它提供的操作数叫做目的操作数</li>
+</ul>
+</li>
+<li>
+<p>运算</p>
+</li>
+</ul>
+<p>对操作数进行指定的操作</p>
+<ul>
+<li>后继指令地址</li>
+</ul>
+<p>在读取指令时PC的内容已自动修改，本例不需要转移指令地址，所以PC修改后的内容就是后继指令地址，即下一条待执行指令所在存储单元的地址。</p>
+<h1 id="数字计算机的特点与性能指标"><a class="header" href="#数字计算机的特点与性能指标">数字计算机的特点与性能指标</a></h1>
+<h2 id="特点"><a class="header" href="#特点">特点</a></h2>
+<ul>
+<li>能在程序控制下自动连续的工作：储存程序工作方式</li>
+<li>运算速度快：采用高速电子线路组成硬件</li>
+<li>运算精度高：采用数字代码表示信息</li>
+<li>具有很强的信息存储能力：二进制易保存</li>
+<li>通用性强，应用领域广：基于信息表示的数字化</li>
+</ul>
+<h2 id="性能指标"><a class="header" href="#性能指标">性能指标</a></h2>
+<ul>
+<li>基本字长：指参与一次运算的二进制数的位数。</li>
+<li>数据通路宽度：数据总线一次所能并行传送的二进制数的位数</li>
+<li>运算速度
+<ul>
+<li>CPU时钟频率与主频
+计算机的操作需要分步执行，一个时钟周期完成一步操作
+<blockquote>
+<p>计算机中有一个振荡器，它的输出经整形后形成全机最基本的脉冲序列，其频率称为主频。主频脉冲经分频后形成时钟脉冲序列，一个时钟脉冲前沿到下一个时钟脉冲前沿就形成一个时钟周期。所以主频是时钟频率的整数倍。</p>
+</blockquote>
+</li>
+<li>每秒平均执行指令的条数(/MIPS)</li>
+<li>分别标明几种典型四则运算所需的时间</li>
+</ul>
+</li>
+<li>主存储器容量
+<blockquote>
+<p>两种表示方法</p>
+<ul>
+<li>字节数</li>
+<li>单元数（字数）X 位数</li>
+</ul>
+</blockquote>
+</li>
+<li>外存容量</li>
+<li>配置的外围设备机器性能</li>
+<li>系统软件配置</li>
+</ul>
+<h1 id="计算机的发展与应用"><a class="header" href="#计算机的发展与应用">计算机的发展与应用</a></h1>
+<h2 id="发展历程"><a class="header" href="#发展历程">发展历程</a></h2>
+<h2 id="提高性能的若干技术"><a class="header" href="#提高性能的若干技术">提高性能的若干技术</a></h2>
+<h2 id="计算机应用举例"><a class="header" href="#计算机应用举例">计算机应用举例</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><p>第二章、计算机中的信息表示</p>
+<p>[toc]</p>
+<p>计算机内部所处理的信息必须是数字化信息，可分为两大类：</p>
+<ul>
+<li>数据：
+<ul>
+<li>数值型数据：数值型数据有确定的值并在数轴上有对应的点</li>
+<li>非数值型数据：非数值型数据没有确定的值，如字符、图像等。</li>
+</ul>
+</li>
+<li>指令：计算机产生各种控制命令的基本依据。</li>
+</ul>
+<h1 id="数值型数据的表示"><a class="header" href="#数值型数据的表示">数值型数据的表示</a></h1>
+<h2 id="带符号数的表示"><a class="header" href="#带符号数的表示">带符号数的表示</a></h2>
+<p><strong>真值与机器数</strong></p>
+<p>真值：用‘+/-’号加上绝对值的表示方法<br />
+机器数：数字实际存储到机器里的形式，正负号需要被“数字化”</p>
+<blockquote>
+<p>机器数有原码、补码、反码和移码四种表示方法</p>
+</blockquote>
+<p><strong>BCD码</strong></p>
+<p>用四位二进制来表示一位十进制数，可表示0-16，挑出9位来表示十进制数。</p>
+<ul>
+<li>8421码</li>
+</ul>
+<p>两位8421码相加若结果大于9，则再加一个6，进行四位二进制数的进位。</p>
+<ul>
+<li>余3码：8421码+$(0011)_2$</li>
+</ul>
+<p><strong>原码</strong></p>
+<p>用最高位表示符号，符号位为0表示该数为正，为1表示该数为负；有效数值部分则用二进制绝对值表示。</p>
+<blockquote>
+<p>小数在个位表示符号位</p>
+</blockquote>
+<blockquote>
+<p>若采用原码作乘除运算，可取其绝对值（即尾数）直接运算，并按同号相乘除取正、异号相乘除取负的原则，单独处理符号位，因此较方便</p>
+</blockquote>
+<p><strong>补码</strong></p>
+<ul>
+<li>引入</li>
+</ul>
+<p>56-24=32，56+76=132=32，该加法中，100超出了表示范围，所以这两的运算结果相同，-24的补码（相对模100）是76。在有模运算中，一个负数可以用其补码代替，得到的是相同的结果</p>
+<blockquote>
+<p>可以把相减变成相加</p>
+</blockquote>
+<ul>
+<li>定义</li>
+</ul>
+<p>计算机中数的表示及运算受字长限制，其运算都是有模运算。模在机器中是表示不出来的，若运算结果超出能表示的数值范围，则会自动舍去溢出量，只保留小于模的部分。</p>
+<p><img src="assets/buma.png" alt="" /></p>
+<p><strong>反码</strong></p>
+<p>正数不变，负数符号位不变，其余位取反</p>
+<p><strong>移码</strong></p>
+<p>补码的基础上将符号位取反。只能用于表示整数</p>
+<blockquote>
+<p>移码相当于把真值映射到正数域(+$2^n$)。若将移码视作无符号数，则移码的大小就反映了真值的大小，这将便于两个浮点数的阶码比较。</p>
+</blockquote>
+<p><strong>比较与总结</strong></p>
+<p><img src="assets/all.png" alt="" /></p>
+<hr />
+<p><img src="./assets/compare.png" alt="" /></p>
+<hr />
+<p>原码和补码的关系：将负数用补码表示，实际上是实现了一种从<code>[-128,127]</code>到<code>[0,255]</code>的映射</p>
+<p><img src="assets/project.png" alt="" /></p>
+<blockquote>
+<p>为什么10000000表示-128?
+$$(-128)=(-1)=(-127)=[1000 0001]_原+[11111111]_原=[11111111]_补+[10000001]_补=[10000000]_补$$</p>
+</blockquote>
+<h2 id="定点数与浮点数"><a class="header" href="#定点数与浮点数">定点数与浮点数</a></h2>
+<p><strong>定点数</strong></p>
+<p>小数点固定的机器数称为定点数，计算机中只采用纯小数或纯整数形式</p>
+<blockquote>
+<p>小数点只是一个约定，机器硬件中并不存在</p>
+</blockquote>
+<ul>
+<li>定点整数</li>
+</ul>
+<p>定点整数的小数点位置固定在最低位之后</p>
+<ul>
+<li>定点小数</li>
+</ul>
+<p>定点小数的小数点位置固定在符号位（最高位）之后</p>
+<blockquote>
+<p>对于绝对值小于定点小数分辨率$2^{-n}$的数，当机器数0处理</p>
+</blockquote>
+<p><em>溢出</em></p>
+<p>参加运算的数以及运算的结果必须在该定点数所能表示的数值范围之内。</p>
+<ul>
+<li>负溢出：机器数小于定点数的最小值（即绝对值最大负数）</li>
+<li>正溢出：当超出最大值时，称为“正溢出”；</li>
+</ul>
+<p>当机器中发生溢出时，将迫使机器转入溢出处理程序或暂停，并将CPU中的状态寄存器的溢出标志位置位。</p>
+<blockquote>
+<p>定点数的小数点位置约定在固定位置上，因此不需设置专门的硬设备来表示它，显然小数点在机器中并不实际存在。对计算机来说，处理定点整数与处理定点小数在硬件上并无区别，至于选择哪一种定点数格式是在程序中约定的。</p>
+</blockquote>
+<p><em>比较</em>
+<img src="assets/xiaoshu.png" alt="" /></p>
+<hr />
+<p><strong>浮点数</strong></p>
+<p>计算机中也引入了类似于 <em>科学计数法</em> 的方法来表示实数，称为浮点数表示法，即小数点的位置可以根据需要而浮动。</p>
+<p>浮点数的代码由两部分组成：阶码E和尾数M。浮点数的真值表示为：
+$$N= \pm R^E·M$$</p>
+<ul>
+<li>R是阶码的底，机器中一般规定为2，8或16（进制），与尾数的基数（进制）相同</li>
+<li>E是阶码，即指数，为带符号整数，常用移码或补码表示</li>
+<li>$e_s$是阶符，表示指数的符号</li>
+<li>M是尾数，通常是纯小数，常用原码或补码表示</li>
+<li>$M_s$是尾数的符号位，安排在最高位，也是整个浮点数的符号位
+<img src="assets/float.png" alt="" /></li>
+</ul>
+<blockquote>
+<p>非IEEE浮点数格式化形式：规格化尾数应满足1/2&lt;=|M|&lt;1</p>
+</blockquote>
+<blockquote>
+<p>当阶码小于机器能表示的最小阶码（即
+该浮点数的值小于最小绝对值）时，称为下溢，此时一般当作机器零
+处理，机器可继续运行。当阶码大于机器所能表示的最大阶码时，称
+为上溢，即溢出，这时机器必须转入溢出出错中断处理。</p>
+</blockquote>
+<p><img src="assets/IEEE.png" alt="" /></p>
+<blockquote>
+<p>IEEE标准：
+尾数用原码表示，隐含最高位1，实际尾数为尾数+1(即1.M)
+阶码用移码表示，实际阶码需要减去偏移量$2^{|E|-1}-1$</p>
+<blockquote>
+<p>其中|E|为阶码的长度</p>
+</blockquote>
+</blockquote>
+<h1 id="字符的表示"><a class="header" href="#字符的表示">字符的表示</a></h1>
+<h2 id="ascii码"><a class="header" href="#ascii码">ASCII码</a></h2>
+<p>一个ASCII码占一个字节，只使用底七位，最高位置0，可表示128个字符</p>
+<h2 id="unicode编码"><a class="header" href="#unicode编码">Unicode编码</a></h2>
+<p>Unicode最基本的思路是将每个字符和符号赋予一个永久、唯一的16位值，即码点</p>
+<h2 id="汉字编码简介"><a class="header" href="#汉字编码简介">汉字编码简介</a></h2>
+<ul>
+<li>输入码</li>
+</ul>
+<p>拼音码，字形码等，所产生的输入码需要借助输入码与内部码的对照表（称为输入字典）转换成便于加工处理的内码。</p>
+<ul>
+<li>汉子交换码</li>
+</ul>
+<p>纳入整理的汉字排成一个94×94的行列矩阵，矩阵的行称为区，列称为位。用双字节编码表示。前一个字节表示区，后一个字节表示位</p>
+<ul>
+<li>内部码</li>
+</ul>
+<p>汉字内部码（简称内码）是计算机内部供存储、处理、传输用的代码。</p>
+<p>todo:P107</p>
+<h1 id="指令信息的表示"><a class="header" href="#指令信息的表示">指令信息的表示</a></h1>
+<p>一台计算机能够直接识别并执行的程序只能是机器语言程序。</p>
+<blockquote>
+<p>因此，任何问题无论使用哪一种计算机语言（汇编语言或某种高级语言）来编程实现，都必须通过翻译程序转换成对应的机器语言程序后才能执行。</p>
+</blockquote>
+<p>机器语言程序是由机器指令序列组成的，它们是产生各种控制信息的基础。</p>
+<blockquote>
+<p>一条机器指令是一组有意义的二进制代码，它指示机器硬件应完成哪种基本操作。</p>
+</blockquote>
+<p>一台计算机的所有指令的集合构成该机的指令系统。</p>
+<blockquote>
+<p>指令系统既是为软件设计者提供的最低层次的程序设计语言，也是硬件设计者的最基本的设计依据。因此，指令系统是软件和硬件的接口</p>
+</blockquote>
+<h2 id="指令格式"><a class="header" href="#指令格式">指令格式</a></h2>
+<ol>
+<li>指令中的基本信息</li>
+</ol>
+<p>计算机是通过执行指令来处理各种数据的。为了指出所执行的操作、操作数的来源和操作结果的去向，以及下一条指令从哪里取<br />
+一条指令一般应包含以下信息：</p>
+<ul>
+<li>操作码：表示该指令所要完成的操作</li>
+<li>操作数的地址：给出操作数存放处的地址</li>
+</ul>
+<blockquote>
+<p>如主存单元地址或寄存器地址。CPU通过该地址可以获得所需的操作数。</p>
+</blockquote>
+<ul>
+<li>操作结果的地址：对操作数进行处理所产生的结果存放在该地址中，以便再次使用。</li>
+<li>下一条指令地址</li>
+</ul>
+<blockquote>
+<p>由于存储在主存储器中的程序（机器指令序列）是按指令执行顺序连续存放的，并且在大多数情况下程序是顺序执行的，因此可以设计一个程序计数器PC专门存放指令地址，每取出一条指令后，PC自动增值指出下一条指令地址，这样就不需在指令中直接给出下一条指令的地址。当需要改变程序执行顺序时，可由转移类指令实现。</p>
+</blockquote>
+<p>从上述分析可知，一条指令实际上包括两种信息，即操作码和地址码，因此指令的基本格式为：</p>
+<p><img src="assets/instr.png" alt="" /></p>
+<ul>
+<li>操作码(Operation Code): 具体说明该指令操作的性质及功能。</li>
+<li>地址码(Address Code): 描述该指令的操作对象，由它给出操作地址或直接给出操作数，并给出操作结果的存放地址。</li>
+</ul>
+<ol start="2">
+<li>地址码结构</li>
+</ol>
+<p><em><strong>三地址码</strong></em></p>
+<p>OP A1 A2 A3</p>
+<ul>
+<li>
+<p>功能：(A1)OP(A2)-&gt;A3</p>
+</li>
+<li>
+<p>说明：</p>
+<ul>
+<li>OP表示操作码</li>
+<li>A1: 表示操作数1的地址</li>
+<li>A2: 表示操作数2的地址</li>
+<li>A3: 结果存放地址</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>A1 、A2 和A3 可以是主存单元地址或寄存器地址。</p>
+</blockquote>
+<p><em><strong>二地址码</strong></em></p>
+<p>OP A1 A2</p>
+<ul>
+<li>功能：(A1)OP(A2)-&gt;A1</li>
+<li>说明：
+<ul>
+<li>A2: 提供的操作数，在运算后仍保存在原处，称它为源操作数，A2 称为源地址</li>
+<li>A1: 提供的操作数，在运算后不再保留，该地址改为存放运算结果</li>
+</ul>
+<blockquote>
+<p>因为A1 最终是存放结果的目的地，所以一开始由A1 提供的操作数称为目的操作数</p>
+</blockquote>
+</li>
+</ul>
+<p><em><strong>一地址码</strong></em></p>
+<p>只有目的操作数的单操作数指令</p>
+<p>OP A</p>
+<ul>
+<li>功能：(OP)A-&gt;A</li>
+<li>说明：指令中只给出一个目的地址A，A既是操作数的地址，又是操作结果的存放地址。</li>
+</ul>
+<p>隐含约定目的地址的双操作数指令</p>
+<p>OP A</p>
+<ul>
+<li>功能：(AC)OP(A)-&gt;AC</li>
+<li>说明：
+<ul>
+<li>源操作数按指令给出的源地址A读取，</li>
+<li>另一个操作数（目的操作数）隐含在CPU的累加器AC中，运算结果也将存放在AC中。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>在某些微机中，双操作数指令也可采用一地址指令格式。</p>
+</blockquote>
+<p><em><strong>零地址码</strong></em></p>
+<p>不需要操作数</p>
+<p>OP</p>
+<ul>
+<li>说明：例如块操作指令、停机指令</li>
+</ul>
+<p>所需的操作数是隐含的</p>
+<p>OP</p>
+<ul>
+<li>说明：如计算机中对堆栈操作的运算指令，所需的操作数事先约定在堆栈中，由堆栈指针SP隐含指出，操作结果仍送回堆栈中。</li>
+</ul>
+<blockquote>
+<p>指令和操作数同样是以二进制代码形式存储的，从表面上看二者并无区别。但是，指令地址是由程序计数器PC指定的。而操作数地址则是由指令中的地址码规定的。因此二者绝不可能混淆。</p>
+</blockquote>
+<ol start="3">
+<li>操作码结构</li>
+</ol>
+<p>指令中的操作码用来指示机器应执行什么性质的操作，每一条指令都有一个含义确定的操作码，不同指令的操作码用不同的二进制编码表示。</p>
+<ul>
+<li>固定长度地址码</li>
+</ul>
+<p>操作码的长度固定，且集中放在指令字的一个字段中，指令的其余部分全部用于地址码。</p>
+<blockquote>
+<p>操作码固定长度有利于简化硬件设计和缩短指令译码时间。</p>
+</blockquote>
+<ul>
+<li>可变长度地址码</li>
+</ul>
+<p>背景：如果指令长度一定，则地址码与操作码的长度是相互制约的
+解决办法：可采用扩展操作码的办法，即操作码和地址码位数不固定，操作码位数允许有几种不同的选择，对地址数少的指令允许操作码长些，对地址数多的指令则操作码就短些。</p>
+<ul>
+<li>复合型地址码</li>
+</ul>
+<p>将操作码分为几个部分，它们的组合使操作含义更丰富。</p>
+<ol start="4">
+<li>指令长度</li>
+</ol>
+<ul>
+<li>变字长地址</li>
+</ul>
+<p>不同的指令可以有不同的字长。</p>
+<blockquote>
+<p>但因为主存通常按字节编址，所以指令字长多为字节的整数倍</p>
+</blockquote>
+<p>功能实现：将操作码放在指令字的第一字节，当CPU读出操作码后可立即判定，这是一条单操作数指令，还是一条双操作数指令，或者是零地址指令，从而知道后面还应读取几字节的指令代码。</p>
+<ul>
+<li>固定字长地址</li>
+</ul>
+<p>指令长度固定，方便机器预取后续指令，有利于指令流水线执行。</p>
+<blockquote>
+<p>现在RISC的微处理器通常采用固定字长指令</p>
+</blockquote>
+<h2 id="常用寻址方式"><a class="header" href="#常用寻址方式">常用寻址方式</a></h2>
+<p>一条指令包括操作码和地址码，指令的功能就是根据操作码对地，址码提供的操作数完成某种操作。指令中以什么方式提供操作数或操作数地址，称为寻址方式。</p>
+<p>指令所需要的操作数可能存放在以下几种地方：</p>
+<ul>
+<li>就包含在该指令之中。</li>
+<li>存放在CPU的某个寄存器中。</li>
+<li>存放在主存单元中。
+<ul>
+<li>只需对某个操作数进行处理</li>
+<li>需要对一个连续的数组或表进行处理。</li>
+</ul>
+</li>
+<li>存放在堆栈区中。</li>
+<li>存放在某个I/O接口的寄存器中。</li>
+</ul>
+<p>两种地址：
+形式地址：指令中的地址码不能直接用来访问主存
+有效地址：对形式地址进行一定的计算而得到的存放操作数的主存单元地址</p>
+<p>寻址方式的类型</p>
+<ul>
+<li>立即寻址类: 在读取指令时也立即读出操作数。</li>
+</ul>
+<blockquote>
+<p>通常用于为程序提供常数或某种初始值，提供的是不可变的数据</p>
+</blockquote>
+<ul>
+<li>直接寻址类: 直接给出主存的有效地址或寄存器号，以读取操作数。
+<ul>
+<li>堆栈寻址: 操作数存放在堆栈中，指令隐含约定由堆栈指针SP寄存器提供堆栈栈顶单元地址，进行读出或写入。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>有效地址是指令的一部分，不能随程序需要动态改变，因而该指令只能访问某个固定的主存单元。</p>
+</blockquote>
+<ul>
+<li>间接寻址类: 先从某寄存器或主存单元中读取有效地址，再按这一地址访问主存以读取操作数。</li>
+</ul>
+<blockquote>
+<p>即指向指针的指针
+可将间址单元当成一个读取操作数的地址指针，它指示操作数在主存中的位置，只要修改指针（即间址单元的内容），则同一条指令就可以用来在不同时间访问不同的存储单元。</p>
+</blockquote>
+<ul>
+<li>变址类: 指令给出的是形式地址，经过某种计算才获得有效地址，据此访问主存，读取操作数。
+<ul>
+<li>变址寻址: 指令的地址部分给出一个形式地址（位移量），并指定一个寄存器作为变址寄存器(Rx)；变址寄存器内容（称为变址量）与形式地址相加，得到操作数有效地址；</li>
+<li>相对寻址: 以当前指令位置为基准，相对它进行位移（往前或往后）定位</li>
+</ul>
+<blockquote>
+<p>用程序计数器PC的内容作为基准地址，指令中给出的形式地址作为位移量（可正可负），二者相加后形成操作数的有效地址。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="指令类型"><a class="header" href="#指令类型">指令类型</a></h2>
+<p><img src="assets/typeInstru.png" alt="" /></p>
+<blockquote>
+<p>一般所有的计算机都提供表2-4中的前三类指令。指令系统对后四类指令的支持取决于具体机器</p>
+</blockquote>
+<ol>
+<li>算数和逻辑运算类指令</li>
+</ol>
+<ul>
+<li>运算指令: 设置加、减、比较、移位等最基本的定点。</li>
+</ul>
+<blockquote>
+<p>性能稍强一点的机器，还设置定点乘、除运算指令。</p>
+</blockquote>
+<ul>
+<li>逻辑运算: 逻辑与、逻辑或、逻辑非（求反）和异或4种。</li>
+</ul>
+<blockquote>
+<p>有些机器设置有专门的位操作指令，如位测试、位清除、位设置等；而有些机器则通过逻辑运算指令实现位操作。</p>
+</blockquote>
+<ul>
+<li>移位操作: 算术移位、逻辑移位和循环移位</li>
+</ul>
+<blockquote>
+<p>对于未设置某种运算指令的机器，如果要实现这种运算，则可以通过程序方法来实现。也可以增设扩展运算部件。</p>
+</blockquote>
+<ol start="2">
+<li>数据传送类指令</li>
+</ol>
+<p>这类指令将数据从一个地方传送到另一个地方，可用来实现寄存器与寄存器、寄存器与主存单元，以及主存单元与主存单元之间的数据传送</p>
+<blockquote>
+<p>而且纯数据传送具有“复制”性质，即数据从源地址传送到目的地址时，源地址中的数据保持不变。</p>
+</blockquote>
+<p>输入/输出（I/O）类指令完成主机与外围设备之间的信息传送有三种设置方式</p>
+<ul>
+<li>专用的I/O指令</li>
+</ul>
+<p>OP R A<br />
+OP是操作码，表示它是I/O指令；<br />
+R是CPU中寄存器的地址，指定与外设交换数据的寄存器；<br />
+A是I/O端口的地址，其长度一般为8～16位，可以表示256～64 K个地址。</p>
+<ul>
+<li>用通用的数据传送指令实现I/O操作</li>
+</ul>
+<p>在I/O接口的端口与主存单元<em><strong>统一编址</strong></em>的机器中，因为将I/O端口与存储器单元同等对待，所以任何访问主存单元的指令均可访问I/O接口中的端口，这样就可以用传送类指令实现主机与I/O接口之间的信息传送</p>
+<ul>
+<li>通过I/O处理执行I/O操作</li>
+</ul>
+<ol start="3">
+<li>程序控制类指令</li>
+</ol>
+<p>这类指令可以控制程序执行的顺序和选择程序的执行方向</p>
+<ul>
+<li>
+<p>转移指令</p>
+<ul>
+<li>无条件转移指令: 改变指令的常规执行顺序，不受任何条件约束，直接把程序转移到该指令指向的任何地址（指令地址）开始执行。</li>
+</ul>
+<blockquote>
+<p>这种操作使程序计数器PC的内容改变为转移地址。</p>
+</blockquote>
+<ul>
+<li>条件转移指令; 需先测试某些条件，仅当条件满足时，才执行转移，否则只相当于一条空操作指令，不改变程序执行顺序。</li>
+</ul>
+<blockquote>
+<p>决定转移的条件一般是指上次运算结果的某些待征。<br />
+在CPU的状态寄存器中，有一组用来保存最近执行的算术逻辑运算指令、移位指令等的结果标志，它们主要包括</p>
+<ul>
+<li>进位标志C</li>
+<li>结果为零标志Z</li>
+<li>结果为负标志N</li>
+<li>溢出标志V</li>
+<li>奇偶标志P。</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>循环控制指令: 有了条件转移指令就可以实现循环程序设计。但有的机器为了提高指令系统的有效性，还专门设置了循环控制指令，它包括对循环控制变量的操作和脱离循环条件的控制，是一种具有复合功能的指令。</p>
+</li>
+<li>
+<p>子程序调用和返回指令</p>
+<ul>
+<li>执行子程序调用指令时，首先将下一条指令地址（即断点）压入堆栈保存，然后转入所调用的子程序执行。</li>
+<li>子程序执行完毕，由返回指令把调用子程序时压入的返回地址从堆栈中弹出，以返回调用程序。</li>
+</ul>
+</li>
+<li>
+<p>程序自中断指令</p>
+<ul>
+<li>按中断方式将处理机断点与现场保存在堆栈中（这点与一般的转子程序不同），然后转向对应的中断处理子程序入口开始执行</li>
+<li>执行完毕后，通过中断返回指令返回到原程序断点继续执行。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>由于自中断指令是由软件驱动的，所以又称为软中断。</p>
+</blockquote>
+<ol start="4">
+<li>系统类指令（特权指令）</li>
+</ol>
+<p>特权指令是指具有特殊权限的指令，它们只能用于操作系统或其他系统软件，一般不直接提供给用户使用。</p>
+<ul>
+<li>通常在单用户、单任务的计算机系统中不需要设置特权指令</li>
+<li>在多用户、多任务计算机系统中，则必须设置特权指令，它主要用于系统资源的分配和管理。如检测用户的访问权限、修改虚拟存储器管理的段表、页表等。</li>
+</ul>
+<p>在有些多用户计算机系统中，为了统一管理各种外设，输入/输出指令也作为特权指令使用，故用户不能直接访问它们。需输入/输出时，可通过系统调用来实现。</p>
+<h2 id="pentium2指令格式"><a class="header" href="#pentium2指令格式">Pentium2指令格式</a></h2>
+<h2 id="spaerc指令格式"><a class="header" href="#spaerc指令格式">SPAERC指令格式</a></h2>
+<div style="break-before: page; page-break-before: always;"></div><!-- ~/study_md/computer_composition/basic/4.CPU.md -->
+<p>第三章 微体系结构层--CPU组成</p>
+<p>[toc]</p>
+<p>从计算机系统的功能组成角度看，中央处理器CPU（Central Process Unit）是计算机系统的核心部件，它主要由寄存器、算术逻 辑部件ALU、控制器及互连它们的机构组成。</p>
+<p>CPU执行一条指令是由控制器产生的一组微命令（即控制信号：控制门电路的开关）序列实现的。按微命令的形成方式不同，控制器有两种组成方式</p>
+<ul>
+<li>组合逻辑控制方式</li>
+<li>微程序控制方式</li>
+</ul>
+<p>在微体系结构层，我们看到的是一些寄存器和算术逻辑部件ALU 相连构成的数据通路，即中央处理器CPU的数据通路。<br />
+数据通路的基本功能是传送和运算数据，如选择一个或两个寄存器的内容作为ALU的操 作数，将它们进行运算（如相加），然后将结果存回某个寄存器中。<br />
+在一些机器上，这些功能</p>
+<ul>
+<li>是由微程序产生的控制信号控制的，相应的控制部件称为微程序控制器；</li>
+<li>而有些机器是直接由硬件产生的控制信号来控制的，相应的控制部件称为组合逻辑控制器。</li>
+</ul>
+<h1 id="1-cpu的组成和功能"><a class="header" href="#1-cpu的组成和功能">1. CPU的组成和功能</a></h1>
+<p>中央处理器CPU的主要功能是</p>
+<ul>
+<li>从主存储器中取出指令</li>
+<li>解释指令和执行指令</li>
+</ul>
+<blockquote>
+<p>即按指令控制计算机各部件操作，并对数据进行处理。</p>
+</blockquote>
+<h2 id="11-cpu的组成"><a class="header" href="#11-cpu的组成">1.1 CPU的组成</a></h2>
+<p><img src="assets/cpucom.png" alt="" /></p>
+<ul>
+<li>控制器：产生一系列控制信号，1️⃣控制计算机中各部件完成操作</li>
+<li>算数逻辑单元ALU：实现所指定的各种算数运算和逻辑运算</li>
+<li>各种寄存器：存放指令、指令地址、操作数及运算结果</li>
+<li>CPU内部总线：连接CPU内部各部件，为信息传送提供通路</li>
+</ul>
+<h3 id="111-alu部件与寄存器"><a class="header" href="#111-alu部件与寄存器">1.1.1 ALU部件与寄存器</a></h3>
+<ol>
+<li>ALU部件</li>
+</ol>
+<p><img src="assets/alucom.png" alt="" /></p>
+<p>ALU的功能是实现数据的算术与逻辑运算。常用图3-2中所示的框图表示ALU。可以看出，</p>
+<ul>
+<li>ALU的输入有两个端口
+<ul>
+<li>分别接收参加运算的两个操作数</li>
+<li>通常它们来自CPU的通用寄存器或ALU总线。</li>
+</ul>
+</li>
+<li>ALU的输出取决于对其功能的控制
+<ul>
+<li>当控制功能选择加、减、与、或等运算功能之一时</li>
+<li>其输出结果将为对应的和、差、与值、或 值等。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>寄存器</li>
+</ol>
+<p>CPU中的寄存器包括</p>
+<ul>
+<li>
+<p>存放控制信息的寄存器</p>
+<ul>
+<li>
+<p>指令寄存器IR(Instruction Register)</p>
+<ul>
+<li>存放当前正在执行的一条指令。</li>
+<li>执行一条指令时，通常是先将其从主存储器(Memory)读出到主存数据寄存器MDR（Memory Data Register）中，然后再送往指令寄存器IR中。</li>
+</ul>
+</li>
+<li>
+<p>程序计数器PC(Program Counter)</p>
+<ul>
+<li>存放当前或下一条指令在主存中的地址</li>
+</ul>
+<blockquote>
+<p>因此又称为指令计数器或指令指针IP（Instruction Pointer）。</p>
+</blockquote>
+</li>
+<li>
+<p>状态字寄存器</p>
+<ul>
+<li>存放当前程序的运行状态和工作方式，其内容称为程序状态字PSW（Program State Word），PSW是参与控制程序执行的重要依据。</li>
+<li>PSW中一部分内容是记录上一条指令执行后的结果标志
+<ul>
+<li>进位标志C、溢出标志V、结果为零标志Z、结果正负标志N、奇偶标志P等。</li>
+</ul>
+<blockquote>
+<p>每当一条指令执行完，CPU将根据运行结果自动修改这些标志。</p>
+</blockquote>
+</li>
+<li>PSW中另一部分内容由编程设定（也称为控制标志）
+<ul>
+<li>跟踪标志T，用以编程设定断点；中断允许标志I，指示CPU是否允许响应 外部中断请求。</li>
+<li>有的机器还设有工作方式字段，若设定为用户方式， 则禁止用户使用某些特权指令。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>及存放所处理数据的寄存器</p>
+<ul>
+<li>
+<p>通用寄存器</p>
+<ul>
+<li>每个寄存器都可以提供多种用途</li>
+<li>每个通用寄存器都有唯一的编号，称为寄存器地址。</li>
+<li>通用寄存器可用D触发器构成。</li>
+</ul>
+</li>
+<li>
+<p>暂存器</p>
+<ul>
+<li>暂存从主存储器读出的数据</li>
+</ul>
+<blockquote>
+<p>这些数据不能存放在通用寄存器中，否则会破坏其原有内容。</p>
+</blockquote>
+<ul>
+<li>暂存器还可用于暂存来自通用寄存器组的数据。</li>
+<li>暂存器没有寄存器号，因此不能直接编程访问它们。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="112-总线"><a class="header" href="#112-总线">1.1.2 总线</a></h3>
+<p>总线是一组能为多个部件分时共享的公共信息传送线路，它分时接收各部件送来的信息，并发送信息到有关部件。</p>
+<blockquote>
+<p>会出现多个部件争用总线</p>
+</blockquote>
+<p>CPU内部总线用来连接CPU内的各寄存器与ALU，主要用于传送数据信息。</p>
+<p>系统总线用来连接CPU、主存储器与I/O接口，它通常包括三组：</p>
+<ul>
+<li>数据总线: 主要传送各大部件间的数据信息，如指令代码、操作数、命令字或状态字等。</li>
+<li>地址总线: 传送主存单元地址码或I/O端口地址。</li>
+<li>控制总线: 传送控制、状态信息，其中有CPU发出的控制信号，也有送入CPU的状态信号。如CPU输出的对主存的读/写控制信号、外设输入到CPU的中断请求信号。</li>
+</ul>
+<h3 id="113-cpu内部数据通路"><a class="header" href="#113-cpu内部数据通路">1.1.3 CPU内部数据通路</a></h3>
+<ol>
+<li>单总线数据通路结构</li>
+</ol>
+<p><img src="assets/cpuoneline.png" alt="" /></p>
+<ul>
+<li>CPU数据通路结构只采用一组内总线，它是双向总线。</li>
+<li>通用寄存器组、其他寄存器和ALU均连在这组内总线上。</li>
+<li>CPU外部的系统总线通过主存数据寄存器MDR和主存地址寄存器MAR（Memory Address Register）与CPU内总线相连。</li>
+<li>CPU内各寄存器间的数 据传送必须通过内总线进行，ALU通过内总线得到操作数，其运算结果 也经内总线输出。</li>
+</ul>
+<blockquote>
+<ul>
+<li>这种结构要求在ALU输入端设置两个暂存器。主要用于暂存提供给ALU的两个操作数。</li>
+<li>暂存器还可作为通用寄存器之间传送的转存部件。</li>
+</ul>
+</blockquote>
+<ol start="2">
+<li>多组总线结构</li>
+</ol>
+<p><img src="assets/cpumutiline.png" alt="" /></p>
+<ul>
+<li>使几个数据传送操作能够同时进行，即实现部分并行操作。</li>
+<li>每组总线连接几个部件的输入端，但只连接一个输出端</li>
+</ul>
+<blockquote>
+<p>通用寄存器之间的数据传送必须经ALU才能完成。</p>
+</blockquote>
+<h2 id="12-指令执行过程"><a class="header" href="#12-指令执行过程">1.2 指令执行过程</a></h2>
+<ol>
+<li>指令的分段执行过程</li>
+</ol>
+<p>任何一条指令的执行都要经过读取指令、分析指令和执行指令三 个阶段。读取与分析指令的操作，对所有指令几乎都一样，而每条指 令的执行阶段的具体操作则有较大差别。</p>
+<blockquote>
+<p>如有的指令需要从存储器中 取操作数，再进行运算，运算结果还要写回存储器，因此执行阶段还 可细分。</p>
+</blockquote>
+<ul>
+<li>
+<p>取指令:</p>
+<ul>
+<li>根据指令计数器PC提供的地址从主存储器中读取当前指令，送到主存数据缓冲器MDR中，然后再送往CPU内的指令寄存器IR中。</li>
+<li>同时改变指令计数器PC的内容，使之指向下一条指令地址或紧跟当前指令的立即数或地址码。</li>
+</ul>
+</li>
+<li>
+<p>分析指令</p>
+<ul>
+<li>如果采用组合逻辑控制器，则通过译码电路译出IR中指令各字段表示什么操作，并在时序系统的配合下产生该指令对应的微操作命令序列。</li>
+<li>若采用微程序控制器，则可根据指令的操作码与标志位转向控制存储器取出对应的微程序，由微指令提供微操作命令序列。</li>
+</ul>
+</li>
+<li>
+<p>执行过程</p>
+<ul>
+<li>
+<p>取操作数</p>
+<ul>
+<li>如果当前指令需要从主存取操作数，就需安排时间再次访问存储器。</li>
+<li>如果是间址方式或是取双操作数，则访存次数更多。</li>
+<li>若是变址方式，在取数之前还需安排时间进行变址计算。</li>
+</ul>
+</li>
+<li>
+<p>执行操作</p>
+<ul>
+<li>如果当前指令需要运算，则需考虑形成稳定运算结果的时间，为此安排专门的节拍。</li>
+</ul>
+<blockquote>
+<p>对乘除、浮点运算则需占用更多的节拍。</p>
+</blockquote>
+<ul>
+<li>若运算结果需送回主存单元，则应安排时间以完成对主存的写操作。</li>
+</ul>
+</li>
+<li>
+<p>形成下一条指令地址</p>
+<ul>
+<li>对于顺序执行的指令，下一条指令地址在取指令、取立即数、取地址码时，就已形成在PC中；</li>
+<li>如果是转移类指令，则将形成的转移地址送到PC中。以后再取下一条指令、分析、 执行……，如此循环直至程序执行完毕或外来干预为止。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>CPU还应该对运行过程中出现的某些异常情况或输入/输出请求进行如下处理：</p>
+<ul>
+<li>当机器出现某些异常情况</li>
+</ul>
+<blockquote>
+<p>如算术运算的溢出和数据传送的奇偶错等</p>
+</blockquote>
+<ul>
+<li>或者某些输入/输出请求</li>
+</ul>
+<blockquote>
+<p>如磁盘上的批量数据需送存储器或程序员从键盘送入命令等</p>
+</blockquote>
+<p>此时由相应的部件或设备发出“中断请求信号”或“DMA请求信号”。 若CPU收到中断请求信号</p>
+<ul>
+<li>在执行完当前指令后，响应该中断请求，暂停当前执行的程序，转去执行中断处理程序。</li>
+<li>当处理完毕后，再返回原程序断点继续执行下去。</li>
+</ul>
+<p>若CPU收到DMA请求信号</p>
+<ul>
+<li>在完成当前机器周期操作后，响应该DMA请求，暂停工作，让出总线给DMA控制器</li>
+<li>由它控制完成输入/输出设备与存储器之间的数据传送操作后，CPU从暂停的机器周期开始继续执行指令。</li>
+</ul>
+<blockquote>
+<p>注意，DMA操作不会改变CPU中任一寄存器（除DMA专用部件外）的状态，因此CPU可以从暂停处快速恢复程序的正确执行。</p>
+</blockquote>
+<ol start="2">
+<li>指令之间的衔接过程</li>
+</ol>
+<ul>
+<li>串行的顺序安排方式: 在一条指令执行完毕后才开始取下一条指令</li>
+<li>并行的重叠处理方式: 在对当前指令执行运算操作时提前从主存取出下一条指令，而不必等当前 指令全部执行完。</li>
+</ul>
+<blockquote>
+<p>但如果程序需要转移，预取下一条指令就要失败。 不过由于大多数情况下程序流程是顺序执行，下一条指令地址并不依赖本次执行结果，所以预取指令还是能有效地提高执行速度。</p>
+</blockquote>
+<h2 id="13-时序控制方式"><a class="header" href="#13-时序控制方式">1.3 时序控制方式</a></h2>
+<h3 id="131-同步控制方式"><a class="header" href="#131-同步控制方式">1.3.1 同步控制方式</a></h3>
+<p>指各项操作由统一的时序信号进行同步控制。这就意味着各个微操作必须在规定时间内完成，到达规定时间就自动执行后继的微操作。</p>
+<p>基本特征: 将操作时间分为若干长度相同的时钟周期 （也称为节拍），要求在一个或几个时钟周期内完成各个微操作。机器的时钟频率（主频）的选择主要取决于CPU内部的操作。</p>
+<blockquote>
+<p>通常时钟周期应能完成CPU内部花费时间最长的微操作。显然，对于花费时间少的微操作，就会有时间上的浪费，这是同步控制方式的一个缺点。</p>
+</blockquote>
+<h3 id="132-同步时序控制的多级时序系统"><a class="header" href="#132-同步时序控制的多级时序系统">1.3.2 同步时序控制的多级时序系统</a></h3>
+<ol>
+<li>多级时序的概念</li>
+</ol>
+<p>在同步控制方式中，通常将时序信号划分为几级（其中包括指令 周期），称为多级时序。</p>
+<p>指令周期是指从取指令、分析指令到执行完该指令所需的时间。</p>
+<blockquote>
+<p>在时序系统中，因其执行时间的长短可能不同，通常不为指令周期设置时间标志信号，因而也不将其作为时序的一级。</p>
+</blockquote>
+<p>在组合逻辑控制器中: 依靠不同的时间标志使CPU分步执行指令，其时序信号常划分为三级：</p>
+<ul>
+<li>机器周期</li>
+<li>节拍</li>
+<li>时钟脉冲
+而在微程序控制器中， 一条指令对应一段微程序（微指令序列），指令的分 步执行是由执行不同的微指令来实现的，每条微指令的执行时间为一个节拍，故其时序信号划分为两级：</li>
+<li>节拍</li>
+<li>时钟脉冲。</li>
+</ul>
+<p>机器周期：</p>
+<p>组合逻辑控制器中，通常将指令周期划分为几个不同的阶段，每个阶段所需的时间称为机器周期，又称为CPU工作周期或基本周期。</p>
+<blockquote>
+<p>例如，取指令周期、存储器读周期、存储器写周期等。在不同的机器周期中完成不同的操作。</p>
+</blockquote>
+<p>在时序系统中需设置一组周期状态触发器，以标志不同的机器周期，任一时刻只允许有其中的一个触发器为1，表明CPU当前处在哪个机器周期。不同的机器周期的长短可以不同。</p>
+<p>节拍（时钟周期）</p>
+<p>一个机器周期的操作一般需分几步完成。为此，将一个机器周期划分为若干相等的时间段，每个时间段内完成一步基本操作。这个时间段用一个电平信号宽度对应，称为节拍或时钟周期。</p>
+<ul>
+<li>节拍长度的确定，一般取决于CPU内部的操作需要。</li>
+<li>在时序系统中设置有节拍发生器，用以产生节拍信号。</li>
+</ul>
+<p>时钟脉冲信号CLK</p>
+<p>节拍的宽度确定后，时钟脉冲信号的频率也就随之确定了。<br />
+在时序系统中，是将由时钟发生器产生时钟脉冲信号作为时序系统的基本定时信号。</p>
+<p>此外，在节拍信号的配合下</p>
+<ul>
+<li>时钟脉冲CLK信号前沿将运算结果打入寄存器</li>
+<li>其后沿实现周期切换等功能。</li>
+</ul>
+<ol start="2">
+<li>多级时序信号之间的关系</li>
+</ol>
+<p><img src="assets/muticontrol.png" alt="" /></p>
+<ol start="3">
+<li>时序系统的组成</li>
+</ol>
+<p><img src="assets/timesys.png" alt="" /></p>
+<ul>
+<li>主振: 就是一个晶体振荡器，当机器一上电就产生频率稳定的主振信号</li>
+<li>主振信号由时钟发生器经过整形分频后得到时钟脉冲信号。</li>
+<li>启停控制线路控制时钟脉冲CLK的发与不发。</li>
+<li>节拍发生器按先后顺序，循环地发出若干节拍信号，它通常用计数译码电路构成。</li>
+</ul>
+<h2 id="14-指令流水线"><a class="header" href="#14-指令流水线">1.4 指令流水线</a></h2>
+<p>一条指令的执行过程也是分成几个步骤实现的。作为一个简化的方法，考虑将指令处理分成两个阶段：取指令和执行指令。在一条指令执行期间，有主存空闲的时间，这个时间能用于取下一条指令，从而使取下一条指令与当前指令的执行并行工作。</p>
+<p><img src="assets/2liushui.png" alt="" /></p>
+<p>重叠执行存在的问题</p>
+<ul>
+<li>执行时间一般要长于取时间。</li>
+</ul>
+<blockquote>
+<p>取指阶段可能必须等待一定的时间才能更新它的缓冲器。</p>
+</blockquote>
+<ul>
+<li>条件转移指令使得待取的下一条指令的地址是未知的。</li>
+</ul>
+<blockquote>
+<p>简单解决：当一条件转移指令通过取指阶段到执行阶段时，新的取指阶段取存储器中此转移指令之后的指令。若转移发生，则要作废已取的指令并再取新的指令。</p>
+</blockquote>
+<p>为获得进一步的加速，流水线可以分成更多的阶段。</p>
+<ul>
+<li>取指令(FI): 读取下一个预期的指令到寄存器</li>
+<li>译码指令(DI): 分析操作码和操作数寻址方式</li>
+<li>计算操作数地址(CO): 计算每个源操作数的有效渎职</li>
+<li>取操作数(FO): 根据操作数地址从存储器取操作数，寄存器中的数不用取</li>
+<li>执行指令(EI): 完成操作码指定的操作。若有指定的目标操作数为位置，则将结果写入此位置</li>
+<li>写操作数(WO): 将结果存入存储器</li>
+</ul>
+<p>以上分解，使各个阶段几乎用相等的时间。</p>
+<p><img src="assets/mutiliushui.png" alt="" /></p>
+<blockquote>
+<p>此过程不适用与所有计算机</p>
+</blockquote>
+<p>影响流水线性能的主要因素：</p>
+<ul>
+<li>
+<p>若各个阶段不全是相等的时间，会在各个流水阶段涉及到某种等待。</p>
+</li>
+<li>
+<p>流水线中的相关问题</p>
+<ul>
+<li>数据相关：第二条指令需要第一条指令的结果
+<ul>
+<li>发生数据相关时，第2条指令的操作数直接从数据处理部件得到，而不是存入后再读取。</li>
+<li>数据流分析技术：分析哪一条指令依赖于其他的结果或数据，依此来优化指令调度。</li>
+</ul>
+<blockquote>
+<p>PentiumⅡ就采用该技术，根据分析结果重排指令，使指令以优化的顺序执行，与原始程序的顺序无关。</p>
+</blockquote>
+</li>
+<li>...</li>
+</ul>
+</li>
+<li>
+<p>遇到条件转移指令时，确定转移与否的条件码往往由条件转移指令本身或由它前一条指令形成，只有当它流出流水线时，才能建立转移条件并决定下一条指令地址。</p>
+<ul>
+<li>猜测法：机器先选定转移分支中的一个，按它继续取指并处理
+<ul>
+<li>假如条件码生成后，说明猜测是正确的，那么流水线可继续进行下去，时间得到充分利用；</li>
+<li>假如猜错了，那么要返回分支点，并要保证在分支点后已进行的工作不能破坏原有现场，否则将产生错误。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>更复杂的例子是，不只预测下面一个分支，还要提前预测多条分支，如PentiumⅡ就可以进行多重跳转分支预测。</p>
+</blockquote>
+</li>
+<li>
+<p>I/O设备有中断请求或机器有故障，要求中止当前程序的执行而转入中断处理。</p>
+</li>
+</ul>
+<h1 id="2-算数逻辑单元alu和运算方法"><a class="header" href="#2-算数逻辑单元alu和运算方法">2. 算数逻辑单元ALU和运算方法</a></h1>
+<h2 id="21-移位"><a class="header" href="#21-移位">2.1 移位</a></h2>
+<ul>
+<li>
+<p>逻辑移位：位置变化，空出位补0</p>
+<blockquote>
+<p>适用于无数值大小的二进制代码</p>
+</blockquote>
+</li>
+<li>
+<p>循环移位</p>
+<ul>
+<li>最高位左移入最低位</li>
+<li>最低位右移入最高位</li>
+</ul>
+<blockquote>
+<p>形成闭合环路</p>
+</blockquote>
+</li>
+<li>
+<p>算数移位：带符号数的移位，移位后数的符号不变而数值发生变化。</p>
+<blockquote>
+<p>左移实现乘2，右移实现除2，各个数字所对应位置的权发生了变化</p>
+</blockquote>
+<ul>
+<li>原码
+<ul>
+<li>左移：符号位不动，其余各位依次左移，末尾补0</li>
+<li>右移：符号位不动，其他位依次右移，最高有效位补0</li>
+</ul>
+</li>
+<li>补码
+<ul>
+<li>左移：各位依次左移，末尾补0
+<blockquote>
+<p>若符号位变化，则发生溢出</p>
+</blockquote>
+</li>
+<li>右移：符号位不变，其余位右移，最高有效位复制符号位</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="assets/yiwei.png" alt="" /></p>
+<h2 id="22-定点数加减运算"><a class="header" href="#22-定点数加减运算">2.2 定点数加减运算</a></h2>
+<h3 id="221-原码加减法"><a class="header" href="#221-原码加减法">2.2.1 原码加减法</a></h3>
+<p>和操作码和符号都有关</p>
+<ul>
+<li>+A+(-B) -&gt; +A-(+B), 结果符号与绝对值大的符号相同</li>
+<li>+A-(-B) -&gt; +A+(+B), 结果与被减数符号相同␍</li>
+</ul>
+<h3 id="222-补码加减法"><a class="header" href="#222-补码加减法">2.2.2 补码加减法</a></h3>
+<p>$$[X+Y]_补=[X]_补+[Y]_补$$
+$$[X-Y]_补=[X+(-Y)]补=[X]_补+[-Y]_补$$</p>
+<blockquote>
+<p>已知$[Y]_补$求$[-Y]_补$
+将$[Y]_补$的每一位（包括符号位）取反，最低位+1</p>
+</blockquote>
+<p><em><strong>补码运算规则</strong></em></p>
+<ul>
+<li>参与运算的操作数用补码表示</li>
+<li>符号位页参与运算，所得结果也是补码表示</li>
+</ul>
+<h3 id="223-溢出"><a class="header" href="#223-溢出">2.2.3 溢出</a></h3>
+<p>如果两个操作数都是同符号数</p>
+<ul>
+<li>相加 可能溢出</li>
+<li>相减 不会溢出</li>
+</ul>
+<ol>
+<li>采用单符号判断法</li>
+</ol>
+<ul>
+<li>正+正=负 溢出（正溢）</li>
+<li>负+负=正 溢出（负溢）</li>
+</ul>
+<ol start="2">
+<li>双符号位(变形补码)判断法</li>
+</ol>
+<p>最高位表示正确的符号，存储时一位，计算时两位</p>
+<p>变形补码表示的数：</p>
+<ul>
+<li>不溢出
+<ul>
+<li>00：结果为正数</li>
+<li>11：结果为负数</li>
+</ul>
+</li>
+<li>溢出
+<ul>
+<li>01：结果正溢</li>
+<li>10：结果负溢</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>查看进位</li>
+</ol>
+<h2 id="23-定点数乘除运算"><a class="header" href="#23-定点数乘除运算">2.3 定点数乘除运算</a></h2>
+<h3 id="231-乘法"><a class="header" href="#231-乘法">2.3.1 乘法</a></h3>
+<ol>
+<li>无符号整数一位乘法</li>
+</ol>
+<p>计算机中，n位乘法 转换为 n次“累加与移位”</p>
+<blockquote>
+<p>每一步只求一位乘数所对应的新部分积，并与原部分积作一次累加，然后右移一位。</p>
+</blockquote>
+<p>流程图</p>
+<ul>
+<li>3个寄存器A、B、C
+<ul>
+<li>B：被乘数</li>
+<li>C：乘数</li>
+<li>A：初值为0，然后存放部分积，最后存放乘积高位,C存乘积低位</li>
+</ul>
+</li>
+<li>乘数每乘一位该位代码就不再使用，A和C寄存器联合右移，将$C_0$替换</li>
+<li>存放逐次增加的部分积，并且使每次乘数位始终在C的最低位$C_0$。</li>
+<li>乘法完成时，A与C存放的是最后乘积。</li>
+</ul>
+<p><img src="assets/cheng.png" alt="" /></p>
+<hr />
+<p>硬件原理图</p>
+<ul>
+<li>初始化：被乘数送入B、乘数送入C，A和Ca置0（进位触发器$C_a$保存每次累加的进位）</li>
+<li>由乘数位C0产生“加B/不加”（加0）信号，用以控制被乘数B是否与上次部分积相加产生本次部分积</li>
+<li>然后$C_a$、A、C一起右移一位；</li>
+<li>重复n个节拍的操作后所得到的乘积存放在A和C中。</li>
+<li>终止条件：乘数中的每一位都被替换(寄存器C)</li>
+</ul>
+<p><img src="assets/chengbasic.png" alt="" /></p>
+<hr />
+<p>举例</p>
+<p><img src="assets/chengexample.png" alt="" /></p>
+<ol start="2">
+<li>有符号整数一位乘法</li>
+</ol>
+<ul>
+<li>有符号 原码 一位乘法
+<ul>
+<li>符号位单独处理，做异或操作</li>
+<li>乘积为|X|·|Y|</li>
+</ul>
+</li>
+<li>有符号 补码 一位乘法
+<ul>
+<li>$[X·Y]_补=[X]_补*Y$</li>
+</ul>
+</li>
+</ul>
+<h3 id="232-除法"><a class="header" href="#232-除法">2.3.2 除法</a></h3>
+<p>关键在于判断够减与否的问题</p>
+<ul>
+<li>用逻辑线路进行比较判别。硬件代价大。</li>
+<li>直接做减法试探。操作不规则，控制时序复杂。
+<ul>
+<li>判断结果符号
+<ul>
+<li>为0（即正）表明够减，上商1；</li>
+<li>为1（即负）表明不够减，上商0并加上之前减去的除数（即恢复余数）</li>
+</ul>
+</li>
+<li>然后余数左移一位再做下一步。这就是恢复余数法。</li>
+</ul>
+</li>
+</ul>
+<p><em><strong>加减交替法(不恢复余数法)</strong></em></p>
+<ul>
+<li>余数为正，商“1”，余数左移一位，余数减除数</li>
+<li>余数为负，商“0”，余数左移一位，余数加除数</li>
+</ul>
+<p>流程图</p>
+<ul>
+<li>n位除数存放在B中，2n位被除数存放在A和C中。</li>
+<li>除法完成后商放在C中，余数放在A中。</li>
+<li>终止条件：被除数的低n位中的值全被商替换后(寄存器C)</li>
+</ul>
+<p><img src="assets/chufa.png" alt="" /></p>
+<blockquote>
+<p>在重复n-1次操作后，如果A中的余数为负，需要恢复余数做A+B。最后的寄存器A中应获得正确的正余数。</p>
+</blockquote>
+<p>举例</p>
+<p><img src="assets/chuexample.png" alt="" /></p>
+<h2 id="24-浮点数运算"><a class="header" href="#24-浮点数运算">2.4 浮点数运算</a></h2>
+<h3 id="241-加减法"><a class="header" href="#241-加减法">2.4.1 加减法</a></h3>
+<p>运算规则</p>
+<ul>
+<li>
+<p>对阶：向大阶看齐（为确保精度）</p>
+<ul>
+<li>求两数阶码之差E</li>
+<li>阶码小的数尾数右移E位，结果阶码为大阶数阶码值
+<ul>
+<li>原码右移，最高位补0</li>
+<li>补码右移，复制最高位</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>尾数相加减</p>
+</li>
+<li>
+<p>结果规格化</p>
+<ul>
+<li>原码：最高有效位为1</li>
+<li>补码最高位与符号位相反（-0.5除外）</li>
+</ul>
+<blockquote>
+<p>若结果位双符号补码</p>
+<ul>
+<li>规格化：00.1XXXX或11.0XXXX</li>
+<li>左规：00.0XXXX或11.1XXXX(11.10..0除外)
+<ul>
+<li>左移，同时阶码减小，直至规格化</li>
+</ul>
+</li>
+<li>右规：01.XXXX或10.XXXX
+<ul>
+<li>右移，复制符号位，同时阶码增大，直至规格化</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>舍入</p>
+<ul>
+<li>下舍上入法：0舍去，1则在新的尾数末尾加1</li>
+<li>恒舍/恒置1，误差大</li>
+</ul>
+</li>
+<li>
+<p>判溢：根据阶码判断</p>
+<ul>
+<li>左规后，阶码减小 -&gt; 判断是否下溢 -&gt; "0"处理</li>
+<li>右规后，阶码增大 -&gt; 判断是否上溢 -&gt; 中断处理</li>
+</ul>
+</li>
+</ul>
+<h3 id="242-乘除法"><a class="header" href="#242-乘除法">2.4.2 乘除法</a></h3>
+<p><em><strong>乘法</strong></em></p>
+<ul>
+<li>阶码相加并判溢
+<ul>
+<li>补码相加：$[E_x+E_y]_补=[E_x]_补+[E_y]_补$</li>
+<li>移码相加：$[E_x\pm E_y]_移 = (2^n+([E_x]_补\pm [E_y]_移)) mod 2^{n+1}$</li>
+</ul>
+</li>
+<li>尾数相乘</li>
+<li>规格化处理
+<ul>
+<li>顶多左规一次（原来两数已是规格化），阶码减小，可能下溢</li>
+</ul>
+</li>
+<li>判溢</li>
+</ul>
+<!-- NOTE: 乘除不是重点，加减是 -->
+<h2 id="25-alu"><a class="header" href="#25-alu">2.5 ALU</a></h2>
+<p>ALU主要完成对二进制代码的定点算术运算和逻辑运算</p>
+<ul>
+<li>算数：定点加减</li>
+<li>逻辑：逻辑与、或、异或、非</li>
+</ul>
+<blockquote>
+<p>组合逻辑电路—多功能函数发生器；核心—加法器</p>
+</blockquote>
+<p>硬件实现</p>
+<ul>
+<li>如何构成一个二进制加法单元，即全加器
+<blockquote>
+<p>使用半加器构成</p>
+</blockquote>
+</li>
+<li>如何构成一个n位并行加法器</li>
+<li>以加法器为核心，通过输入选择逻辑扩展为具有多种算数和逻辑运算的ALU</li>
+</ul>
+<p>多位加法器</p>
+<ul>
+<li>串型加法器：由一个一位全加器组成，数据逐位串行进入加法器</li>
+<li>并行加法器：由多个全加器组成，数据各位同时进入加法器进行运算
+<ul>
+<li>串行进位：将n个全加器串接起来，就可进行两个n位数相加，进位依赖于上一个全加器的值，延迟大</li>
+<li>并行进位：复杂电路结构，让各级进位信号同时形成</li>
+<li>分组的串并结合
+<ul>
+<li>组内并行、组间串行的进位链。</li>
+</ul>
+<blockquote>
+<p>芯片SN74181
+<img src="assets/SN74181.png" alt="" /></p>
+</blockquote>
+<ul>
+<li>组内并行、组间并行的进位链。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="3-cpu模型机的组成及其数据通路"><a class="header" href="#3-cpu模型机的组成及其数据通路">3. CPU模型机的组成及其数据通路</a></h1>
+<h2 id="31-基本组成"><a class="header" href="#31-基本组成">3.1 基本组成</a></h2>
+<p><img src="assets/cpumodel.png" alt="" /></p>
+<h3 id="311-寄存器"><a class="header" href="#311-寄存器">3.1.1 寄存器</a></h3>
+<p>种类</p>
+<ul>
+<li>存放控制信息的寄存器</li>
+<li>存放处理数据的寄存器</li>
+</ul>
+<p>为讨论简单，假设所有寄存器都是16位，内部结构是16个D触发 器，数据代码输入至D端，由CP端脉冲同步打入，其输出由输出门控 制。PSW的特征位则由R、S端置入，系统总线对MDR的输入也由R、S端 置入。</p>
+<ol>
+<li>
+<p>可编程寄存器</p>
+<ul>
+<li>通用寄存器：R0,R1,R2,R3</li>
+<li>堆栈指针: SP</li>
+<li>程序状态字：PSW</li>
+<li>程序计数器：PC</li>
+</ul>
+</li>
+<li>
+<p>暂存器: C,D,Z</p>
+<ul>
+<li>在ALU输出端设暂存器Z存放运算结果。</li>
+<li>暂存器D还可暂存从主存储器读出的数据，并设有左移和右移功能。</li>
+<li>暂存器C主要用于暂存从主存读出的源操作数。</li>
+</ul>
+</li>
+<li>
+<p>指令寄存器IR</p>
+<ul>
+<li>存放当前正在执行的一条指令。</li>
+<li>当执行一条指令时，应先将指令从主存中读出到IR中。</li>
+<li>IR的内容（指令）是控制器产生控制信号的主要逻辑依据。</li>
+</ul>
+</li>
+<li>
+<p>与主存接口的寄存器MAR、MDR</p>
+<ul>
+<li>地址寄存器MAR用于存放CPU访问主存或I/O接口的地址。MAR连接
+地址总线的输出门是三态门
+<ul>
+<li>当微命令EMAR为高电平时，MAR输出地址送往地址总线；</li>
+<li>当EMAR为低电平时，MAR输出呈高阻态，与地址总线断开。</li>
+</ul>
+</li>
+<li>数据寄存器MDR用于存放CPU与主存或I/O接口之间传送的数据。
+<ul>
+<li>CPU的输出数据必须先打入MDR，再从MDR输出到数据总线上。</li>
+<li>对于输入 CPU的数据，则从数据总线输入数据到MDR，然后由MDR送往CPU中的其他部件。</li>
+<li>MDR与数据总线间为双向连接，其输出级也采用三态门，可与数据总线断开。</li>
+<li>CPU对主存的控制信号有两个
+<ul>
+<li>读信号RD控制对主存的读操作；</li>
+<li>写信号WR控制对主存的写操作。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="312-运算部件"><a class="header" href="#312-运算部件">3.1.2 运算部件</a></h3>
+<p>ALU的输入A来自暂存器D，输入B来自ALU总线，运算结果输出到Z。<br />
+控制ALU运算的控制信号有：ADD、SUB、AND、OR、XOR、COM、NEG、A+1、A−1、B+1、B−1，它们分别控制ALU完成加、减、与、或、异或、求负、求反等运算。</p>
+<h3 id="313-总线与数据通路结构"><a class="header" href="#313-总线与数据通路结构">3.1.3 总线与数据通路结构</a></h3>
+<ol>
+<li>ALU总线</li>
+</ol>
+<p>CPU内部采用单总线结构</p>
+<ul>
+<li>即设置一组ALU总线（也称为CPU内总线），由16根双向数据传送线组成</li>
+<li>ALU和所有寄存器通过这组公共总线连接起来。</li>
+<li>在单总线结构中，CPU的任何两个部件间的数据传送都必须通过这组总线</li>
+</ul>
+<p>挂接在ALU总线上的寄存器几乎都设有三态输出门和打入脉冲。</p>
+<ul>
+<li>三态输出门打开，便将寄存器中的信息代码送到ALU总线上去，但每次只允许 一个部件向ALU总线发送信息代码；</li>
+<li>接收信息的寄存器可以有多个，由打入脉冲将ALU总线上的信息代码打入其中。</li>
+</ul>
+<ol start="2">
+<li>系统总线</li>
+</ol>
+<p>模型机的CPU、存储器及I/O设备分别挂接在一组系统总线上。</p>
+<p>系统总线包括：16根地址总线、16根数据总线，以及控制总线。
+为简单起见，模型机采用同步控制方式。</p>
+<ul>
+<li>CPU通过MAR向地址总线提供访问主存单元或I/O接口的地址，由控制信号EMAR决定是否发送地址。I/O接口（如DMA控制器）也可以向地址总线发送访存地址。</li>
+<li>CPU通过MDR向数据总线发送或接收数据，以完成与主存单元或I/O接口之间的数据传送，由控制信号RD、WR决定传送方向。主存M和I/O设备之间也可以通过数据总线传送数据。</li>
+<li>CPU通过控制总线向主存或I/O设备发出有关控制信号，或接收控制信号。有时，I/O设备也可以向控制总线发出控制信号。</li>
+</ul>
+<h3 id="314-控制器及微命令的基本形式"><a class="header" href="#314-控制器及微命令的基本形式">3.1.4 控制器及微命令的基本形式</a></h3>
+<ol>
+<li>微命令的基本形式</li>
+</ol>
+<p>微操作命令是最基本的控制信号，通常是指直接作用于部件或控制门电路的控制信号，简称微命令。</p>
+<blockquote>
+<p>例如，打开或关闭某个三态门的电位信号，或是对寄存器进行同步打入、置位、复位的脉冲。</p>
+</blockquote>
+<p>微命令的两种形式</p>
+<p>电位型微命令：用信号电平的高与低分别表示不同的信息</p>
+<blockquote>
+<p>通常定义高电平（如+5V）表示1，低电平（如0V）表示0。</p>
+</blockquote>
+<ul>
+<li>各寄存器输出到ALU总线的控制信号有：$R0_{OUT} 、R1_{OUT} 、PC_{OUT} 、SP_{OUT} 、MDR_{OUT}$等。
+• ALU运算控制信号有：ADD、SUB、AND、OR、XOR等。
+• 暂存器D的左移/右移控制信号有：SAL、SAR。
+• 程序计数器PC的计数控制信号有：PC+1。
+• MAR和MDR输出到系统总线的控制信号有：EMAR、EMDR。
+• 寄存器置入控制信号有：SMDR、SPSW。
+• 主存的读/写信号有：RD、WR。</li>
+</ul>
+<p>脉冲型微命令：利用脉冲边沿（即正向或负向跳变）来表示某一时刻，起定时作用，或识别脉冲的有无。</p>
+<ul>
+<li>各寄存器均采用同步打入脉冲将ALU总线上的数据打入其中。</li>
+<li>脉冲型微命令有：CP_{R0} 、CP_{R1} 、CP_{PC} 、CP_{IR} 、CP_{SP} 、CP_{MAR} 、CP_{MDR} 等。</li>
+</ul>
+<ol start="2">
+<li>控制器</li>
+</ol>
+<p>功能：根据指令产生控制信号序列以控制相应部件分步完成指定的操作。</p>
+<ul>
+<li>向CPU内部发送控制信号，控制寄存器之间的数据传送，使ALU完成指定功能以及其他内部操作；</li>
+<li>它也向CPU外部发出控制信号，以控制CPU与存储器或I/O设备之间传送数据。</li>
+</ul>
+<p>传统控制器的主要部件包括：</p>
+<ul>
+<li>指令寄存器IR</li>
+<li>指令译码器</li>
+<li>程序计数器PC</li>
+<li>状态字寄存器PSW</li>
+<li>时序系统</li>
+<li>微操作信号发生器
+在微型计算机中，将控制器和运算器（即CPU）集成在一块芯片上，因此现在
+是将CPU作为一个整体来讨论。</li>
+</ul>
+<p>如图3-20所示，微操作信号发生器的输入由</p>
+<ul>
+<li>IR中的指令经译码后的输出</li>
+<li>PSW的状态位</li>
+<li>时序信号</li>
+<li>外部的控制信号（如中断信号）组成。
+微操作信号发生器则依据它的输入产生指令执行时所需要的微操作信号（即控制信号）。</li>
+</ul>
+<h2 id="32-数据传送"><a class="header" href="#32-数据传送">3.2 数据传送</a></h2>
+<ol>
+<li>寄存器之间的数据传送</li>
+</ol>
+<p>在模型机中，寄存器之间可直接通过ALU总线传送数据，具体传送由输出门和打入脉冲控制。</p>
+<p>如图3-20所示，</p>
+<ul>
+<li>某寄存器$Ri$ 的输出和打入分别由$Ri_{OUT}$ 和$CP_{R_i}$控制。</li>
+<li>$Ri$ 的输出门控制信号$Ri_OUT$ 为高电平时，输出门打开，Ri 的内容就送到了ALU总线上；</li>
+<li>$Ri_OUT$为低电平时，输出门关闭，$Ri$的输出呈高阻态，与ALU总线隔离。</li>
+<li>打入脉冲$CP_{R_i}$ 有效时，将ALU总线上的数据打入Ri 。</li>
+</ul>
+<p>例如，把寄存器R1的内容传送到寄存器R3，即实现传送操作R1→R3所需控制信号为$R1_{OUT} 、CP_{R3}$ 。</p>
+<ol start="2">
+<li>主存数据到CPU</li>
+</ol>
+<p>如图3-20所示，要从主存中读一个数据到CPU</p>
+<ul>
+<li>CPU首先要把所取数据的地址送到MAR</li>
+<li>然后将MAR中的地址输出到地址总线上，同时发读命令到主存；</li>
+<li>主存完成读操作后将读出的16位数据送到数据总线上，再将数据线上的信息置入MDR。</li>
+</ul>
+<p>例如要从存储器中取指令到指令寄存器IR，通过以下操作序列即可实现：</p>
+<ul>
+<li>PC→MAR ；PC中的指令地址送存储器地址寄存器
+<ul>
+<li>实现PC→MAR传送操作所需的控制信号为$PC_{OUT} 、CP_{MAR}$ 。</li>
+</ul>
+</li>
+<li>M→MDR→IR ；从存储器中读指令到IR
+<ul>
+<li>实现读操作M→MDR的控制信号为EMAR、RD、SMDR；</li>
+<li>实现MDR→IR的控制信号为$MDR_{OUT} 、CP_{IR}$ 。</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>CPU数据到主存</li>
+</ol>
+<p>由图3-20可见，CPU数据要写入主存</p>
+<ul>
+<li>首先要将寄存器中的数据装入MDR，还要将写入主存单元的地址送MAR，然后发写命令；</li>
+<li>主存将按MAR中的地址把MDR的内容写入对应单元中。</li>
+</ul>
+<p>例如在R2中存放需写入主存的数据，存储单元地址在R1中，则写一个数据到存储器可通过以下操作序列实现：</p>
+<ul>
+<li>R1→MAR ；地址送MAR
+<ul>
+<li>实现R1→MAR操作的控制信号为$R1_{OUT} 、CP_{MAR}$ 。</li>
+</ul>
+</li>
+<li>R2→MDR ；数据送MDR
+<ul>
+<li>实现R2→MDR的控制信号为$R2_{OUT} 、CP_{MDR}$。</li>
+</ul>
+</li>
+<li>MDR→M ；数据写入主存
+<ul>
+<li>实现写操作MDR→M的控制信号为EMAR、EMDR、WR。</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>执行算数或逻辑操作</li>
+</ol>
+<p>执行算术或逻辑操作时，由于ALU本身是没有内部存储功能的组合电路，因此，如要执行加法运算，被相加的两个数必须在ALU的两个输入端同时有效，图3-20中的暂存器D即用于该目的。</p>
+<ul>
+<li>先将一个操作数经ALU总线送入暂存器D保存起来，D的内容在ALU的输入端A始终有效</li>
+<li>再将另一个操作数经总线直接送到ALU的输入端B；这样两个操作数都
+送入了ALU</li>
+<li>运算结果暂存在暂存器Z中</li>
+</ul>
+<p>若要执行“把寄存器R1和R2的内容相加，结果送到R3”这个功能，需要分成三步执行：</p>
+<ul>
+<li>R1→D ；把R1的内容先送到寄存器D
+<ul>
+<li>实现R1→D操作的控制信号为$R1_{OUT} 、CP_D$ 。</li>
+</ul>
+</li>
+<li>D+ R2→Z ；R2内容送到ALU的B端与D内容通过ALU相加，结果送Z
+<ul>
+<li>实现D + R2→Z的控制信号为$R2_{OUT} 、ADD、CP_Z$ 。</li>
+</ul>
+</li>
+<li>Z→R3 ；将相加结果送入R3中
+<ul>
+<li>实现Z→R3的控制信号为$Z_{OUT} 、CP_{R3}$。</li>
+</ul>
+</li>
+</ul>
+<h1 id="4组合逻辑控制器原理"><a class="header" href="#4组合逻辑控制器原理">4、组合逻辑控制器原理</a></h1>
+<p>按产生控制信号的方式不同，控制器可分为</p>
+<ul>
+<li>组合逻辑控制器</li>
+<li>微程序控制器两种基本类型。</li>
+</ul>
+<p>组合逻辑控制器是指产生控制信号（即微命令）的部件，是用组合逻辑线路来实现的。</p>
+<p>在模型机中有几十个微命令，则每个微命令都需要一组逻辑门电路，根据相应的逻辑条件（如指令的操作码、寻址方式、时序信号等）产生该微命令。控制器一旦制造完成后，这些逻辑电路之间的连接关系就固定了，不易改动，所以组合逻辑控制器又称为硬连逻辑控制器。</p>
+<h2 id="41-模型机的指令系统"><a class="header" href="#41-模型机的指令系统">4.1 模型机的指令系统</a></h2>
+<p>本节先介绍模型机的指令系统，然后假设模型机采用的是组合逻辑控制器，讨论其时序系统、指令执行流程及微命令的产生与综合。</p>
+<h3 id="411-指令格式"><a class="header" href="#411-指令格式">4.1.1 指令格式</a></h3>
+<p><img src="assets/model_instrution.png" alt="" /></p>
+<p>对于转移指令字段，第0-3位中有一位为1，表示转移条件</p>
+<ul>
+<li>进位--<code>C</code></li>
+<li>溢出--<code>V</code></li>
+<li>结果为零--<code>Z</code></li>
+<li>结果为负--<code>N</code><br />
+第五位表明转移方式，若为0，表示相关标志位为0则转移。<br />
+若第0-5位全为0，则表无条件转移</li>
+</ul>
+<p>可编程寄存器有七个，编号如下</p>
+<ul>
+<li>通用寄存器R0-R3,000-011</li>
+<li>堆栈指针SP,100</li>
+<li>程序状态字PSQ,101</li>
+<li>程序计数器PC,111</li>
+</ul>
+<h3 id="412-寻址方式"><a class="header" href="#412-寻址方式">4.1.2 寻址方式</a></h3>
+<ul>
+<li>立即数寻址，操作数紧跟着指令，即在指令代码之中。</li>
+<li>操作数在寄存器中，即寄存器寻址方式。</li>
+<li>操作数在主存中，相应的寻址方式有：
+<ul>
+<li>直接寻址方式，地址紧跟指令操作码与寻址字段后。</li>
+<li>寄存器间址方式，地址在寄存器中。</li>
+<li>自增型寄存器间址方式。</li>
+<li>自减型寄存器间址方式。</li>
+<li>变址方式。</li>
+</ul>
+</li>
+</ul>
+<p><img src="assets/model_find_pos.png" alt="" /></p>
+<ul>
+<li>0型</li>
+</ul>
+<p>寄存器寻址方式，寻址字段代码000，汇编符号<code>R</code>，定义为：操作数在指定的寄存器中</p>
+<ul>
+<li>1型</li>
+</ul>
+<p>寄存器间址方式，寻址字段代码001，汇编符号<code>(R)</code>，定义为：操作数地址在指定寄存器中（即从指定寄存器中得到操作数地址，再按次地址访问主存，从主存中读取操作数）</p>
+<ul>
+<li>2型</li>
+</ul>
+<p>自减型寄存器寻址方式，寻址字段代码010，汇编符号<code>-(R)</code>，定义为：将指定寄存器内容减去1后为操作数地址，再按地址防伪主存，从主存中获取操作数</p>
+<ul>
+<li>3型</li>
+</ul>
+<p>立即/自增型寄存器寻址方式，寻址代码011，汇编代码<code>(R)+</code>，定义为：操作数地址在指定寄存器中，地址使用后将寄存器内容加1，</p>
+<ul>
+<li>4型</li>
+</ul>
+<p>直接寻址方式，寻址字段代码100，汇编符号<code>DI</code>，定义为：操作数地址紧跟指令操作码与寻址字段后的单元中，然后PC+1，将修改后的PC内容作为地址，据此访问紧跟当前指令操作码与寻址字段后的存储单元，从中取得操作数地址（称为绝对地址），据此再度访存，读得操作数，然后PC+1</p>
+<ul>
+<li>5型</li>
+</ul>
+<p>变址方式，寻址字段101，汇编符号<code>X(R)</code>，其中X是变址的一种习惯标注符，定义为：指定变址寄存器内容与紧跟指令操作码与寻址字段后的位移量相加，其结果为操作数地址。</p>
+<h3 id="413-操作类型"><a class="header" href="#413-操作类型">4.1.3 操作类型</a></h3>
+<p>操作码共4位，现设14中指令，余下两种操作码可共扩展</p>
+<ol>
+<li>传送指令</li>
+</ol>
+<ul>
+<li><code>MOV</code>: 传送，操作码0000</li>
+</ul>
+<ol start="2">
+<li>双操作数算数逻辑指令</li>
+</ol>
+<ul>
+<li><code>ADD</code>: 加，操作码0001（带进位）</li>
+<li><code>SUB</code>: 减，操作码0010（带进位）</li>
+<li><code>AND</code>: logic and,operator 0011</li>
+<li><code>OR</code>: logic or,operator 0100</li>
+<li><code>EOR</code>: 逻辑异或,操作码0101</li>
+</ul>
+<ol start="3">
+<li>singnal operator instruction</li>
+</ol>
+<ul>
+<li><code>COM</code>: 求反,operator 0110</li>
+<li><code>NEG</code>: 求补，operator 0111</li>
+<li><code>INC</code>: add 1,operator 1000</li>
+<li><code>DEC</code>: substruct 1,operator 1001</li>
+<li><code>SL</code>: move left,operator 1010</li>
+<li><code>SR</code>: move right,operator 1011</li>
+</ul>
+<ol start="4">
+<li>program control instruction</li>
+</ol>
+<ul>
+<li><code>JMP</code>: 转移指令,operator 1100</li>
+</ul>
+<p><img src="assets/jmp.png" alt="" /></p>
+<p>如表3-5所示，JMP指令第3～0位选择一位为1，表明以PSW中的某一特征作为转移条件。</p>
+<p>JMP指令第5位（IR5）决定转移条件为0转，还是为1转。若JMP指令第5～0位全为0，则表示无条件转移。</p>
+<ul>
+<li><code>RST</code>: 返回指令，operator 1100</li>
+</ul>
+<p>RST指令与JMP指令的操作码相同，可视为一条指令。RST指令只能采用自增型寄存器间址表明转移地址，并指定寄存器为SP，即寻址方式为（SP）+。它从堆栈中取出返回地址，然后修改堆栈指针SP+1。实际上，“JMP（SP）+”指令就是一条RST指令。</p>
+<ul>
+<li><code>JSR</code>: 转子指令，operator 1101</li>
+</ul>
+<p>执行JSR指令时，先将返回地址压栈保存，然后按寻址方式找到转移地址（即子程序入口地址），将它送入PC中。</p>
+<h2 id="42-模型机的时序系统"><a class="header" href="#42-模型机的时序系统">4.2 模型机的时序系统</a></h2>
+<p>组合逻辑控制器依靠不同的时间标志，使CPU分步工作。</p>
+<p>模型机采用前述的三级时序系统，即将时序信号分为工作周期、节拍（时钟周期）和工作脉冲。</p>
+<h3 id="421-工作周期划分"><a class="header" href="#421-工作周期划分">4.2.1 工作周期划分</a></h3>
+<p>模型机设置了6种工作周期，分别用6个周期状态触发器来表示它们的状态。任一时刻只允许一个触发器为1，表明CPU现在所处的工作周期状态，并为该阶段的工作提供时间标志与依据。</p>
+<ol>
+<li>取指令周期<code>FT</code></li>
+</ol>
+<p>完成取指所需的操作。</p>
+<ol start="2">
+<li>源周期<code>ST</code></li>
+</ol>
+<p>如果需要从主存中读取源操作数，则进入ST。在ST中将依据指令寄存器IR的源地址字段信息进行操作，形成源地址，读取源操作数。</p>
+<ol start="3">
+<li>目的周期<code>DT</code></li>
+</ol>
+<p>如果需要从主存中读取目的地址或目的操作数，则进入DT。在DT中将依据指令寄存器IR的目的地址段信息进行操作。</p>
+<ol start="4">
+<li>执行周期<code>ET</code></li>
+</ol>
+<p>取得操作数后，则进入ET，将依据IR中操作码执行相应操作，如传送、算术运算、逻辑运算、获得转移地址等。</p>
+<ol start="5">
+<li>中断响应周期<code>IT</code></li>
+</ol>
+<p>CPU在响应中断请求之后，进入中断响应周期IT。</p>
+<ul>
+<li>在IT中将直接依靠硬件进行关中断、保存断点、转处理程序入口等操作。</li>
+<li>IT结束后，进入取指周期FT，开始执行中断处理程序。</li>
+</ul>
+<blockquote>
+<p>中断方式是指这样一种工作方式：由于某些异常情况或特殊请求，引起CPU暂停执行当前程序，转去执行中断处理子程序，以处理这些情况或请求，等处理完后又返回原程序断点继续执行，这一过程就称为中断。</p>
+</blockquote>
+<ol start="6">
+<li>DMA传送周期<code>DMAT</code></li>
+</ol>
+<p>CPU响应DMA请求之后，进入DMAT。</p>
+<p>在DMAT中</p>
+<ul>
+<li>CPU交出系统总线的控制权，即MAR、MDR与系统总线脱钩（呈高阻态）</li>
+<li>改由DMA控制器控制系统总线，实现主存与外围设备间的数据直接传送</li>
+<li>因此对CPU来说，DMAT是一个空操作周期。</li>
+</ul>
+<blockquote>
+<p>DMA（Direct Memory Access）即直接访存方式，它的基本思想是在主存储器和I/O设备 之间建立直接的数据传送通路，由专门的DMA控制器控制主存和I/O设备间的数据传送，在传送时不需CPU干预。由于传送过程完全由硬件实现，所花费的时间短，因此能满足高速数据传送的需要。</p>
+</blockquote>
+<p><img src="assets/cpu_period.png" alt="" /></p>
+<p>为此，在每一周期结束前，都要判断下一个周期状态将是什么，并为此准备好进入该周期的条件，如发出电位信号1→ST等。到本周期结束的时刻，再实现周期状态的定时切换。</p>
+<p>由于DMA周期要实现的是高速数据直传，所以DMA请求的优先级高于中断请求。</p>
+<blockquote>
+<p>注意，实际的计算机大多允许在一个系统总线周期结束时插入DMAT。本模型机为了简化其控制逻辑，限制在一条指令结束时才判别与响应DMA请求。</p>
+</blockquote>
+<h3 id="422-节拍时钟周期"><a class="header" href="#422-节拍时钟周期">4.2.2 节拍（时钟周期）</a></h3>
+<p>每个工作周期的操作一般需要分成若干步完成，为此将工作周期划分成若干节拍。</p>
+<p>节拍宽度为最长微操作所需的时间，即访问主存操作所需的时间</p>
+<blockquote>
+<p>注意，在实际机器中节拍长度短于访存周期</p>
+</blockquote>
+<p>节拍发生器由计数器T与节拍译码器组成。当工作周期开始时，T=0，若本工作周期还需延长，则发命令T+1，计数器将继续计数，表示进入一个新的节拍；若本工作周期应当结束，则发命令T=0，计数器T复位，从T=0开始一个新的计数循环，进入新的工作周期。</p>
+<h3 id="423-工作脉冲"><a class="header" href="#423-工作脉冲">4.2.3 工作脉冲</a></h3>
+<p>在节拍中执行的有些操作需要同步定时脉冲，如将稳定的运算结果打入寄存器，又如周 期状态切换等。为此，模型机在每个节拍的末尾发一个工作脉冲P，作为各种同步脉冲的来源</p>
+<ul>
+<li>工作脉冲P的前沿作为打入寄存器的定时信号，它标志着一次数据通路操作的完成。</li>
+<li>P的后沿作为节拍与工作周期切换的定时信号，在此刻对节拍计数器T计数、打入新的工作周期状态。</li>
+</ul>
+<h2 id="43-指令流程"><a class="header" href="#43-指令流程">4.3 指令流程</a></h2>
+<p>分析指令流程是为了在寄存器这一层次分析指令序列的读取与执行过程，也就是讨论CPU的工作机制</p>
+<p>设计和确定指令执行的具体流程通常有两种方法</p>
+<ul>
+<li>工作周期为线索: 以工作周期为主轴来制定各类指令的操作流程</li>
+<li>指令为线索: 以指令类型为主轴来制定流程</li>
+</ul>
+<h3 id="431-取指令周期ft"><a class="header" href="#431-取指令周期ft">4.3.1 取指令周期FT</a></h3>
+<p>FT中的操作是各类指令流程都需首先经历的，与指令类型无关，通常称为公共操作。</p>
+<h4 id="进入ft的条件"><a class="header" href="#进入ft的条件">进入FT的条件</a></h4>
+<p>取指周期状态触发器FT为1</p>
+<p><img src="assets/ft_trrigle.png" alt="" /></p>
+<ol>
+<li>初始化置入FT</li>
+</ol>
+<p>当机器加电或按“复位”键后，将产生一个“复位信号”预置全机的初始状态。</p>
+<ul>
+<li>首先将某值（如全0）置入程序计数器PC中，此即为开机后执行的第一条指令的地址，同时将取指周期状态触发器FT置1。</li>
+<li>当复位信号结束后，开放时钟，开始执行取指操作，进入操作系统程序运行状态。由于在复位信号作用时，时钟被封锁，因此采取S端置入方式。</li>
+</ul>
+<ol start="2">
+<li>程序运行过程中，同步打入FT</li>
+</ol>
+<p>在正常的程序运行过程中，时钟已开放，可用同步方式实现周期状态转换。</p>
+<ul>
+<li>若要进入FT，则事先在状态触发器D端准备好条件1→FT，然后产生同步脉冲$CP_FT$ ，由$CP_FT$的上升沿（即脉冲P的后沿），将1打入FT。</li>
+<li>若要结束FT状态，则让D端电平为0，并产生$CP_FT$将0打入FT，使FT变为0，表示取指周期结束。</li>
+</ul>
+<p>有三种情况可采用同步方式进入新的取指周期：</p>
+<ul>
+<li>当一条指令将执行完毕时，即在执行周期ET中，如果不响应DMA请求与中断请求，程序正常执行，接着就转入新的FT，开始执行下一条指令。</li>
+<li>在中断周期IT这一过渡阶段操作结束后，就应转入中断处理程序，即进入FT。</li>
+<li>在DMA周期完成一次DMA传送后，如果没有新的DMA请求，也没有中断请求，则恢复执行被暂停的程序，也应进入FT。</li>
+</ul>
+<p>因此，产生控制信号1→FT的逻辑条件如下：
+$$1 \to FT = ET(\overline{1 \to IT} \cdot \overline{1 \to DMAT}) + IT + DMAT(\overline{1 \to IT} \cdot \overline{1 \to DMAT})$$</p>
+<blockquote>
+<p>整个表达式是一个布尔逻辑表达式，所有变量都只有两种状态（0或1），用来表示不同条件的真或假，以便触发控制信号$1 \to FT$。</p>
+</blockquote>
+<h4 id="取指流程"><a class="header" href="#取指流程">取指流程</a></h4>
+<p><img src="assets/get_instruction.png" alt="" /></p>
+<ul>
+<li>在$FT_0$中先将指令地址由PC送入MAR；</li>
+<li>在$FT_1$中从主存读出指令代码到MDR再送到指令寄存器IR中，由于PC本身具有计数功能，所以可同时修改程序计数器PC的内容，让PC+1，则修改后的PC指向紧跟当前指令操作码与寻址字段后的下一主存单元。</li>
+</ul>
+<h4 id="微操作时间表"><a class="header" href="#微操作时间表">微操作时间表</a></h4>
+<p><img src="assets/smalloperationtable.png" alt="" /></p>
+<p>表3-6以操作时间表形式，进一步给出了为实现取指流程的每步基本操作与转入下一步操作所需的微命令（包括控制电位和脉冲）。</p>
+<ul>
+<li>左栏给出节拍序号，如T0 、T1 、…，也可将工作周期状态与节拍序号综合标注，如FT0 形式。</li>
+<li>中栏给出在本拍中应发的电平型微命令，这些命令同时发出，维持一个节拍宽度。
+<ul>
+<li>有些命令只在某些逻辑条件下才发出，则进一步在括号中标注其补充逻辑条件</li>
+<li>如果表中空间不便写全，或是在拟定本表时还不能给出全部逻辑条件，要等到全部指令流程与操作时间表都列完后才能全部确定，则可在括号中先注明逻辑条件，以后再补充相应逻辑式</li>
+</ul>
+</li>
+<li>右栏给出本拍中应发的脉冲型微命令，并示意性地表明脉冲是在时钟周期的末尾发出的，由工作脉冲P或其反相脉冲P定时。</li>
+</ul>
+<hr />
+<p>让我们分析FT操作时间表中各个微命令的含义。如表3-6所示，</p>
+<ul>
+<li>在$FT_0$
+<ul>
+<li>要完成PC→MAR操作，则应发控制信号$PC_{OUT}$、$CP_{MAR}$ ，由它们控制将PC的内容送ALU总线并打入MAR中。</li>
+<li>控制信号T+1、CPT 控制转入下一个节拍FT1 。</li>
+</ul>
+</li>
+<li>在FT1中
+<ul>
+<li>要完成M→MDR→IR操作，控制信号EMAR、RD、SMDR控制从主存中读一个字（指令）置入MDR，由$MDR_{OUT}$ 、$CP_{IR}$将MDR内容打入IR中。</li>
+<li>要完成PC+1→PC操作，控制信号PC+1、$CP_{PC}$ 将PC内容加1计数。</li>
+</ul>
+</li>
+</ul>
+<p>在取指周期结束时，需根据已取到IR中的指令操作码与寻址方式，判断应转入哪个周期， 因此1→ST、1→DT、1→ET这三个电位信号中只能有一个为1，其逻辑条件主要涉及操作码与寻址方式。</p>
+<p>当周期状态发生转换时，FT触发器的D端1→FT为0，$CP_{FT}$将其打入0。<br />
+在周期状态结束时，T+1为0，由CPT使T计数器置0。</p>
+<h3 id="432-move指令"><a class="header" href="#432-move指令">4.3.2 MOVE指令</a></h3>
+<p>如果当前指令是MOV指令，CPU将执行MOV指令流程，如图3-26所示。</p>
+<p><img src="assets/move_instruction.png" alt="" /></p>
+<p>MOV指令流程图包含了各种寻址方式的组合</p>
+<ul>
+<li>流程分支的逻辑依据就是指令的寻址方式字段代码，图中标注为相应的汇编符号。</li>
+<li>每个工作周期结束时要判断后继工作周期将是什么。</li>
+</ul>
+<ol>
+<li>FT</li>
+</ol>
+<p>取指令周期FT</p>
+<ol start="2">
+<li>ST</li>
+</ol>
+<p>在FT中根据寻址方式作出判别，决定在ST中的分支。</p>
+<ul>
+<li>R型: 源操作数在指定寄存器中
+<ul>
+<li>第1拍ST0将寄存器Ri内容送入C中。</li>
+</ul>
+</li>
+<li>(R)型
+<ul>
+<li>第1拍ST0 完成从指定寄存器Ri 中取得源地址</li>
+<li>第2拍ST1 访存读取操作数，经MDR送入C中暂存。</li>
+</ul>
+</li>
+<li>−(R)型
+<ul>
+<li>第1拍先修改地址指针内容，即指定寄存器Ri 内容减1，所得结果打入Z。</li>
+<li>第2拍将Z同时送入Ri 与MAR，形成源地址</li>
+<li>第3拍访存读取操作数，送入C暂存。</li>
+</ul>
+</li>
+<li>I/(R)+型
+<ul>
+<li>第1拍取得地址</li>
+<li>第2拍读取操作数</li>
+<li>第3、4拍修改地址指针，即Ri 加1。</li>
+</ul>
+</li>
+<li>DI型 操作数地址紧跟着指令。取指后PC已加1，指向紧跟当前指令的下一单元
+<ul>
+<li>ST0 将PC内容送MAR</li>
+<li>ST1 据此访存，从中取得操作数地址，并同时修改PC。</li>
+<li>ST2 读取操作数。</li>
+</ul>
+</li>
+<li>X(R)型 需两次访存，第1次在PC指点下读取位移量，第2次读取操作数。
+<ul>
+<li>ST0 中将PC内容送MAR。</li>
+<li>ST1 读取位移量，暂存于D，并修改PC指针。</li>
+<li>ST2 实现变址计算，即变址寄存器Ri中的变址量与D中的位移量相加，获得操作数地址。</li>
+<li>ST3 操作数地址送MAR。</li>
+<li>ST4 读取操作数。</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>DT</li>
+</ol>
+<p>与ST相似，但对于MOV指令，DT直到取得目的地址为止。</p>
+<blockquote>
+<p>$DR$表示目的地址采用寄存器寻址方式，若不是寄存器寻址方式，则用$\overline{DR}$表示。</p>
+</blockquote>
+<ol start="4">
+<li>ET</li>
+</ol>
+<p>执行周期的基本任务是实现操作码要求的传送操作，这就需要考虑在进入ET时，操作数是送往寄存器还是送往主存，可以根据DR状态区分。因此，按DR形成两种分支，如图3-26所示。</p>
+<p>指令流程图只反映了正常执行程序的情况，实际上在最后一拍还需判别是否响应DMA请求与中断请求，即是否发1→DMAT或1→IT。如果都没有，则建立1→FT，转入下一条指令。</p>
+<h3 id="433-双操作数指令"><a class="header" href="#433-双操作数指令">4.3.3 双操作数指令</a></h3>
+<p>双操作数指令共有5条：加ADD、减SUB、与AND、或OR、异或EOR，其指令流程如图3-27所示。</p>
+<p>其中取指和取源操作数周期，与MOV指令相同，图中不再细画。目的周期DT也与MOV指令的DT相似，但多一步操作，即访存读取目的操作数，其余则完全相同，不再赘述。</p>
+<p>OP是操作运算符，例如C OP D→Z，若该指令是一条加法指令，则所描述的含义即为C+D→Z。</p>
+<p><img src="assets/double_operator_instruction.png" alt="" /></p>
+<h3 id="434-单操作数指令"><a class="header" href="#434-单操作数指令">4.3.4 单操作数指令</a></h3>
+<p>单操作数指令共有6条：求反COM、求补NEG、加“1”INC、减“1”DEC、左移SL、右移SR，其指令流程图如图3-28所示。</p>
+<p><img src="assets/single_operator_instruction.png" alt="" /></p>
+<p>单操作数指令只有一个操作数，处理后送回原处，因此不需源周期状态ST，取指后直接进入目的周期DT，执行周期ET中的流程分支也只有两类，其余均与双操作数指令相同。$RT_0$ 中的具体操作含义取决于操作码OP，例如OP D→Z，若该指令是一条求反指令，则所描述的含义为 $\overline{D}$→Z。</p>
+<h3 id="435-转移指令jmp返回指令rst"><a class="header" href="#435-转移指令jmp返回指令rst">4.3.5 转移指令JMP/返回指令RST</a></h3>
+<p>JMP指令的流程如图3-29所示。RST指令被视为JMP指令的一种特例。</p>
+<p><img src="assets/jump_insruction.png" alt="" /></p>
+<p>JMP/RST指令的主要任务是获得转移地址或返回地址，安排在执行周期ET中完成，因此</p>
+<ul>
+<li>在FT中读得指令并修改PC后，直接进入ET。</li>
+<li>根据指令规定的转移条件与PSW相应的位的实际状态，决定是否转移，相应地分成转移成功（JP）、转移不成功（NJP）两种可能。</li>
+</ul>
+<ol>
+<li>转移不成功<code>NJP</code></li>
+</ol>
+<p>转移条件不满足，则程序将顺序执行。 在决定下一条指令地址时有以下两种可能的情况</p>
+<ul>
+<li>
+<p>转移地址段中的寻址方式所指定的寄存器如果不是PC寄存器，称为$\overline{PC}$型(即通用寄存器、堆栈指针SP)，则后继指令紧跟着当前转移指令（在FT中修改后的PC内容，就是后继指令地址）。</p>
+</li>
+<li>
+<p>转移地址段中的寻址方式所指定的寄存器指明是PC，称为PC型，则紧跟指令操作码与寻址字段之后的单元已用来存放转移地址，再下一个存储单元内容才是后继指令，所以在ET中令PC再次加1。</p>
+</li>
+</ul>
+<ol start="2">
+<li>转移成功JP</li>
+</ol>
+<p>即转移条件满足，按寻址方式获得转移地址。</p>
+<ul>
+<li>寄存器寻址R: 从指定寄存器中读取转移地址。</li>
+<li>寄存器间址（R）: 从指定寄存器中读取间址单元地址，再从间址单元中读取转移地址。</li>
+<li>自增型寄存器间址（R）+ : 比上一种寻址方式增加一步修改指针R i 的操作。</li>
+<li>返回指令RST 其寻址方式固定为（SP）+，即从堆栈中读取返回地址，然后修改指针SP。</li>
+<li>相对寻址X（PC）: 以PC内容为基准进行转移地址计算。</li>
+</ul>
+<h3 id="434-转子指令jsr"><a class="header" href="#434-转子指令jsr">4.3.4 转子指令JSR</a></h3>
+<p><img src="assets/vrzi_instruction.png" alt="" />
+转子指令采用（R）或（R）+型，安排在源周期ST，从主存中读取转移地址，暂存于C中。</p>
+<p>在ET0 ～ET3 中，先将返回地址压入堆栈保存，即修改堆栈指针，将PC内容（返回地址）经MDR写入堆栈。在ET4 中再将子程序入口地址送入PC。</p>
+<h3 id="435-中断响应周期it"><a class="header" href="#435-中断响应周期it">4.3.5 中断响应周期IT</a></h3>
+<p>当外部有中断请求信号送入CPU时</p>
+<ul>
+<li>若允许响应，则在一条指令的执行周期ET的最后一拍，向请求源发中断响应回答信号INTA，并在ET结束时将IT置1，即转入中断响应周期。</li>
+<li>进入IT后，将断点与PSW压入堆栈，然后关中断，最后形成中断处理程序的入口地址并送入PC。</li>
+<li>IT一结束就切换到取指周期FT，即开始执行中断处理程序。</li>
+</ul>
+<blockquote>
+<p>有关中断的内容将在以后的章节深入讨论。</p>
+</blockquote>
+<h3 id="436-dma周期"><a class="header" href="#436-dma周期">4.3.6 DMA周期</a></h3>
+<p>在一条指令执行结束时查询有无DMA请求</p>
+<ul>
+<li>如有请求且CPU允许响应，则CPU与总线断开，将总线控制权交给DMA控制器，并转入DMA周期。</li>
+<li>在DMAT中，CPU暂停工作，由DMA控制器接管系统总线，向总线发出有关地址码与控制信息，控制主存与外设接口之间的信息传送。</li>
+<li>由于DMAT并不影响程序计数器PC的内容与有关现场，只是暂停执行程序，所以只要由DMAT转入FT，程序就将恢复执行。</li>
+</ul>
+<h3 id="437-键盘操作"><a class="header" href="#437-键盘操作">4.3.7 键盘操作</a></h3>
+<p>模型机在加电或复位后，产生一个“复位信号”对全机进行初始化，使PC置0，然后进入取指周期FT。</p>
+<ul>
+<li>主存0号单元中存放的是一条无条件转移指令，它指向“操作系统”的入口。</li>
+<li>机器进入系统状态后，可通过键盘输入各种命令信息，使机器进入所要求的工作状态。</li>
+</ul>
+<h2 id="44-微命令的综合与产生"><a class="header" href="#44-微命令的综合与产生">4.4 微命令的综合与产生</a></h2>
+<p>在组合逻辑（硬连逻辑）控制器中</p>
+<ul>
+<li>微命令是由组合逻辑电路产生的。产生微命令的逻辑条件有工作周期名称、节拍序号、定时脉冲，以及操作码、寻址方式、寄存器号、PSW状态、中断请求、DMA请求等。</li>
+<li>在给出全部指令的流程图和微操作时间表后，通过对它们进行综合分析，就可列出各个微命令的逻辑表达式。</li>
+</ul>
+<p>微命令的逻辑表达式都是“与-或”式的逻辑形态，各“与”项通常包括：指令操作码译码信号、寻址字段译码信号、工作周期状态、节拍、工作脉冲等。</p>
+<p>例如：
+$$PC_{OUT} =  FT \cdot T_0 + MOV \cdot [DI + X(R) \cdot ST \cdot T_0 + ...$$</p>
+<p>$PC_{OUT}$的输出由不同指令（如FT和MOV）与控制信号（如$T_0,ST$等$）组合触发。</p>
+<p>$$CP_{MAR} = FT \cdot T_0 \cdot P + MOV \cdot ST \cdot T_0 \cdot P ...$$
+在特定状态$P$、周期$T_0$及指令条件下触发$CP_{MAR}$信号输出。</p>
+<p>上述微命令的逻辑式反映出在什么情况下需发出某个微命令，将它们整理化简后就获得一组最终的逻辑表达式，可用组合逻辑门电路实现，也可用PLA门阵列实现。所有产生微命令的组合逻辑电路就构成了微操作信号发生器，如图3-20所示。</p>
+<p><img src="assets/logic_map.png" alt="" /></p>
+<h2 id="45-小结"><a class="header" href="#45-小结">4.5 小结</a></h2>
+<p>组合逻辑控制方式</p>
+<ul>
+<li>优点：组合逻辑控制方式是用逻辑门电路产生微命令的，其速度主要取决于电路延迟，因此在高速计算机，如RISC处理器中，常采用这种速度较快的硬连控制方式。</li>
+<li>缺点：在组合逻辑控制器中，产生微命令的门电路所需的逻辑形态很不规整，因此组合逻辑控制器的核心部分比较繁琐、零乱，设计效率较低，检查调试也比较困难。而且设计结果用印制电路板（硬连逻辑）固定下来以后，就很难再修改与扩展。</li>
+</ul>
+<p>解决上述问题的方法是采用微程序控制方式</p>
+<ul>
+<li>将程序技术引入到CPU的构成级，即像编制程序那样编制微命令序列，从而使设计规整化</li>
+<li>另一方面，将存储结构引入CPU，取代组合逻辑的微操作信号发生器。也就是将微命令表示为二进制代码直接存入一个存储器中，只要修改所存储的代码即微命令信息，就可修改有关功能与执行方式。</li>
+</ul>
+<h1 id="5-微程序控制器原理"><a class="header" href="#5-微程序控制器原理">5. 微程序控制器原理</a></h1>
+<h2 id="微程序控制概念"><a class="header" href="#微程序控制概念">微程序控制概念</a></h2>
+<p>有些CPU采用微程序控制方式来产生微命令，相应的控制器称为微程序控制器。</p>
+<h3 id="基本概念与术语"><a class="header" href="#基本概念与术语">基本概念与术语</a></h3>
+<ol>
+<li>微命令与微操作</li>
+</ol>
+<ul>
+<li>
+<p>微命令：构成控制信号序列的最小单位（例如，打开或关闭某个控制门的电位信号、某个寄存器的打入脉冲等）微命令由控制器通过控制线向有关的部件发出。</p>
+</li>
+<li>
+<p>微操作：微命令控制微操作的发生，微操作是微命令的具体实现。</p>
+</li>
+</ul>
+<ol start="2">
+<li>微指令与微周期</li>
+</ol>
+<ul>
+<li>微指令</li>
+</ul>
+<p>若干微命令的组合，以编码形式存放在控制存储器的一个单元中，控制实现一步操作。一条微指令的功能就是给出完成指令某一步操作所需的微操作控制信息和后继微 指令地址信息。</p>
+<p><img src="assets/little_instruction.png" alt="" /></p>
+<ul>
+<li>微周期</li>
+</ul>
+<p>通常指从控制存储器中读取一条微指令并执行相应的
+微操作所需的时间。</p>
+<ol start="3">
+<li>微程序与微程序设计</li>
+</ol>
+<ul>
+<li>微程序：一系列微指令的有序集合。</li>
+<li>微程序设计：是将传统的程序设计方法运用到控制逻辑的设计中</li>
+</ul>
+<ol start="4">
+<li>工作程序与微程序、主存储器与控制存储器</li>
+</ol>
+<ul>
+<li>
+<p>程序员所编制的工作程序以机器指令为单位存放在主存储器中，由于解决不同问题的工作程序中所包含的机器指令、数据及机器指令条数可能有所不同，要求主存单元内容是可以更新的，因此主存储器是可读可写的随机访问存储器。</p>
+</li>
+<li>
+<p>而由机器设计者编制的微程序是以微指令为基本单位，在制作机器时用特殊方式将其写入控制存储器中，由于机器的指令系统是固定的，所以实现指令系统的微程序也是固定的，并且在CPU执行机器指令时，控制存储器只能被读出，不能写入，故控制存储器用只读存储器来实现。</p>
+</li>
+</ul>
+<h3 id="微程序控制方式的基本思想"><a class="header" href="#微程序控制方式的基本思想">微程序控制方式的基本思想</a></h3>
+<ul>
+<li>
+<p>将机器指令分解为基本的微命令序列，用二进制代码表示这些微命令，并编成微指令，多条微指令再形成微程序。</p>
+</li>
+<li>
+<p>每条机器指令对应一段微程序，在制造CPU时固化在CPU中的一个控制存储器（CM）中。</p>
+</li>
+<li>
+<p>当执行一条机器指令时，CPU依次从控制存储器CM中取微指令，从而产生微命令序列。</p>
+</li>
+<li>
+<p>一条微指令包含的微命令，控制实现一步（一个节拍）操作；</p>
+</li>
+<li>
+<p>若干条微指令组成的一小段微程序解释执行一条机器指令。CM中的微程序能解释执行整个指令系统的所有机器指令。</p>
+</li>
+<li>
+<p>这种将微命令以代码形式存储起来的做法就是前面提到的存储控制逻辑，而微指令序列设计方法可以借助于一般的程序设计技术实现。</p>
+</li>
+</ul>
+<p><img src="assets/little_control_principle.png" alt="" /></p>
+<p>微程序控制器的核心是控制存储器CM，用它存放各条指令对应的微程序。</p>
+<ul>
+<li>CM可用只读存储器ROM构成。</li>
+<li>若采用可擦除可编程只读存储器EPROM作为CM，则有利于微程序的修改和动态微程序设计。</li>
+</ul>
+<p>控制存储器CM中的一行表示存放的一条微指令</p>
+<ul>
+<li>列线输出微指令代码。</li>
+<li>行列交叉处有黑点者表示该位信息为1，行列交叉处无黑点者表示该位信息为0。</li>
+</ul>
+<p>微指令寄存器存放从CM中读出的微指令，它包含两大部分：</p>
+<ul>
+<li>微操作控制字段（微命令字段）: 微命令字段可直接按位或通过译码提供微命令</li>
+<li>顺序控制字段（微地址字段）: 顺序控制字段用于控制产生下一条微指令地址</li>
+</ul>
+<h3 id="微程序执行过程的描述"><a class="header" href="#微程序执行过程的描述">微程序执行过程的描述</a></h3>
+<p>机器所有指令对应的微程序放在控制存储器CM中，其一条机器指令对应的微程序执行过程可描述如下：</p>
+<ol>
+<li>根据微地址寄存器的内容（通常为0或1），从CM的0号（或1号）单元中读出一条“取机器指令”微指令，送到微指令寄存器，这是一条公用微指令。</li>
+</ol>
+<blockquote>
+<p>该微指令的微命令字段产生有关控制信号，完成从存储器中取出机器指令送往指令寄存器IR，并修改程序计数器PC的内容。</p>
+</blockquote>
+<ol start="2">
+<li>
+<p>IR中机器指令的操作码通过微地址形成电路形成这条指令对应的微程序入口地址，并送入微地址寄存器中。</p>
+</li>
+<li>
+<p>根据微地址寄存器中的微地址从CM中取出对应微程序的一条微指令，其微命令字段产生一组微命令控制有关操作；由顺序控制字段形成下一条微指令地址，送入微地址寄存器。重复步骤3直到该机器指令的微程序执行完。</p>
+</li>
+<li>
+<p>执行完一条机器指令的微程序后，返回到CM的0号（或1号）微地址单元，重复步骤1，读取“取机器指令”微指令，以便取下一条机器指令。</p>
+</li>
+</ol>
+<h2 id="微指令编码方式"><a class="header" href="#微指令编码方式">微指令编码方式</a></h2>
+<ol>
+<li>直接控制编码（不译码法）</li>
+</ol>
+<p>微指令的微命令字段中每一位都代表一个微命令。设计微指令时，选用或不选用某个微命令，只要将表示该微命令的对应位设置成1或0就可以了。因此，微命令的产生不需译码。</p>
+<p>这种编码的优点是简单、直观、执行速度快、操作并行性好，其缺点是微指令字长过长。</p>
+<ol start="2">
+<li>分段直接译码法</li>
+</ol>
+<ul>
+<li>互斥性微命令：在同一微周期中不能同时出现的微命令</li>
+</ul>
+<blockquote>
+<p>例如，控制ALU操作的各种微命令ADD、SUB、 AND等是不能同时出现的，即在一条微指令中只能出现一种运算操作。 又如主存储器的读命令与写命令也不能同时出现。</p>
+</blockquote>
+<ul>
+<li>相容性微命令：在同一微周期中可以同时出现的微命令</li>
+</ul>
+<p>如果将微指令的微命令字段分成若干小字段，把相斥性微命令组合在同一字段中，而把相容性微命令组合在不同的字段中。每个字段独立编码，每种编码代表一个微命令，且各字段编码含义单独定义，与其他字段无关，这就称为分段直接编译法</p>
+<p>分段直接编译法可以缩短微指令字长，同时又保持一定的并行控制能力。</p>
+<p>常见的分段方法有两种：</p>
+<ul>
+<li>将机器的全部微命令中相斥性微命令尽可能编入同一字段，而不管它们是否属于同一类操作。</li>
+<li>将同类操作（或控制同一部件的操作）中相斥性微命令划分在一个字段内</li>
+</ul>
+<ol start="3">
+<li>分段间接译码法</li>
+</ol>
+<p>一个字段的含义不仅决定于本字段编码，还兼由其他字段来解释，以便使用较少的信息位表示更多的微命令。</p>
+<p>属于这种编码方法的常见形式有以下两种：</p>
+<ul>
+<li>可解释的字段译码</li>
+</ul>
+<p>例如微指令中A字段（高3位）的含义兼由第0位来解释，当第0位为1时，字段A表示某一类操作中的8个相斥性微命令；第0位为0时，字段A表示另一类操作中的8个微命令。因此，第0位与A字段总共可表示16种微命令。</p>
+<p>这种方法可将属于不同类型的操作归并为一个字段。当然解释位也可扩展为一个字段或某一个状态触发器。</p>
+<ul>
+<li>分类编译</li>
+</ul>
+<p>按微指令的功能将其分成几类，分别安排各类微指令的格式和编码，由某一字段或状态触发器来控制和区别。例如，可分为ALU操作类、I/O操作类等。</p>
+<ol start="4">
+<li>常数源字段E的设置</li>
+</ol>
+<p>在微指令中，一般设有一个常数源字段E，就如同机器指令中的立即操作数一样，用来提供微指令所使用的常数（由设计者填写）</p>
+<ul>
+<li>如提供计数器初值，通用寄存器地址，转移地址等。</li>
+<li>字段E也可用来参与其他控制字段的间接编码，以减少微指令字长，增加微指令的灵活性。</li>
+</ul>
+<p>字段E在微指令中的形式为</p>
+<p><img src="assets/little_yr_operator.png" alt="" /></p>
+<h2 id="微程序的顺序控制方式"><a class="header" href="#微程序的顺序控制方式">微程序的顺序控制方式</a></h2>
+<h3 id="微程序入口地址的形成"><a class="header" href="#微程序入口地址的形成">微程序入口地址的形成</a></h3>
+<p>由于每条机器指令都需要取指操作，所以将取指操作编制成一段公用微程序，通常安排在控制存储器的0号或1号单元开始的一段CM空间。</p>
+<p>每一条机器指令对应着一段微程序，其入口就是初始微地址。首先由“取机器指令”微程序取出一条机器指令到IR中，然后根据机器指令操作码转换成该指令对应的微程序入口地址。</p>
+<p>这是一种多分支（或多路转移）的情况，常用以下三种方式形成入口地址:</p>
+<ol>
+<li>当操作码的位数与位置固定时，可直接使操作码与入口地址码的部分相对应。</li>
+</ol>
+<p>例如，操作码为P，则入口地址为000P，这样控制存储器0页的一些单元地址被安排作为各段微程序入口地址，再通过单元内的无条件转移微指令与各自的后续微程序相连接。</p>
+<ol start="2">
+<li>当每类指令中的操作码位数与位置固定，而各类指令之间的操作码与位置不固定时，可采用分级转移的方式。</li>
+</ol>
+<p>例如，操作码为P，则入口地址为000P，这样控制存储器0页的一些单元地址被安排作为各段微程序入口地址，再通过单元内的无条件转移微指令与各自的后续微程序相连接。</p>
+<ol start="3">
+<li>当机器指令的操作码位数和位置都不固定时，通常可以采用PLA电路将每条指令的操作码翻译成对应的微程序入口地址，也可以采用PROM（可编程只读存储器）实现转移，将指令操作码作为PROM的地址输入，其对应的PROM单元内容即为该机器指令的微程序入口地址。</li>
+</ol>
+<h3 id="后继地址的形成"><a class="header" href="#后继地址的形成">后继地址的形成</a></h3>
+<p>转移到一条机器指令对应的微程序入口地址后，就开始执行微程序，这时每条微指令执行完毕时，需根据其中的顺序控制字段的要求形成后继微指令地址。</p>
+<p>形成后继微指令地址的方式很多，总的来说，可分为两大基本类型。</p>
+<ol>
+<li>增量方式（顺序-转移型微地址）</li>
+</ol>
+<p>在微程序控制器中，可设置一个微程序计数器μPC</p>
+<ul>
+<li>在顺序执行微指令时，后继微指令地址由当前微地址（即μPC内容）加上一个增量（通常为1）来形成</li>
+<li>遇到转移时，由微指令给出转移微地址，使微程序按新的顺序执行。</li>
+</ul>
+<p><img src="assets/little_next_addr_add.png" alt="" />
+增量方式可能有以下形态：</p>
+<ul>
+<li>顺序执行: 由转移方式字段指明。此时，μPC加1给出后继微地址。为减少微指令长度，可将转移地址字段暂作为微命令字段。</li>
+<li>无条件转移: 由转移方式字段指明。转移地址字段提供微地址的全部；或给出低位部分，高位与当前微地址相同。</li>
+<li>条件转移: 由转移方式字段指明判别条件，转移地址字段指明转移成功的去向，不成功则顺序执行。</li>
+</ul>
+<blockquote>
+<p>机器中可作为转移判别的条件有多个，但每次只能选择一个测试判别源，所以一次只允许两路分支。</p>
+</blockquote>
+<ul>
+<li>转微子程序: 由转移方式字段指明。微子程序入口地址由转移地址字段（或与μPC组合）提供。在转微子程序之前，要将该条微指令的下一条微指令地址（μPC+1）送入返回地址寄存器中，以备返回微主程序。</li>
+<li>微子程序返回: 由转移方式字段指明。此时将返回地址寄存器内容作为后继微地址送入μPC中，从而实现从微子程序返回到原来的微主程序。此时，可将转移地址字段暂用作微命令字段。</li>
+</ul>
+<p>缺点是这种方式不利于解决两路以上的并行微程序转移，因而不利于提高微程序的执行速度。</p>
+<ol start="2">
+<li>断定方式</li>
+</ol>
+<p>所谓断定型微地址是指后继微地址可由微程序设计者指定，或者根据微指令所规定的测试结果直接决定后继微地址的全部或部分值。</p>
+<p><img src="assets/little_instruction_next_drdk.png" alt="" /></p>
+<ul>
+<li>非测试段: 可由设计者直接给定，通常是后继微地址的高位部分，用以指定后继微指令在某个区域内。</li>
+<li>测试段: 根据有关状态的测试结果确定其地址值，占后继微地址的低位部分。这相当于在指定区域内断定具体的分支。所依据的测试状态可能是指定的开关状态、指令操作码、状态字等。</li>
+</ul>
+<p>事实上，在多数机器的微指令系统中，增量方式和断定方式是混合使用的</p>
+<h2 id="微指令格式"><a class="header" href="#微指令格式">微指令格式</a></h2>
+<h3 id="水平型微指令"><a class="header" href="#水平型微指令">水平型微指令</a></h3>
+<p>特征：</p>
+<ul>
+<li>微指令较长，通常为几十位到上百位左右。如VAX-11/780的微指令字长96位，总之，机器规模越大、速度越快，其微指令字越长。</li>
+<li>微指令中的微操作具有高度并行性，这种并行操作能力是以数据通路中各部件间的并行操作结构为基础的。例如执行一条水平型微指令就能控制信息从若干源部件同时传送到若干目的部件。</li>
+<li>微指令编码简单，减少微命令的译码时间。</li>
+</ul>
+<p>优缺点：</p>
+<ul>
+<li>优点：执行效率高、灵活性好，微程序条数少，因此广泛应用于速度较快的机器中。</li>
+<li>缺点：其微指令字较长，复杂程度高，难以实现微程序设计自动化。</li>
+</ul>
+<h3 id="垂直型微指令"><a class="header" href="#垂直型微指令">垂直型微指令</a></h3>
+<p>特征是微指令较短，微指令的并行操作能力有限，一般一条微指令只能控制数据通路的一两种信息传送操作。</p>
+<p>通常每条微指令都有一个微操作码字段、源地址和目的地址及某些扩展操作字段。</p>
+<ul>
+<li>优点：便于编制微程序。由此编制的微程序规整、直观、有利于设计的自动化。</li>
+<li>缺点：但垂直型微指令不能充分利用数据通路的并行操作能力，微程序长，因而效率低。</li>
+</ul>
+<h2 id="5-模型机微程序指令格式"><a class="header" href="#5-模型机微程序指令格式">5. 模型机微程序指令格式</a></h2>
+<p>微指令的微操作控制字段是按操作性质划分字段，对于一些零乱的微操作可归入辅助操作一组。</p>
+<p>由于模型机CPU内部采用的是单总线结构，每次只能完成一种基本的数据通路传送操作，如PC→MAR，这表明其微指令格式应偏向于垂直型；但由于微指令控制字段的设置是面向微命令的，因此又具有水平型微指令的某些特点，故可以看成是混合型微指令。</p>
+<p>对于微程序的顺序控制方式，在模型机中采用增量方式和断定方式相结合的方案，当微程序顺序执行、无条件和条件转移，以及转微子程序与返回时，用增量方式形成后继微地址；当微程序需要多路转移时，用断定方式形成相应的各路转移微地址。</p>
+<p><img src="assets/little_instruction_model.png" alt="" /></p>
+<ol>
+<li>基本数据通路控制字段</li>
+</ol>
+<ul>
+<li>$F_{OUT}$：寄存器的输出控制字段</li>
+<li>$F_{ALU}$：ALU的操作与Z的移位控制字段</li>
+<li>$F_{CP}$：寄存器的同步打入控制字段</li>
+<li>$F_{PC}$：PC的操作控制字段</li>
+</ul>
+<ol start="2">
+<li>访存控制字段</li>
+</ol>
+<ul>
+<li>$F_{EMAR}$：MAR输出控制字段</li>
+<li>$F_{R/W}$：主存读写与MDR开支字段</li>
+</ul>
+<ol start="3">
+<li>辅助控制字段</li>
+</ol>
+<ul>
+<li>$F_{ST}$：辅助操作控制字段</li>
+</ul>
+<ol start="4">
+<li>顺序控制字段</li>
+</ol>
+<ul>
+<li>$JC$：转移方式字段，用以选择后继指令地址的形成方式</li>
+</ul>
+<h1 id="精简指令计算机risc"><a class="header" href="#精简指令计算机risc">精简指令计算机(RISC)</a></h1>
+<ol>
+<li>RISC和CISC</li>
+</ol>
+<p>统的CISC设计思想并不利于提高计算机的速度。而且复杂的指令系统必然增加硬件实现的复杂性，从而使计算机的研制周期长、投资大。因此人们开始研究指令系统的合理性问题。对CISC指令系统运行的统计分析表明，各种指令的使用频率相差悬殊，最常用的是一些比较简单的指令，仅占指令总数的20%，但在程序中出现的频率却占80%。</p>
+<ol start="2">
+<li>特点</li>
+</ol>
+<p>精简指令系统计算机的着眼点不是简单地放在简化指令系统上，而是通过简化指令使计算机的结构更加简单合理，更易于流水线的实现，从而提高处理速度。</p>
+<ul>
+<li>面向寄存器的结构</li>
+</ul>
+<p>所有运算使用的数据都来自寄存器，运算结果也都写入寄存器。通常CPU内应设置大量的通用寄存器，以减少访问主存储器。</p>
+<ul>
+<li>采用LOAD/STORE结构</li>
+</ul>
+<p>能够访问主存储器的只有两种指令：从存储器读取数据到寄存器的LOAD（取数）指令和从寄存器向存储器写数据的STORE（存数）指令。</p>
+<ul>
+<li>较少的指令数和寻址方式</li>
+</ul>
+<p>选取使用频率最高的一些简单指令，以及很有用但不复杂的指令，可简化控制部件。选用简单的寻址方式，有利于减少指令的执行周期数。</p>
+<ul>
+<li>所有指令长度相同</li>
+</ul>
+<p>指令长度相同，指令格式固定简单，可简化指令的译码逻辑，并 有利于提高流水线的执行效率。为了便于编译的优化，常采用三地址 指令格式。</p>
+<ul>
+<li>硬布线控制逻辑</li>
+</ul>
+<p>由于指令系统的精简，控制部件可由组合逻辑实现，不用或少用微程序控制，这样可使控制部件的速度大大提高。</p>
+<ul>
+<li>注重编译的优化</li>
+</ul>
+<p>RISC指令系统的简化，必然使编译生成的代码长度增长。但通过编译优化技术，将编译初步生成的代码重新组织，调度指令的执行次序，以充分发挥内部操作的并行性，从而进一步提高流水线的执行效率。</p>
+<ol start="3">
+<li>超标量与超流水线概念</li>
+</ol>
+<p>在一个单执行部件的RISC中，多数指令是单周期执行，但仍有少数指令需要一个周期以上的执行时间。因此，其每条指令执行的平均周期数CPI接近于1，但不能小于1。</p>
+<p>要使CPI小于1</p>
+<ul>
+<li>
+<p>超标量结构: 将RISC设计成具有多个执行部件的结构，同时在每一个周期内允许发出多条指令，并调度多条指令在不同的执行部件中并行执行操作</p>
+</li>
+<li>
+<p>超标量结构: 将流水线的每个节拍分成3个或4个小节拍，每个小节拍执行一个操作，便有可能在取出第i 条指令后，相隔一个小节拍，就取出第i +1条指令，这样就可能在一个流水线的节拍内，取出3条或4条指令，送入流水线去执行，从而使CPI小于1</p>
+</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="command-system"><a class="header" href="#command-system">command system</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

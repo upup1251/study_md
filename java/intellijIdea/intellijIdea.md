@@ -5,6 +5,7 @@
 package are used for grouping classes that belong to the same category or provide similar functionality
 ```markdown
 `java class filw` saved in `src` folder
+
 in the Name field,package name + class name is Ok(the IDE will inserted the package statement and the class declaration automatically(the IDE will inserted the package statement and the class declaration automatically))
 
 ```

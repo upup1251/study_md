@@ -1,4 +1,5 @@
-Nvim support the Language Sever Protocol(LSP),which means it acts as a client to LSP servers and includes a Lua framework vim.lsp for building enhanced LSP tools.
+N
+im support the Language Sever Protocol(LSP),which means it acts as a client to LSP servers and includes a Lua framework vim.lsp for building enhanced LSP tools.
 
 To get LSP features,follow these steps:
 1. install language servers using package manager or Neovim plugin Mason

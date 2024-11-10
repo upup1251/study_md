@@ -5,9 +5,24 @@
 
 2. 点击项目名进行选中，双击`shift`输入`add Frame support`
 
+p
 ![](assets/addFrameSupport.png)
 
-3. 编辑tomcat启动配置
+
+- 在项目依赖dependencies中选中lib文件夹为jar directory
+
+![](assets/addLib.png)
+
+3. 导入tomact目录下的lib中的jsp和servlet到项目中
+
+
+![](assets/addLib.png)
+
+![](assets/Lib.png)
+
+
+
+4. 编辑tomcat启动配置
 
 - 添加local tomcat配置
 
@@ -24,7 +39,7 @@
 ![](assets/addArticial.png)
 
 
-4. 可在`/web/index.jsp`中编辑源代码
+5. 可在`/web/index.jsp`中编辑源代码
 
 
 
