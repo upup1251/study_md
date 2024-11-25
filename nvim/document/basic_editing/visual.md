@@ -3,16 +3,31 @@ Visual mode is a flexible and easy way to select a piece of text for an operator
 
 # using visual mode
 
-using visual mode consists of three parts:
-- Mark the start of the text with "v", "V" or CTRL-V.
-- Move to the end of the text.
-- Type an operator command.
 
-the option `hi-Visual` group determine the heighting of visual selection 
+## three steps to using visual mode
 
-the option `virtualedit` set whether the black-area can be selected
+three steps to start visual mode
+1. Mark the start of the text with "v", "V" or CTRL-V.
+2. Move to the end of the text.
+3. Type an operator command.
 
-the option `selection` set the character under the cursor is included or exclusive
+
+## some setting of visual mode
+
+
+### hl-visual group 
+
+use 
+```lua
+-- in init.lua
+hightlight Visual ...
+
+-- in comdline
+:hightlight Visual ...
+```
+to change the css of visual seelction
+
+
 
 # start and stop visual mode
 

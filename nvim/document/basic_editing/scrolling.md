@@ -1,4 +1,11 @@
 
+these commands move the contents of the window
+
+if the cursor position is move off the window,the cursor is moved onto the window(with option 'scrolloff' screen lines around it)
+
+a page : the number of lines in the windows minus 2 
+
+the command is to moving the window upwards or downwards,the text in windows is revert
 
 
 # scrolling downwards

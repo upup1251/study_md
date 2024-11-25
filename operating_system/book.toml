@@ -1,0 +1,12 @@
+[book]
+authors = ["upup1251"]
+language = "en"
+multilingual = false
+src = "src"
+title = "operating system"
+
+
+[preprocessor.toc]
+command = "mdbook-toc"
+renderer = ["html"]
+marker = "[toc]"

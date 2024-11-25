@@ -1,3 +1,4 @@
+~/study_md/nvim/plugins/lazynvim.md
 
 lazy.nvim is a modern plugin manager for Neovim.
 

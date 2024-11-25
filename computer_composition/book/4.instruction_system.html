@@ -1,0 +1,1824 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>instruction system - Computer composition principles and assembly</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Computer composition principles and assembly</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <p>第四章、指令系统层</p>
+<p>计算机的基本工作主要体现为执行指令。</p>
+<p>指令系统(指令集)：指令格式、寻址方式、指令类型与功能。</p>
+<p>相对微体系结构层，是一个抽象的层次，它是硬件和软件之间的接口（硬件和编译器都能理解的语言）</p>
+<p>其主要特征就是指令系统的两种状态</p>
+<ul>
+<li>内核模式</li>
+<li>用户模式</li>
+</ul>
+<p>本章将以80x86为背景讨论指令系统层，介绍</p>
+<ul>
+<li>80x86系列cpu的结构</li>
+<li>80x86主存储器和寄存器</li>
+<li>80x86指令系统</li>
+</ul>
+<h1 id="1-80x86cpu"><a class="header" href="#1-80x86cpu">1. 80x86CPU</a></h1>
+<p>目前，主要的CPU架构有四种</p>
+<ul>
+<li>ARM</li>
+<li>X86</li>
+<li>MIPS Power</li>
+<li>ALPHA<br />
+目前，在移动芯片领域，ARM架构的芯片占据了90%以上的市场份额，在服务器CPU市场上，英特尔X86处理器占据超过90%市场份额</li>
+</ul>
+<p>80x86是Intel首先开发制造的一种微处理器体系结构的泛称</p>
+<p><img src="./assets/all80x86cpu.png" alt="80x86CPU概括" /></p>
+<h2 id="11-80868088cpu"><a class="header" href="#11-80868088cpu">1.1 8086/8088cpu</a></h2>
+<ul>
+<li>
+<p>8086
+16位微处理器，即8086CPU的内外数据总线为16位，⼀个总线周期可以传送⼀个字（16位）数据。</p>
+</li>
+<li>
+<p>8088
+准16位微处理器,即8088CPU的内部DB为16位，外部DB为8位，⼀个总线周期只能传送⼀个字节。</p>
+</li>
+</ul>
+<p>8086/8088两者的内部结构基本上相同，地址引脚均为20位，可寻址1MB主存空间。指令系统完全相同，在软件上是完全兼容的。</p>
+<h3 id="指令流水线结构"><a class="header" href="#指令流水线结构">指令流水线结构</a></h3>
+<ul>
+<li>BIU总线接口部件: 取指令（或取操作数）</li>
+<li>EU执行部件: 执行指令<br />
+当EU执行某条指令时，BIU同时完成从主存中预取后继指令，两个部件并行地工作。</li>
+</ul>
+<h3 id="内部架构"><a class="header" href="#内部架构">内部架构</a></h3>
+<p><img src="assets/2024-11-20-13-51-35.png" alt="8086cpu内部架构" /></p>
+<ol>
+<li>执行部件EU</li>
+</ol>
+<p>包括：</p>
+<ul>
+<li>一个ALU（16位）</li>
+<li>一组通用寄存器（16位）</li>
+<li>暂存器</li>
+<li>标志寄存器（16位）</li>
+<li>EU控制器</li>
+</ul>
+<p>功能：</p>
+<ul>
+<li>从指令队列中取出指令代码，由EU控制器进⾏译码后产⽣对应的控制信号到各部件以完成指令规定的操作。</li>
+<li>对操作数进⾏算术和逻辑运算，并将运算结果的特征状态存放在标志寄存器中。</li>
+<li>由于EU不直接与系统总线连接，因此当需要与主存储器或I/O端⼝传送数据时，EU向BIU发出命令，并提供给BIU 16位有效地址与传送的数据。</li>
+</ul>
+<ol start="2">
+<li>总线接口部件BIU</li>
+</ol>
+<p>包括</p>
+<ul>
+<li>一组段寄存器</li>
+<li>指令指针</li>
+<li>指令队列（6字节，8088是4字节）</li>
+<li>总线地址形成部件（20位，地址加法器）</li>
+<li>总线控制逻辑</li>
+</ul>
+<p>功能：完成CPU与主存储器或I/O端口之间的信息传送</p>
+<ul>
+<li>从主存取出指令送到指令队列中排队</li>
+<li>从主存或I/O端⼝取操作数或存放运算结果</li>
+<li>计算并形成访问主存的20位物理地址</li>
+</ul>
+<h3 id="8086主存地址的形成"><a class="header" href="#8086主存地址的形成">8086主存地址的形成</a></h3>
+<p>8086cpu内部寄存器即数据线均为16位，可访问存储器空间64K，实际主存地址20位，寻址空间1M。16位字长的机器如何提供20位地址？</p>
+<p>解决办法：分段：将1M空间分成64K一段</p>
+<ol>
+<li>地址概念</li>
+</ol>
+<ul>
+<li>物理地址：每个存储单元的唯一的20位地址</li>
+<li>段基址
+<ul>
+<li>段起始地址，XXXX0H</li>
+<li>段起始地址的20位后4位为零，所以只需要表示前16位即可，前16位地址称为段基址</li>
+<li>段基址放在段寄存器中</li>
+</ul>
+</li>
+<li>偏移地址：段内相对于段起始地址的偏移量</li>
+<li>逻辑地址：
+<ul>
+<li>由段基址和逻辑地址组成，记作<code>段基址:偏移地址</code></li>
+</ul>
+</li>
+</ul>
+<p>物理地址与逻辑地址的转换
+$$物理地址 = 段基址 x 2^4 + 偏移地址$$</p>
+<p><img src="assets/2024-11-20-13-57-58.png" alt="8086主存地址的形成" /></p>
+<h4 id="段寄存器"><a class="header" href="#段寄存器">段寄存器</a></h4>
+<p>汇编语言源程序是分段结构（代码段、数据段...）</p>
+<p>在8086～80286中，有4个专门存放段基值的寄存器，称为段寄存器。</p>
+<blockquote>
+<p>每个段寄存器可以确定一个段的起始地址</p>
+</blockquote>
+<ol>
+<li>段寄存器的种类</li>
+</ol>
+<ul>
+<li>CS: 代码段
+存放当前正在运行的程序</li>
+<li>DS: 数据段
+存放当前运行程序所用的数据</li>
+<li>SS: 堆栈段
+定义了堆栈的所在区域</li>
+<li>ES: 附加段
+附加的数据段，一个辅助的数据区，也是串处理指令的目的操作数存放区</li>
+</ul>
+<blockquote>
+<p>在80386及其后继的80x86中，除上述4个段寄存器外，又增加了2个段寄存器FS和GS，它们也是附加的数据段寄存器</p>
+</blockquote>
+<ol start="2">
+<li>段寄存器与存放偏移地址的寄存器之间的默认组合关系</li>
+</ol>
+<ul>
+<li>8086/8088,80286</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>段寄存器</th><th>偏移地址</th></tr></thead><tbody>
+<tr><td>CS</td><td>IP</td></tr>
+<tr><td>SS</td><td>SP或BP</td></tr>
+<tr><td>DS</td><td>BX,SI,DI或一个16位数</td></tr>
+<tr><td>ES</td><td>DI(用于串指令)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>80386及后续机型</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>段寄存器</th><th>偏移地址</th></tr></thead><tbody>
+<tr><td>CS</td><td>IP</td></tr>
+<tr><td>SS</td><td>SP或BP</td></tr>
+<tr><td>DS</td><td>BX,SI,DI或一个16位数</td></tr>
+<tr><td>ES</td><td>EAX,EBX,ECX,EDX,EDI,ESI,一个8位或32位数</td></tr>
+<tr><td>FS</td><td>无默认</td></tr>
+<tr><td>GS</td><td>无默认</td></tr>
+</tbody></table>
+</div>
+<h2 id="12-8038680486cpu"><a class="header" href="#12-8038680486cpu">1.2 80386/80486cpu</a></h2>
+<ol>
+<li>80386</li>
+</ol>
+<ul>
+<li>32位地址，可直接寻址的物理存储空间为4 GB。</li>
+<li>具有片内存储管理部件，使虚拟存储空间（逻辑地址空间）可达64 TB。</li>
+<li>字长32位，系统总线的数据通路宽度32位。</li>
+<li>采用多级流水线结构(多独立部件，重叠执行)。</li>
+<li>平均运算速度约为4 MIPS（4百万指令每秒）。</li>
+</ul>
+<ol start="2">
+<li>80486</li>
+</ol>
+<p>80486相当于一个增强型的80386、一个增强型的80387数值协处理器（浮点部件FPU）、一个8 KB的高速缓存（Cache）的集成，基本上沿用了80386的体系结构,5级流水</p>
+<p><img src="assets/2024-11-20-17-51-59.png" alt="80486cpu结构" /></p>
+<ul>
+<li>
+<p>总线接口部件BIU:</p>
+<ul>
+<li>包含
+<ul>
+<li>地址驱动器</li>
+<li>数据收发器</li>
+<li>总线控制器</li>
+</ul>
+</li>
+<li>功能:
+<ul>
+<li>CPU与存储器及I/O设备之间的高速接口</li>
+<li>当取指令、取数据或写数据、响应分页部件或分段部件请求时，能有效地满足CPU对系统总线的传送要求。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>指令部件</p>
+<ul>
+<li>包含
+<ul>
+<li>指令预取部件</li>
+<li>指令译码部件</li>
+<li>产生微命令的控制部件</li>
+<li>高速缓存Cache。</li>
+</ul>
+</li>
+<li>功能:
+<ul>
+<li>完成预取指令</li>
+<li>分析指令</li>
+<li>然后产生指令所需的微命令去控制相应部件操作。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>执行部件</p>
+<ul>
+<li>数据部件: 执行控制部件所指定的数据操作,包括:
+<ul>
+<li>通用寄存器</li>
+<li>一个有乘除功能的ALU</li>
+<li>一个64位的桶形移位器</li>
+</ul>
+</li>
+<li>浮点部件FPU
+<ul>
+<li>浮点部件FPU</li>
+<li>浮点寄存器组</li>
+</ul>
+<blockquote>
+<p>由于浮点部件FPU和浮点寄存器组集成在80486芯片内，缩短了FPU与处理器各部件之间的距离，因此FPU的执行速度比80386和80387组成的系统快3倍。</p>
+</blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p>存储器管理部件MMU</p>
+<ul>
+<li>将存储器按段来组织，以适应用户程序的逻辑结构，段的大小可变，最大可达到4 GB。</li>
+<li>针对主存物理空间的组织，又将存储器划分为页，每页大小均为4 KB。</li>
+<li>存储器管理部件设置了分段部件与分页部件
+<ul>
+<li>分段部件按控制部件的要求计算有效地址，并且将逻辑地址（由段基值和偏移地址组成）转换成线性地址，即：线性地址=段基址+有效地址（即偏移地址）</li>
+<li>分页部件通过页变换，将来自分段部件或指令预取部件的线性地址转换成主存的物理地址。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>上述9个部件可以独立操作，也能与其他部件并行工作。在取指令和执行指令的过程中，每个部件都完成一部分功能，因此80486可以同时对不同指令进行操作。</p>
+<p>80486具有5级流水线，使不同指令的操作重叠程度更高，从而允许一些常用指令在一个时钟周期内完成。</p>
+<blockquote>
+<p>尽管这些指令的读取、译码和执行实际上占用了多个时钟周期，但由于这些指令与其他指令的译码和执行相重叠，因此平均每条指令的执行时间只占一个时钟周期。</p>
+</blockquote>
+<h2 id="3-pentium系列cpu"><a class="header" href="#3-pentium系列cpu">3. Pentium系列cpu</a></h2>
+<h3 id="pentium-cpu"><a class="header" href="#pentium-cpu">Pentium cpu</a></h3>
+<p>Pentium CPU是第一个实现系统管理方式的高性能微处理器，它能很好地实现PC机系统的能耗与安全管理。</p>
+<p>Pentium CPU是Intel 80x86系列微处理器的第五代产品，其性能比它的前一代产品又有较大的提高，但它仍保持与Intel 8086、80286、80386、80486兼容。</p>
+<p><img src="assets/2024-11-20-18-08-24.png" alt="Pentium cpu的功能结构" /></p>
+<ol start="0">
+<li>
+<p>64位数据总线</p>
+</li>
+<li>
+<p>超标量体系</p>
+</li>
+</ol>
+<ul>
+<li>三条指令执行流水线
+<ul>
+<li>两条独立的整数指令流水线（U流水线和V流水线）</li>
+<li>一条浮点指令流水线</li>
+</ul>
+</li>
+</ul>
+<p>意味着每条流水线拥有</p>
+<ul>
+<li>独立的算数逻辑运算部件</li>
+<li>地址生成逻辑</li>
+<li>高数数据缓存接口</li>
+</ul>
+<blockquote>
+<p>一个时钟周期执行两条简单指令，比相同频率下的80486性能提高1倍</p>
+</blockquote>
+<ol start="2">
+<li>浮点指令流水线与浮点指令部件</li>
+</ol>
+<p>浮点指令流水线具有8级，U流水线的扩充。</p>
+<ul>
+<li>U流水线的前4级准备一条浮点指令，浮点部件中的后4级执行浮点运算操作并报错。</li>
+<li>浮点指令（加、减、除）采用专用硬件电路，这比相同频率下的80486浮点处理性能提高了4倍。</li>
+</ul>
+<ol start="3">
+<li>指令转移预测指令</li>
+</ol>
+<p>小型1KB高速缓存（称为转移目标缓冲器BTB）</p>
+<ul>
+<li>记录正在执行的程序最近所发生的几次转移</li>
+<li>预示很可能会引向何处</li>
+<li>进入流水线的新指令与有关转移信息进行比较
+<ul>
+<li>多数预测是正确的</li>
+<li>若错误，重新取指令。</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>数据和指令高数缓存</li>
+</ol>
+<p>两个超高速缓冲存储器Cache</p>
+<ul>
+<li>8KB的数据Cache</li>
+<li>8KB的指令Cache<br />
+并行操作。减少指令预取和数据操作之间冲突，提高微处理器的信息存取速度</li>
+</ul>
+<h3 id="pentium-pro-cpu"><a class="header" href="#pentium-pro-cpu">Pentium Pro cpu</a></h3>
+<p>Pentium Pro CPU即P6，中文名称为高能奔腾处理器，适用32位操作系统</p>
+<ul>
+<li>三路发布超标量微结构，14级超流水线，使一个时钟周期内可同时执行三条简单指令。</li>
+<li>5个并行处理单元
+<ul>
+<li>两个整数运算部件</li>
+<li>一个装入部件</li>
+<li>一个存储部件</li>
+<li>一个浮点运算部件（FPU）。</li>
+</ul>
+</li>
+<li>8KB两路组相关指令高速缓存，8KB四路组相关数据高速缓存。</li>
+<li>专用全速总线上的256 KB SRAM使二级高速缓存与微处理器紧密相联。</li>
+<li>事务处理I/O总线和非封锁高速缓存分级结构。</li>
+<li>乱序执行，动态分支预测和推理执行。</li>
+</ul>
+<h3 id="pentium2-cpu"><a class="header" href="#pentium2-cpu">Pentium2 cpu</a></h3>
+<ol>
+<li>概述</li>
+</ol>
+<p>PentiumⅡ（PⅡ）CPU采用了与Pentium Pro CPU相同的核心结构。同时，增加了对多媒体的支持和对16位代码优化的特性，它能够同时处理两条MMX多媒体指令。</p>
+<ul>
+<li>双重独立总线DIB体系结构，能同时使用具有纠错功能的64位系统总线和具有可选纠错功能的64位Cache总线。</li>
+<li>多重跳转分支预测。</li>
+<li>数据流分析。分析哪一条指令依赖于其他指令的结果或数据，由此来优化指令调度。根据分析结果来重排指令，使指令以优化的顺序执行，而与原始程序的顺序无关。</li>
+<li>指令推测执行。使用转移预测和数据流分析，让指令在程序实际执行之前就“推测执行”，并把结果暂时存储起来。通过执行可能需要的指令，使处理器的执行机制尽可能地保持繁忙。</li>
+<li>采用Intel MMX技术。它包括57条增强的MMX指令，可处理视频、声频及图像数据。</li>
+</ul>
+<ol start="2">
+<li>内部结构</li>
+</ol>
+<p><img src="assets/2024-11-20-18-19-47.png" alt="Pentium2 cpu的内部架构" /></p>
+<p>PⅡ有3条指令流水线，每条指令流水线共有14级</p>
+<p><img src="assets/2024-11-20-18-20-30.png" alt="Pentium2 cpu14级流水" /></p>
+<p>PⅡ CPU在体系结构上较以前的处理器有很大变化，一个最明显的技术特征就是其核心完全采用RISC微结构，为了保持与80x86其他处理器兼容，仍继续采用CISC指令集，因此内部增加了RISC与CISC之间的转换硬件。</p>
+<p>PⅡ与P6一样采用*BE7～*BE0作为8个存储体的选择信号对存储器的访问加以控制。它们在非流水线的地址方式下需要两个时钟周期进行总线操作，在P6和早期PⅡ系统中，系统总线的速度为66 MHz，主频为250 MHz，以后的PentiumⅡ系统总线速度提高到100 MHz。</p>
+<ol start="3">
+<li>操作模式</li>
+</ol>
+<p>PentiumⅡ具有3种操作模式：实模式、虚拟8086模式和保护模式。</p>
+<blockquote>
+<p>实际上，80386及后继机型都具有这3种模式。</p>
+</blockquote>
+<ul>
+<li>
+<p>在实模式下</p>
+<ul>
+<li>所有8088/8086之后增加的新特性都被关闭</li>
+<li>这时PentiumⅡ就像一台单纯的8088/8086一样运行</li>
+</ul>
+</li>
+<li>
+<p>在虚拟8086模式下</p>
+<ul>
+<li>可以用一种受保护的方式来运行老的8088/8086程序</li>
+<li>这时，有一个实际的操作系统在控制整个计算机。</li>
+</ul>
+</li>
+<li>
+<p>在保护模式下</p>
+<ul>
+<li>有4种可用的特权级别，它们由程序状态字中的对应位控制</li>
+<li>第0级相当于别的计算机中的内核模式，它可以完全控制计算机，因而只由操作系统使用</li>
+<li>第3级用于运行用户程序，它阻塞用户程序对某些特殊的关键指令和控制寄存器的访问，以防止某些鲁莽的用户程序搞垮整个计算机</li>
+</ul>
+<blockquote>
+<p>第1级和第2级很少使用。</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="2-80x86-cpu的寄存器和主存储器"><a class="header" href="#2-80x86-cpu的寄存器和主存储器">2. 80x86 cpu的寄存器和主存储器</a></h1>
+<h2 id="21-80x86-cpu的寄存器"><a class="header" href="#21-80x86-cpu的寄存器">2.1 80x86 cpu的寄存器</a></h2>
+<ol>
+<li>基本结构寄存器组</li>
+</ol>
+<ul>
+<li>通用寄存器</li>
+<li>指令指针寄存器</li>
+<li>标志寄存器</li>
+<li>段寄存器</li>
+</ul>
+<ol start="2">
+<li>浮点寄存器组</li>
+</ol>
+<ul>
+<li>数据寄存器</li>
+<li>标记字寄存器</li>
+<li>指令和数据指针寄存器</li>
+<li>控制字寄存器</li>
+</ul>
+<ol start="3">
+<li>系统级寄存器</li>
+</ol>
+<ul>
+<li>系统地址寄存器</li>
+<li>控制寄存器</li>
+<li>测试寄存器</li>
+<li>调试寄存器</li>
+</ul>
+<h3 id="211-基本结构寄存器组"><a class="header" href="#211-基本结构寄存器组">2.1.1 基本结构寄存器组</a></h3>
+<p><img src="assets/2024-11-21-13-26-14.png" alt="基本结构寄存器组图示" /></p>
+<h4 id="通用寄存器"><a class="header" href="#通用寄存器">通用寄存器</a></h4>
+<ol>
+<li>通用寄存器</li>
+</ol>
+<p>8086/8088和80286所具有的寄存器: 图中除阴影区以外的寄存器,都是16位寄存器。</p>
+<p>四个16位数据寄存器</p>
+<ul>
+<li>AX: 数据存储器，累加器，I/O</li>
+<li>BX: 数据存储器，基址寄存器</li>
+<li>CX: 数据存储器，循环次数</li>
+<li>DX: 数据存储器，与AX连用表示32为数据；I/O的端口地址</li>
+</ul>
+<blockquote>
+<p>也可作为8位使用AH、AL、BH、BL……</p>
+</blockquote>
+<ol start="2">
+<li>变址寄存器</li>
+</ol>
+<p>4个变址寄存器（地址指针寄存器）</p>
+<ul>
+<li>SP：栈顶指针寄存器</li>
+<li>BP：基址指针寄存器</li>
+<li>SI： 源变址寄存器</li>
+<li>DI：目的变址寄存器</li>
+</ul>
+<blockquote>
+<p>SP、BP、DI、SI也可做16位的数据寄存器使用</p>
+</blockquote>
+<h4 id="指令指针寄存器和标志寄存器"><a class="header" href="#指令指针寄存器和标志寄存器">指令指针寄存器和标志寄存器</a></h4>
+<ol>
+<li>IP（Instruction Pointer）</li>
+</ol>
+<p>指令指针寄存器，它用来存放代码段中的偏移地址。<br />
+8086中的CS:IP类似于其他CPU中的PC</p>
+<ol start="2">
+<li>FLAGS</li>
+</ol>
+<p>标志寄存器，又称PSW（Program Status Word），即程序状态寄存器。存放条件码标志、控制标志等</p>
+<p><img src="assets/2024-11-21-13-36-08.png" alt="80x86cpu中标志寄存器的内容" /></p>
+<p>条件码标志:</p>
+<ul>
+<li>
+<p>OF: Over Flow Flag溢出标志
+溢出时，则OF置1；否则OF置0</p>
+</li>
+<li>
+<p>SF: Sign Flag符号(负数)标志
+结果为负，则SF置1；结果为正，则SF置0</p>
+</li>
+<li>
+<p>ZF: Zero Flag零标志
+结果各位全为0时，则ZF置1；否则ZF置0</p>
+</li>
+<li>
+<p>CF: Carry Flag进位/借位标志
+进位或借位时，则CF置1；否则置0</p>
+</li>
+<li>
+<p>PF: Parity Flag奇偶标志
+运算结果中1的个数为偶数时置1，否则置0</p>
+</li>
+<li>
+<p>AF: Auxiliary Carry Flag辅助进位标志
+低字节，低4位</p>
+</li>
+</ul>
+<p>控制标志:</p>
+<ul>
+<li>DF: Direction Flag方向标志；
+在串处理指令中
+<ul>
+<li>当DF=1时，负向, SI和DI不断减小</li>
+<li>当DF＝0时，正向，SI和DI增⼤，使串处理从低地址向⾼地址⽅向处理。</li>
+</ul>
+</li>
+<li>IF: Interrupt Flag中断标志</li>
+<li>TF: Trap Flag单步运行标志</li>
+</ul>
+<p>调试程序DEBUG中提供了测试标志位的手段，它用符号表示某些标志位的值：</p>
+<div class="table-wrapper"><table><thead><tr><th>标志名</th><th>标志为1</th><th>标志为0</th></tr></thead><tbody>
+<tr><td>OF 溢出（是/否）</td><td>OV</td><td>NV</td></tr>
+<tr><td>DF 方向（增量/减量）</td><td>DN</td><td>UP</td></tr>
+<tr><td>IF 中断（允许/关闭）</td><td>EI</td><td>DI</td></tr>
+<tr><td>SF 符号（正/负）</td><td>NG</td><td>PL</td></tr>
+<tr><td>ZF 零（是/否）</td><td>ZR</td><td>NZ</td></tr>
+<tr><td>PF 奇偶（偶/奇）</td><td>PE</td><td>PO</td></tr>
+<tr><td>CF 进位（是/否）</td><td>CY</td><td>NC</td></tr>
+<tr><td>AF 辅助进位（是/否）</td><td>AC</td><td>NA</td></tr>
+</tbody></table>
+</div>
+<p>系统标志:</p>
+<ul>
+<li>TF(Trap Flat)
+标志处理器是否进入单步调试状态</li>
+<li>IF(Interrupt Flat)
+控制是否允许响应外部中断请求</li>
+<li>IOPL（I/O Privilege Level）
+设置当前任务访问 I/O 指令的权限级别</li>
+<li>NT（Nested Task）
+嵌套任务标志，用来表示当前的任务是否嵌套在另一任务内</li>
+<li>RF（Resume Flag）
+恢复标志位，它与调试寄存器的断点一起使用，以保证不重复处理断点。</li>
+<li>VM（Virtual-8086 Mode）
+虚拟8086模式位 。</li>
+<li>AC（Alignment Check mode）
+对准检查方式位 。</li>
+<li>VIF（Virtual Interrupt Flag）
+虚拟中断标志。</li>
+<li>VIP（Virtual Interrupt Pending flag）
+虚拟中断未决标志。</li>
+<li>ID（IDentification flag）
+标识标志，程序有设置和清除ID标识的能力，以指示处理机对CPU ID指令的支持。</li>
+</ul>
+<h3 id="段寄存器-1"><a class="header" href="#段寄存器-1">段寄存器</a></h3>
+<p>汇编语言源程序是分段结构（代码段、数据段…），段寄存器用来存放段起始地址</p>
+<ol>
+<li>分类</li>
+</ol>
+<ul>
+<li>CS：（Code Segment）代码段</li>
+<li>DS：（Data Segment）数据段</li>
+<li>SS：（Stack Segment）堆栈段</li>
+<li>ES：（Extra Segment）附加段</li>
+</ul>
+<blockquote>
+<p>386后增加了FS、GS两个附加段</p>
+</blockquote>
+<ol start="2">
+<li>段寄存器与存放偏移地址的寄存器之间的默认组合关系</li>
+</ol>
+<ul>
+<li>8086/8088,80286</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>段寄存器</th><th>偏移地址</th></tr></thead><tbody>
+<tr><td>CS</td><td>IP</td></tr>
+<tr><td>SS</td><td>SP或BP</td></tr>
+<tr><td>DS</td><td>BX,SI,DI或一个16位数</td></tr>
+<tr><td>ES</td><td>DI(用于串指令)</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>80386及后续机型</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>段寄存器</th><th>偏移地址</th></tr></thead><tbody>
+<tr><td>CS</td><td>IP</td></tr>
+<tr><td>SS</td><td>SP或BP</td></tr>
+<tr><td>DS</td><td>BX,SI,DI或一个16位数</td></tr>
+<tr><td>ES</td><td>EAX,EBX,ECX,EDX,EDI,ESI,一个8位或32位数</td></tr>
+<tr><td>FS</td><td>无默认</td></tr>
+<tr><td>GS</td><td>无默认</td></tr>
+</tbody></table>
+</div>
+<h3 id="212-系统级寄存器"><a class="header" href="#212-系统级寄存器">2.1.2 系统级寄存器</a></h3>
+<p>系统级寄存器组是指不能由用户程序访问而只能由系统管理的寄存器</p>
+<!-- TODO: many systemtic register -->
+<h2 id="22-80x86的主存储器"><a class="header" href="#22-80x86的主存储器">2.2 80x86的主存储器</a></h2>
+<p><img src="assets/2024-11-21-13-54-51.png" alt="存储单元的地址和内容" /></p>
+<blockquote>
+<p>低位字节存放在低位地址中</p>
+</blockquote>
+<h3 id="221-存储单元的地址和内容"><a class="header" href="#221-存储单元的地址和内容">2.2.1 存储单元的地址和内容</a></h3>
+<p>存储器里以字节为单位存储信息，每一个字节单元给予一个唯一的编号即存储器地址，称为物理地址。地址从0开始编号，也是用二进制数来表示的。书写格式为十六进制数。</p>
+<p>$$地址总线宽度n位 \Rightarrow^{可寻址} 寻址空间2^n$$</p>
+<p>字、双字存放：以低位地址作为整个字/双字的地址</p>
+<ul>
+<li>对准字：字地址为偶地址</li>
+<li>非对准字：字地址为奇地址</li>
+</ul>
+<blockquote>
+<p>非对准字的存取速度比对准字慢，故尽量避免</p>
+</blockquote>
+<h3 id="222-实模式存储寻址"><a class="header" href="#222-实模式存储寻址">2.2.2 实模式存储寻址</a></h3>
+<p>80x86中除8086/8088只能在实模式下工作外，其他的CPU均可在实模式或保护模式下工作。</p>
+<ul>
+<li>实模式下允许的最大寻址空间为1 MB。8086/8088的地址总线宽度为20位，因而其最大寻址空间正好是1MB。</li>
+<li>在1MB的存储器里，每个存储单元都有一个唯一的20位地址，称为物理地址。</li>
+<li>对于其他微处理器在实模式下只能访问前1MB的存储器地址。</li>
+</ul>
+<h3 id="223-保护模式存储器寻址"><a class="header" href="#223-保护模式存储器寻址">2.2.3 保护模式存储器寻址</a></h3>
+<ol>
+<li>逻辑地址</li>
+</ol>
+<p>在保护模式存储器寻址中 ，程序员在程序中指定逻辑地址， CPU采用一种比较复杂的方法来求得相应的物理地址。</p>
+<p>$$逻辑地址 = 段选择器 + 偏移地址$$</p>
+<p>段选择器存放在段寄存器中，由CPU通过一定的方法利用段选择器取得段基址，再和偏移地址相加，从而求得所选存储单元的线性地址，线性地址再通过分页部件转换成物理地址。</p>
+<ol start="2">
+<li>描述符</li>
+</ol>
+<p>段选择器是通过描述符表取得描述符，从而得到段基址的。</p>
+<p>描述符有8个字节长，用来说明段的起始地址、段的大小、段在存储器中的位置及有关的控制和状态信息，其格式如下图所示:</p>
+<p><img src="assets/2024-11-21-14-10-44.png" alt="80286描述符" />
+<img src="assets/2024-11-21-14-11-07.png" alt="80386/80486/Pentium描述符" /></p>
+<p>描述符由段基址、段界限、访问权和附加字段4部分组成</p>
+<ul>
+<li>
+<p>段基址（Base）
+用来指定段的起始地址。80386以上处理器的段基址为32位，说明段可以从4 GB存储器的任何地址开始。</p>
+</li>
+<li>
+<p>段界限（Limit）
+用来存放该段的段长度。80386及其后继机型的段界限为20位，同时在其描述符中又给出了一个粒度位G（Granularity）</p>
+<ul>
+<li>当G = 0时，段长的粒度单位为字节</li>
+<li>当G = 1时，段长的粒度单位为页，每页为4 KB</li>
+</ul>
+</li>
+<li>
+<p>访问权（Access Rights）
+有8位，所以又称为访问权字节,用来说明该段在系统中的功能，并给出访问该段的一些控制信息。
+<img src="assets/2024-11-21-14-19-03.png" alt="访问权标志" /></p>
+<ul>
+<li>
+<p>P（Present）存在位</p>
+<ul>
+<li>P = 1说明该段已装入物理存储器，其段基址和段界限值有效</li>
+<li>P = 0则说明该段并未装入物理存储器，段基址和段界限值无用</li>
+</ul>
+</li>
+<li>
+<p>DPL（Descriptor Privilege Level）描述符特权级字段2位
+用来指定该存储段的特权级0～3，0级为最高特权级。</p>
+</li>
+<li>
+<p>S（Segment Descriptor）段描述符位</p>
+<ul>
+<li>S = 0表示该段为系统段</li>
+<li>S = 1则表示该段为应用程序的代码段或数据（包括堆栈）段</li>
+</ul>
+</li>
+<li>
+<p>A（Accessed）已访问位</p>
+<ul>
+<li>A = 0表示该段尚未被访问过</li>
+<li>A = 1表示该段已被访问过。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>附加字段部分在386及其后继机型中存在，它们包括G、D/B、0和AVL 共4位。</p>
+<ul>
+<li>
+<p>G为粒度位
+前面已有说明。</p>
+</li>
+<li>
+<p>D/B位
+在代码段里，该位称为D（Default OperationSize）默认操作长度位</p>
+<ul>
+<li>D= 1表示操作数及有效地址长度均为32位</li>
+<li>D = 0则为16位操作数和16位有效地址。</li>
+</ul>
+</li>
+<li>
+<p>0位
+该位必须为0，为未来的处理机保留。</p>
+</li>
+<li>
+<p>AVL（Available）
+该位只能由系统软件使用。</p>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>描述符表</li>
+</ol>
+<p>描述符存放在描述符表中，主要有4种描述符表：</p>
+<ul>
+<li>
+<p>全局描述符表GDT（Global Descriptor Table）
+用于存放操作系统和各任务公用的描述符，如公用的数据和代码段描述符、各个任务的TSS描述符和LDT描述符等。</p>
+</li>
+<li>
+<p>局部描述符表LDT（Local Descriptor Table）
+用于存放各个任务私有的描述符，如本任务的代码段描述符和数据段描述符等。</p>
+</li>
+<li>
+<p>中断描述符表IDT（Interrupt Descriptor Table）
+用于存放系统中断描述符。</p>
+</li>
+<li>
+<p>任务状态段TSS（Task State Segment）
+用来存放各个任务的私有运行状态信息描述符。</p>
+</li>
+</ul>
+<p>描述符表都存放在存储器中，每个表分别构成一个64 KB长的段，表中可存放8 K个描述符。</p>
+<p>全局描述符表中的描述符所指定的段可用于所有程序，而局部描述符表中的描述符所指定的段通常只用于一个用户程序（或称一个任务）。在整个系统里，只有一个全局描述符表和一个中断描述符表，而局部描述符表可以有多个，它们分别对应于不同的任务。</p>
+<ol start="4">
+<li>段选择器</li>
+</ol>
+<p>段选择器提供描述符在描述符表中的位置，存放在段寄存器中，16位长，其格式如下：</p>
+<p><img src="assets/2024-11-21-14-26-08.png" alt="段选择器的格式" /></p>
+<ul>
+<li>
+<p>INDEX为索引值，即描述符表索引值
+它给出所选描述符在描述符表中的地址。该字段共13位，可从表中8K个描述符中选取一个。</p>
+</li>
+<li>
+<p>RPL（Requested Privilege Level）为请求特权级，这是对该存储段请求访问的特权级
+其值可为0～3，0级特权级最高，如RPL和该段描述符中的DPL相等（同一特权级）或RPL＜DPL（请求特权级高于描述符特权级）则允许对该段的访问</p>
+</li>
+<li>
+<p>TI（Table Indicator）为选择位</p>
+<ul>
+<li>TI = 0指示从全局描述符表GDT中选择描述符</li>
+<li>TI = 1则指示从局部描述符表LDT中选择描述符。</li>
+</ul>
+</li>
+</ul>
+<ol start="5">
+<li>描述符寄存器</li>
+</ol>
+<p>为了提高保护模式存储器寻址的速度，CPU中设置了6个64位的描述符寄存器，用来存放对应段的描述符，如下图所示
+<img src="assets/2024-11-21-14-31-35.png" alt="段寄存器和描述符" /></p>
+<p>每当段寄存器中段选择器的值确定以后，硬件会自动地根据段选择器的索引值，从系统的描述符表中取出一个8字节（64位）的描述符，装入到相应的段描述符寄存器中</p>
+<p>以后每当出现对该段存储器的访问时，就可直接使用相应的描述符寄存器中的段基址作为线性地址计算的一个元素，而不需要在内存中查表得到段基址，因此加快了存储器物理地址的形成。</p>
+<p>应当指出，段寄存器是程序可访问的，而描述符寄存器则是程序不可访问的。</p>
+<h3 id="224-80x86逻辑地址的来源"><a class="header" href="#224-80x86逻辑地址的来源">2.2.4 80x86逻辑地址的来源</a></h3>
+<p>从以上内容可知</p>
+<ul>
+<li>实模式下的逻辑地址：由段基值和偏移地址组成</li>
+<li>保护模式下的逻辑地址：由段选择器和偏移地址组成。</li>
+</ul>
+<p>实际上段基值和选择器都是由段寄存器提供。</p>
+<p>在汇编语言程序中，逻辑地址可表示为：
+$$段基值（或段选择器）：偏移地址$$</p>
+<p>在80x86 CPU中，逻辑地址的两个分量之间存在一种默认组合关系，可以不在程序中指明
+<img src="assets/2024-11-21-14-41-49.png" alt="80x86cpu逻辑地址两分量中的默认组合" /></p>
+<blockquote>
+<p>如用到非默认的组合关系（如使用允许替代来源），则必须用段跨越前缀加以说明。</p>
+</blockquote>
+<h1 id="3-80x86cpu的指令系统"><a class="header" href="#3-80x86cpu的指令系统">3. 80x86cpu的指令系统</a></h1>
+<p>80x86 CPU的指令集是在8086/8088 CPU的指令系统上发展起来的。</p>
+<ul>
+<li>8086/8088 指令系统是基本指令集</li>
+<li>80286、80386、80486和Pentium指令系统是在基本指令集上进行了扩充。扩充指令的
+<ul>
+<li>一部分是增强的8086/8088基本指令和一些专用指令；</li>
+<li>另一部分是系统控制指令，即特权指令，它们对80286、80386、80486和Pentium保护模式的多任务、存储器管理和保护机制提供了控制能力。</li>
+</ul>
+</li>
+</ul>
+<p>80x86 CPU采用了变字长的机器指令格式，由1～15个字节组成一条指令。一般格式如下图所示:</p>
+<p><img src="assets/2024-11-22-11-37-14.png" alt="80x86cpu机器指令格式" /></p>
+<h2 id="31-80x86寻址方式"><a class="header" href="#31-80x86寻址方式">3.1 80x86寻址方式</a></h2>
+<p>指令中的寻址方式是用来确定操作数地址以找到指令所需的操作数。</p>
+<ul>
+<li>
+<p>8086和80286</p>
+<p>字长是16位</p>
+<ul>
+<li>⼀般情况下只处理8位和16位操作数</li>
+<li>只是在乘、除指令中才会有32位操作数；</li>
+</ul>
+</li>
+<li>
+<p>80386及其后继机型</p>
+<p>字长为32位</p>
+<ul>
+<li>因此它除可处理8位和16位操作数外，还可处理32位操作数</li>
+<li>在乘、除法情况下可产⽣64位操作数。</li>
+</ul>
+</li>
+</ul>
+<p>本节下面所述例⼦中，如处理的是32位操作数，则适用于80386及其后继机型</p>
+<h3 id="311-立即寻址方式和寄存器寻址方式"><a class="header" href="#311-立即寻址方式和寄存器寻址方式">3.1.1 立即寻址方式和寄存器寻址方式</a></h3>
+<ol>
+<li>立即寻址方式</li>
+</ol>
+<p>指令所需的操作数直接在指令代码中，随着取指令一起取到CPU中。</p>
+<p>这种操作数称为立即数。立即数用来表示常数</p>
+<ul>
+<li>经常用于给寄存器赋初值</li>
+<li>只能用于源操作数字段，不能用于目的操作数字段</li>
+<li>源操作数长度应与目的操作数长度一致</li>
+<li>在汇编指令中，立即数若是数值常数可直接书写，若是字符常数则应加上引号。</li>
+</ul>
+<ol start="2">
+<li>寄存器寻址方式</li>
+</ol>
+<p>指令所需的操作数存放在CPU的寄存器（通用寄存器或段寄存器）中，通过指令中的寄存器地址去找到操作数</p>
+<p>在汇编指令中，寄存器地址直接用寄存器名表示，如用AX、BX、AL、BH、EAX、EBX、DS、ES等，这些寄存器可以是8位的、16位的或32位的。</p>
+<h3 id="312-存储器寻址"><a class="header" href="#312-存储器寻址">3.1.2 存储器寻址</a></h3>
+<p>在汇编语言程序中，一个存储单元的地址采用逻辑地址来表示，其形式为:
+$$段基址（或段选择器）: 偏移地址$$</p>
+<ul>
+<li>操作数地址（物理地址）是根据段基值（或段选择器）和偏移地址通过一定的方法得到。
+<ul>
+<li>段基址在实模式和保护模式下可从不同的途径取得。</li>
+<li>偏移地址是指存放操作数的存储单元与段起始地址（段基址）之间的字节距离</li>
+</ul>
+<blockquote>
+<p>在80x86里，把按寻址方式计算出来的操作数偏移地址称为有效地址EA（Effective Address）。</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<p>获得有效地址EA（偏移地址）的方法</p>
+<p>EA可由4个地址分量的某种组合求得
+$$EA = 基地址+（变址量 x 比例因子） + 位移量$$</p>
+<blockquote>
+<p>上式中的每一个地址分量均可空缺，但比例因子只能与变址寄存器同时使用。</p>
+</blockquote>
+<ul>
+<li>
+<p>位移量</p>
+<p>指令代码中的一个8位、16位或32位二进制数，但它不是立即数，而是一个地址量。</p>
+</li>
+<li>
+<p>基地址</p>
+<p>基址寄存器或基址指针中的内容</p>
+</li>
+<li>
+<p>变址量</p>
+<p>变址寄存器中的内容</p>
+</li>
+<li>
+<p>比例因子</p>
+<p>它是80386及其后继机型新增加的寻址方式中的一个术语，其值可为1，2，4或8。在含比例因子的寻址方式中，可用变址寄存器的内容乘以比例因子来取得变址值</p>
+</li>
+</ul>
+<p>8086/80386只能用16位寻址，80386及后续机型可用32位寻址</p>
+<div class="table-wrapper"><table><thead><tr><th><strong>地址分量</strong></th><th><strong>16位寻址</strong></th><th><strong>32位寻址</strong></th></tr></thead><tbody>
+<tr><td><strong>位移量</strong></td><td>0，8，16位</td><td>0，8，32位</td></tr>
+<tr><td><strong>基址寄存器</strong></td><td>BX，BP</td><td>任何32位通用寄存器（包括ESP）</td></tr>
+<tr><td><strong>变址寄存器</strong></td><td>SI，DI</td><td>除ESP以外的32位通用寄存器</td></tr>
+<tr><td><strong>比例因子</strong></td><td>无</td><td>1，2，4，8</td></tr>
+</tbody></table>
+</div>
+<h4 id="直接寻址方式"><a class="header" href="#直接寻址方式">直接寻址方式</a></h4>
+<ul>
+<li>指令所需的操作数存放在存储单元中</li>
+<li>EA直接由指令代码中的位移量提供。
+即EA只包含位移量这一种地址分量</li>
+</ul>
+<p>$$EA = 位移量$$</p>
+<ol>
+<li>数值地址表示EA</li>
+</ol>
+<p>如用数值表示操作数的有效地址，则操作数所在段的段寄存器必须指明，不能省略。例如</p>
+<pre><code class="language-asm">MOV BX,段寄存器名:[位移量]
+MOV BX,DS:[1000H]
+</code></pre>
+<ol start="2">
+<li>符号地址表示EA</li>
+</ol>
+<p>源程序中</p>
+<ul>
+<li>常用符号地址表示存放操作数的存储单元</li>
+<li>段基址缺省（DS）或用段跨越前缀给出</li>
+</ul>
+<pre><code class="language-asm">MOV BX,VARIABLE_NAME
+</code></pre>
+<h4 id="寄存器间接寻址"><a class="header" href="#寄存器间接寻址">寄存器间接寻址</a></h4>
+<ul>
+<li>指令所需的操作数在存储单元中</li>
+<li>EA直接从基址寄存器或变址寄存器中获得
+即EA是由基址（或变址）寄存器内容来提供的</li>
+</ul>
+<p>$$EA = 基地址/变地址$$</p>
+<pre><code class="language-asm">MOV BX,[R_变址]/[R_基址]
+MOV BX,[BP]
+</code></pre>
+<ul>
+<li>
+<p>16位寻址时可用的寄存器：基址BX、BP、变址SI、DI</p>
+<blockquote>
+<p>注意：BP缺省段地址为SS，其余3个缺省DS</p>
+</blockquote>
+</li>
+<li>
+<p>32位寻址时可用的寄存器：EAX、EBX、ECX、EDX、ESP、EBP、ESI、EDI</p>
+<blockquote>
+<p>用BP、ESP、EBP时, 默认为SS段;其他默认为DS段</p>
+</blockquote>
+</li>
+</ul>
+<h4 id="寄存器相对寻址"><a class="header" href="#寄存器相对寻址">寄存器相对寻址</a></h4>
+<ul>
+<li>指令所需的操作数在存储单元中</li>
+<li>EA是两个地址分量之和: 基址(或变址)寄存器的内容与指令中指定的位移量之和
+<ul>
+<li>若使用的是变址寄存器称为变址寻址方式</li>
+<li>若使用的是基址寄存器称为基址寻址方式</li>
+<li>位移量部分：可用数值表示，也可用符号地址表示</li>
+</ul>
+</li>
+</ul>
+<p>$$EA = (R_{变址})/(R_{基址}) + 位移量$$</p>
+<pre><code class="language-asm">MOV BX,位移量[R_变址/R_基址]
+MOV BX,2[BX]
+MOV BX,VARIABLE_NAME[BX]
+</code></pre>
+<p>常用来访问顺序存放在主存中的一维数组、表、字符串等。其典型用法是将指令中不能修改的位移量作为基准地址，而将变址或基址寄存器内容作为修改量</p>
+<h4 id="基址变址寻址方式"><a class="header" href="#基址变址寻址方式">基址变址寻址方式</a></h4>
+<ul>
+<li>指令所需的操作数在主存单元中</li>
+<li>EA是三个地址分量之和：基址寄存器内容、变址寄存器内容与指令中的位移量（0位、8位、16位或32位）之和</li>
+</ul>
+<p>$$EA = (R_{变址})+(R_{基址})+位移量$$</p>
+<pre><code class="language-asm">MOV BX,位移量[R_变址][R_基址]
+MOV BX,2[BX][SI]
+MOV BX,VARIABLE_NAME[BX][Si]
+</code></pre>
+<p>由于基址变址寻址⽅式中有两个地址分量可以在程序执⾏过程中进⾏修改，因此常用来访问存放在主存中的⼆维数组 。</p>
+<h4 id="比例变址寻址方式"><a class="header" href="#比例变址寻址方式">比例变址寻址方式</a></h4>
+<ul>
+<li>指令所需的操作数在主存单元中</li>
+<li>EA是变址寄存器的内容乘以指令中指定的比例因子再加上位移量之和</li>
+</ul>
+<p>$$EA = (R_{变址})X比例因子+位移量$$</p>
+<pre><code class="language-asm">MOV BX,位移量[(R_{变址}) * 比例因子]
+MOV EAX，COUNT[ESI * 4]
+</code></pre>
+<p>对于元素大小为2，4，8字节的数组，可以在变址寄存器中给出数组元素下标，而由寻址方式控制直接用比例因子把下标转换为变址值。</p>
+<h4 id="基址比例变址寻址方式"><a class="header" href="#基址比例变址寻址方式">基址比例变址寻址方式</a></h4>
+<ul>
+<li>指令所需的操作数在主存单元中</li>
+<li>EA由4种成分组成:变址寄存器的内容乘以比例因子，加上基址寄存器的内容，再加上位移量（0位、8位或32位）之和</li>
+</ul>
+<p>$$EA = (R_{变址})X比例因子+ (R_{基址}) + 位移量$$</p>
+<pre><code class="language-asm">MOV BX,位移量[(R_{基址})][(R_{变址}) * 比例因子]
+MOV BX,VARIABLE_NAME[BP][DI * 4]
+MOV BX,2[BP][DI * 2]
+</code></pre>
+<h3 id="313-串操作寻址方式"><a class="header" href="#313-串操作寻址方式">3.1.3 串操作寻址方式</a></h3>
+<p>80x86提供专门的串操作指令，这些指令所用的操作数也在存储器中，但它们不能使用上述寻址方式，而是隐含使用变址寄存器SI、ESI、DI或EDI</p>
+<ul>
+<li>隐含使用SI或ESI作为在数据段中的源串（即源操作数）的地址指针</li>
+<li>隐含使用DI或EDI作为在附加段中的目的串的地址指针</li>
+<li>在完成一次串操作后，指令自动修改SI或ESI、DI或EDI两个地址指针，使SI或ESI、DI或EDI指向下一个串元素的存储单元。</li>
+</ul>
+<h2 id="32-80x86cpu指令系统"><a class="header" href="#32-80x86cpu指令系统">3.2 80x86cpu指令系统</a></h2>
+<p>80x86 CPU指令按操作数地址个数可划分为3种类:</p>
+<ol>
+<li>双操作数指令</li>
+</ol>
+<p>$$OPR \quad DEST,SRC$$</p>
+<ul>
+<li><code>OPR</code>: 指令操作码</li>
+<li><code>DEST</code>: 目的操作数地址</li>
+<li><code>SRC</code>: 源操作数地址</li>
+</ul>
+<blockquote>
+<p>为了避免指令过长，双操作数指令的两个操作数不能同时是内存中的数</p>
+</blockquote>
+<ol start="2">
+<li>单操作数指令</li>
+</ol>
+<p>$$ORP \quad DEST$$</p>
+<ul>
+<li><code>OPR</code>: 指令操作码</li>
+<li><code>DEST</code>
+<ul>
+<li>既是源地址又是目的地址</li>
+<li>目的地址，源操作数隐含</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>无操作数指令</li>
+</ol>
+<ul>
+<li><code>OPR</code>: 指令操作码</li>
+<li>操作数隐含</li>
+<li>不需要操作数</li>
+</ul>
+<h3 id="传送类指令"><a class="header" href="#传送类指令">传送类指令</a></h3>
+<p>把数据、地址送到寄存器或存储单元中</p>
+<h4 id="mov"><a class="header" href="#mov">MOV</a></h4>
+<p>$$MOV \quad DEST,SRC$$</p>
+<ul>
+<li>操作：<code>(SRC) -&gt; DEST</code></li>
+<li>说明
+<ul>
+<li>SRC和DEST操作数位数一致</li>
+<li>DEST不能是立即数和CS</li>
+<li>不能将立即数给段寄存器</li>
+<li>不能将段寄存器给段寄存器
+<img src="assets/2024-11-22-13-36-09.png" alt="MOV指令的源操作数和目的操作数" /></li>
+</ul>
+</li>
+</ul>
+<h5 id="带符号扩展传送指令movsx"><a class="header" href="#带符号扩展传送指令movsx">带符号扩展传送指令MOVSX</a></h5>
+<blockquote>
+<p>MOVSX和MOVZX指令只支持386以后机型</p>
+</blockquote>
+<p>$$MOVSX \quad DEST,SRC$$</p>
+<ul>
+<li>操作：<code>符号扩展(SRC) -&gt; DEST</code></li>
+<li>说明
+<ul>
+<li>SRC可以是8位或16位的寄存器或存储单元的内容</li>
+<li>DEST必须是16位或32位寄存器</li>
+<li>将源操作数进⾏符号扩展后送⼊目的寄存器，8位扩展到16位或32位,16位到32位</li>
+</ul>
+<blockquote>
+<p>符号扩展：将缺少的高位填入符号位进行位数扩展</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="带零扩展传送指令"><a class="header" href="#带零扩展传送指令">带零扩展传送指令</a></h5>
+<p>$$MOVZX \quad DEST,SRC$$</p>
+<ul>
+<li>操作：<code>零扩展(SRC) -&gt; DEST</code></li>
+<li>说明
+<ul>
+<li>SRC是⽆符号整数，作零扩展，</li>
+<li>即不管源操作数的符号位是否为1，⾼位均扩展为零</li>
+</ul>
+</li>
+</ul>
+<h4 id="pushpop"><a class="header" href="#pushpop">PUSH/POP</a></h4>
+<ol>
+<li>PUSH</li>
+</ol>
+<p>$$PUSH \quad SRC$$</p>
+<ul>
+<li><code>(SP)/(ESP) - 2 -&gt; (SP)/(ESP)</code></li>
+<li><code>16位SRC -&gt; (SP)/(ESP)</code>
+<img src="assets/2024-11-22-13-54-47.png" alt="PUSH AX举例" /></li>
+</ul>
+<ol start="2">
+<li>POP</li>
+</ol>
+<p>$$POP \quad DEST$$</p>
+<ul>
+<li>操作：</li>
+<li><code>(SP)/(ESP) -&gt; (DST)</code></li>
+<li><code>(SP)/(ESP) + 2 -&gt; (SP)/(ESP)</code>
+<img src="assets/2024-11-22-13-55-40.png" alt="POP AX举例" /></li>
+</ul>
+<ol start="3">
+<li>说明</li>
+</ol>
+<ul>
+<li>以字（16位）或双字(32位)为单位入、出栈</li>
+<li>寄存器、段寄存器、存储单元可入栈，80286之后立即数允许入栈</li>
+<li>除CS外，寄存器、段寄存器、存储单元都可作为出栈目的DST</li>
+<li>对于不同长度的操作数，所执行的操作不同
+<img src="assets/2024-11-22-13-57-58.png" alt="不同操作数长度时所执行de 不同的操作" /></li>
+</ul>
+<h5 id="pushapushd"><a class="header" href="#pushapushd">PUSHA/PUSHD</a></h5>
+<ol>
+<li>PUSHA</li>
+</ol>
+<p>$$PUSHA$$</p>
+<ul>
+<li>16位通用寄存器依次进栈</li>
+<li>进栈次序为AX、CX、DX、BX,以及指令执⾏前的SP、BP、SI、DI</li>
+<li>指令执⾏后<code>（SP）&lt;-（SP）- 16</code>指向新栈顶</li>
+</ul>
+<ol start="2">
+<li>PUSHAD</li>
+</ol>
+<p>$$PUSHAD$$</p>
+<ul>
+<li>32位通用寄存器依次进栈</li>
+<li>进栈次序为EAX、ECX、EDX、EBX，以及指令执⾏前的ESP、EBP、ESI和EDI</li>
+<li>指令执⾏后<code>（SP）&lt;-（SP）- 32</code></li>
+</ul>
+<h5 id="popapopad"><a class="header" href="#popapopad">POPA/POPAD</a></h5>
+<ol>
+<li>POPA</li>
+</ol>
+<p>$$POPA$$</p>
+<ul>
+<li>16位通用寄存器依次出栈</li>
+<li>出栈次序为DI、SI、BP、SP、BX、DX、CX、AX</li>
+<li>指令执⾏后<code>（SP）&lt;-（SP）+ 16</code></li>
+</ul>
+<blockquote>
+<p>SP的出栈只是修改了指针使其后的BX能顺利出栈，而堆栈中原先由PUSHA指令存入的SP的原始内容被丢弃，并未真正送到SP寄存器中去（SP的伪出栈）</p>
+</blockquote>
+<ol start="2">
+<li>POPAD</li>
+</ol>
+<p>$$POPAD$$</p>
+<ul>
+<li>32位通用寄存器依次出栈 (ESP的伪出栈)</li>
+<li>出栈次序为EDI、ESI、EBP、ESP、EBX、EDX、ECX、EAX</li>
+<li>指令执⾏后<code>（ESP）&lt;-（ESP）＋ 32</code></li>
+</ul>
+<h4 id="xchg"><a class="header" href="#xchg">XCHG</a></h4>
+<p>$$XCHG \quad DEST,SRC$$</p>
+<ul>
+<li>
+<p>操作</p>
+<ul>
+<li><code>(DEST) Rightleftarrow (SRC)</code></li>
+<li>交换SRC和DEST的内容</li>
+</ul>
+</li>
+<li>
+<p>说明</p>
+<ul>
+<li>通用寄存器间或与存储单元,不允许段寄存器、立即数</li>
+</ul>
+</li>
+</ul>
+<h4 id="地址传送类"><a class="header" href="#地址传送类">地址传送类</a></h4>
+<p>将存储器操作数的地址传送给指定的寄存器，而不是传送操作数</p>
+<ul>
+<li>LEA（Load Effective Address）有效地址送寄存器</li>
+<li>LDS（Load DS with pointer）地址指针送寄存器和DS</li>
+<li>LES（Load ES with pointer）地址指针送寄存器和ES</li>
+<li>LFS（Load FS with pointer） 地址指针送寄存器和FS</li>
+<li>LGS（Load GS with pointer）地址指针送寄存器和GS</li>
+<li>LSS（Load SS with pointer） 地址指针送寄存器和SS</li>
+</ul>
+<h5 id="lea"><a class="header" href="#lea">LEA</a></h5>
+<p>$$LEA \quad DEST,SRC$$</p>
+<ul>
+<li><code>DEST &lt;- SRC的偏移地址</code></li>
+<li>DEST不允许是段寄存器，只能是16位或32位通用寄存器</li>
+<li>SRC不允许是立即数、寄存器，必须是存储单元</li>
+<li>目的操作数位数和源操作数有效地址长度不同时执行的操作
+<img src="assets/2024-11-22-14-12-32.png" alt="目的操作数位数和源操作数有效地址长度不同时执行的操作" /></li>
+</ul>
+<h5 id="ldsleslfslgslss"><a class="header" href="#ldsleslfslgslss">LDS,LES,LFS,LGS,LSS</a></h5>
+<p>将地址指针指向的内存单元内容送寄存器和段寄存器指令</p>
+<p><img src="assets/2024-11-22-14-19-52.png" alt="SRC地址指针指向内存的存储情况" /></p>
+<ol>
+<li>LDS</li>
+</ol>
+<p>$$LDS \quad DEST,SRC$$</p>
+<ul>
+<li><code>(SRC) -&gt; DEST</code></li>
+<li>偏移地址送至DEST通用寄存器</li>
+<li><code>(SRC + 2/4) -&gt; DS</code></li>
+<li>段基址送至段寄存器</li>
+</ul>
+<ol start="2">
+<li>LES</li>
+</ol>
+<p>$$LES \quad DEST,SRC$$</p>
+<ul>
+<li><code>(SRC) -&gt; DEST</code></li>
+<li><code>(SRC + 2/4) -&gt; ES</code></li>
+</ul>
+<ol start="3">
+<li>
+<p>LFS,LGS,LSS指令格式类似，不过指定的段寄存器不同</p>
+</li>
+<li>
+<p>说明</p>
+</li>
+</ol>
+<ul>
+<li>DEST不允许是段寄存器，只能是16位或32位通用寄存器</li>
+<li>SRC不允许是立即数、寄存器，必须是存储单元</li>
+</ul>
+<h4 id="标志传送指令"><a class="header" href="#标志传送指令">标志传送指令</a></h4>
+<p>用于对标志寄存器进行存取操作，都是无操作数指令</p>
+<ol>
+<li>
+<p><code>LAHF</code>: <code>(FLAGS低8位) -&gt; AH</code></p>
+</li>
+<li>
+<p><code>SAHF</code>: <code>(AH) -&gt; FLAGS低八位</code></p>
+</li>
+<li>
+<p><code>PUSHF/PUSHFD</code>: <code>16位FLAGS入栈/32位FLAGS入栈</code></p>
+</li>
+<li>
+<p><code>POPF/POPFD</code>: <code>16位FLAGS出栈/32位FLAGS出栈</code></p>
+</li>
+</ol>
+<h4 id="类型转换指令"><a class="header" href="#类型转换指令">类型转换指令</a></h4>
+<p>将字节、字转换为字、双字，共有4条指令且都是无操作数指令<br />
+操作数隐含（在AL或AX或EAX中）</p>
+<ol>
+<li>CBW（Convert Byte to Word）</li>
+</ol>
+<p>$$CBW$$</p>
+<ul>
+<li>字节转换为字</li>
+<li>AL最高位置入AH的所有位，AL扩为AX</li>
+</ul>
+<ol start="2">
+<li>CWD/CWDE(Convert Word to Double Word）</li>
+</ol>
+<p>$$CWD/CWDE$$</p>
+<ul>
+<li>字转换为双字</li>
+<li>CWD
+<ul>
+<li>AX最高位置入DX的所有位，AX扩为DX:AX</li>
+</ul>
+</li>
+<li>CWDE
+<ul>
+<li>AX扩展成EAX</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>CDQ（Convert Double to Quad）</li>
+</ol>
+<p>$$CDQ$$</p>
+<ul>
+<li>双字转换为4字</li>
+<li>EAX扩展成EDX：EAX</li>
+</ul>
+<ol start="4">
+<li>BSWAP（Byte SWAP）</li>
+</ol>
+<p>$$BSWAP REG32$$</p>
+<ul>
+<li>使指令指定的32位寄存器的字节次序变反</li>
+<li>具体操作为：1，4字节互换；2，3字节互换。</li>
+</ul>
+<blockquote>
+<p>该指令只能用于80486及其后继机型</p>
+</blockquote>
+<h3 id="算数运算类指令"><a class="header" href="#算数运算类指令">算数运算类指令</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th><th>操作</th></tr></thead><tbody>
+<tr><td>加</td><td>ADD DEST, SRC</td><td>(DEST) + (SRC) → DEST</td></tr>
+<tr><td>带进位加</td><td>ADC DEST, SRC</td><td>(DEST) + (SRC) + (CF) → DEST</td></tr>
+<tr><td>减</td><td>SUB DEST, SRC</td><td>(DEST) - (SRC) → DEST</td></tr>
+<tr><td>带借位减</td><td>SBB DEST, SRC</td><td>(DEST) - (SRC) - (CF) → DEST</td></tr>
+<tr><td>比较</td><td>CMP DEST, SRC</td><td>(DEST) - (SRC)</td></tr>
+</tbody></table>
+</div>
+<blockquote>
+<p>CMP指令后往往跟条件转移指令，根据比较结果产生不同分支</p>
+</blockquote>
+<ul>
+<li>影响所有标志位(ZF,SF,CF,OF,PF,AF)</li>
+<li>DEST不能是立即数</li>
+<li>不允许两存储单元操作</li>
+</ul>
+<ol>
+<li>ADD举例</li>
+</ol>
+<p><img src="assets/2024-11-22-14-49-02.png" alt="ADD举例" /></p>
+<ul>
+<li>ZF(零) = 0</li>
+<li>OF(溢出) = 0</li>
+<li>PF(奇数个1) = 0</li>
+</ul>
+<blockquote>
+<p>OF表示带符号数的溢出，CF表示无符号数的溢出</p>
+</blockquote>
+<ol start="2">
+<li>SUB举例</li>
+</ol>
+<p><img src="assets/2024-11-22-14-52-58.png" alt="SUB举例" /></p>
+<ul>
+<li>ZF = 0</li>
+<li>OF = 0</li>
+<li>PF = 1</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th><th>操作</th></tr></thead><tbody>
+<tr><td>交换并相加</td><td>XADD DEST,SRC</td><td>（DEST）+（SRC）→TEMP;（DEST →SRC;（TEMP）→DEST</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>SRC只能用寄存器寻址⽅式</li>
+<li>DEST可用寄存器或任⼀种存储器寻址⽅式</li>
+<li>对标志位的影响同ADD指令</li>
+<li>只能用于80486及其后继机型</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th><th>操作</th></tr></thead><tbody>
+<tr><td>加1</td><td>INC OPR</td><td>(OPR) + 1 → OPR</td></tr>
+<tr><td>减1</td><td>DEC OPR</td><td>(OPR) - 1 → OPR</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>不影响CF，其余影响</li>
+<li>OPR不允许是立即数、段寄存器</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th><th>操作</th></tr></thead><tbody>
+<tr><td>求补</td><td>NEG OPR</td><td>0 - (OPR) → OPR</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>影响所有标志</li>
+<li>OPR不允许是立即数、段寄存器</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th></tr></thead><tbody>
+<tr><td>比较并交换指令</td><td>CMPXCHG DEST,SRC</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>操作</p>
+<ul>
+<li>累加器AC与（DEST）相比较（相减）</li>
+<li>如果相等，则1→ ZF，（SRC）→ DEST ；</li>
+<li>否则 0→ ZF ， （DEST） → AC</li>
+</ul>
+</li>
+<li>
+<p>累加器可为AL、AX或EAX寄存器</p>
+</li>
+<li>
+<p>SRC只能用8位、16位或32位寄存器</p>
+</li>
+<li>
+<p>DEST则可用寄存器或存储单元</p>
+</li>
+<li>
+<p>该指令只能用于80486及其后继机型</p>
+</li>
+<li>
+<p>该指令对其他标志位的影响与CMP指令相同</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th></tr></thead><tbody>
+<tr><td>比较并交换8字节指令</td><td>CMPXCHG8B DEST</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>操作</p>
+<ul>
+<li>EDX：EAX与DEST相比较，64位数比较</li>
+<li>如果相等，则 1→ ZF，（ EDX：EAX ）→ DEST</li>
+<li>否则 0→ ZF ，（DEST）→EDX：EAX</li>
+</ul>
+</li>
+<li>
+<p>该指令只影响ZF位，但不影响其他标志位</p>
+</li>
+<li>
+<p>该指令只能用于Pentium及其后继机型</p>
+</li>
+<li>
+<p>操作数均为64位数，目的操作数必须采用存储器寻址⽅式确定⼀个64位数</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th></tr></thead><tbody>
+<tr><td>无符号乘法</td><td>MUl SRC</td></tr>
+<tr><td>带符号乘法</td><td>IMUL SRC</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>操作</p>
+<ul>
+<li>字节：<code>(AL)*(SRC)→(AX)</code></li>
+<li>字：<code>(AX)*(SRC)→(DX:AX)</code></li>
+<li>双字：<code>(EAX)*(SRC)→(EDX:EAX)</code></li>
+</ul>
+<blockquote>
+<p>隐含另一操作数在累加器中</p>
+</blockquote>
+</li>
+<li>
+<p>影响CF、OF,其余无定义</p>
+</li>
+<li>
+<p>SRC为寄存器或用byte_ptr或word_ptr指明的存储单元</p>
+</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>指令</th></tr></thead><tbody>
+<tr><td>无符号除法</td><td>DIV SRC</td></tr>
+<tr><td>带符号除法</td><td>IDIV SRC</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>
+<p>操作</p>
+<ul>
+<li>除数为字节：<code>(AX)/(SRC)→ 商(AL)余数(AH)</code></li>
+<li>除数为字：<code>(DX:AX)/(SRC)→ 商(AX)余数(DX)</code></li>
+<li>除数为字：<code>(EDX:EAX)/(SRC)→ 商(EAX)余数(EDX)</code></li>
+</ul>
+<blockquote>
+<p>隐含被除数在EDX/EAX/DX/AX中</p>
+</blockquote>
+</li>
+<li>
+<p>对标志位无定义</p>
+</li>
+<li>
+<p>SEC为寄存器或用byte_ptr或word_ptr指明的存储单元</p>
+</li>
+</ul>
+<!-- NOTE: BCD码校正指令跳过 -->
+<h3 id="逻辑类指令"><a class="header" href="#逻辑类指令">逻辑类指令</a></h3>
+<div class="table-wrapper"><table><thead><tr><th>操作</th><th>指令格式</th></tr></thead><tbody>
+<tr><td>与</td><td>AND DEST, SRC</td></tr>
+<tr><td>或</td><td>OR DEST, SRC</td></tr>
+<tr><td>异或</td><td>XOR DEST, SRC</td></tr>
+<tr><td>测试</td><td>TEST DEST, SRC</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>将CF、OF置0，影响SF，ZF，ZF</li>
+<li>SRC可以是立即数，REG和MEM，字/字节/双字</li>
+<li>DEST允许是ERG,MEM</li>
+<li>不允许两存储单元操作</li>
+</ul>
+<ol>
+<li>测试TEST</li>
+</ol>
+<p><code>(DEST)Λ(SRC)</code>，相与，结果不保存,ZF</p>
+<div class="table-wrapper"><table><thead><tr><th>操作</th><th>指令格式</th></tr></thead><tbody>
+<tr><td>非</td><td>NOT OPR</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>不影响标志位</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>指令</th><th>格式</th><th>功能描述</th></tr></thead><tbody>
+<tr><td>BT</td><td><code>BT DEST, SRC</code></td><td>把 <code>DEST</code> 中由 <code>SRC</code> 指定位的值送往标志位 <code>CF</code></td></tr>
+<tr><td>BTS</td><td><code>BTS DEST, SRC</code></td><td>完成 <code>BT</code> 功能外，将 <code>DEST</code> 中的指定位置 1</td></tr>
+<tr><td>BTR</td><td><code>BTR DEST, SRC</code></td><td>完成 <code>BT</code> 功能外，将 <code>DEST</code> 中的指定位置 0</td></tr>
+<tr><td>BTC</td><td><code>BTC DEST, SRC</code></td><td>完成 <code>BT</code> 功能外，将 <code>DEST</code> 中的指定位取反</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>SRC是十进制数</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>操作</th><th>指令格式</th></tr></thead><tbody>
+<tr><td>正向位扫描</td><td>BSF REG，SRC</td></tr>
+<tr><td>反向位扫描</td><td>BSR REG，SRC</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>指令从位0开始自右向左扫描源操作数(反向位扫描则相反)，目的是检索第一个为1的位。</li>
+<li>如遇到第一个为1的位则将ZF位置0，并把该位的位置装入目的寄存器中；</li>
+<li>如源操作数为0，则将ZF位置1，目的寄存器无定义。</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>指令</th><th>格式</th><th>功能描述</th></tr></thead><tbody>
+<tr><td>SHL</td><td><code>SHL OPR, CNT</code></td><td>逻辑左移：最高位移入 <code>CF</code>，空出的位补 <code>0</code></td></tr>
+<tr><td>SHR</td><td><code>SHR OPR, CNT</code></td><td>逻辑右移：最低位移入 <code>CF</code>，空出的位补 <code>0</code></td></tr>
+<tr><td>SAL</td><td><code>SAL OPR, CNT</code></td><td>算术左移：最高位移入 <code>CF</code>，补 <code>0</code></td></tr>
+<tr><td>SAR</td><td><code>SAR OPR, CNT</code></td><td>算术右移：最低位移入 <code>CF</code>，空出的位复制最高位</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>OPR可以是字、字节、双字,在存储单元或REG中</li>
+<li>CNT可以是1或CL，指移位次数</li>
+</ul>
+<blockquote>
+<p>对于80386及以后机型，COUNT还可以是8位立即数，可指定1～31的移位次数</p>
+</blockquote>
+<div class="table-wrapper"><table><thead><tr><th>指令</th><th>格式</th><th>功能描述</th></tr></thead><tbody>
+<tr><td>SHLD</td><td><code>SHLD DEST, SRC, COUNT</code></td><td>双精度左移：将 <code>DEST</code> 的内容左移 <code>COUNT</code> 次，同时将 <code>SRC</code> 的高位移入 <code>DEST</code> 的低位，<code>SRC</code> 保持不变</td></tr>
+<tr><td>SHRD</td><td><code>SHRD DEST, SRC, COUNT</code></td><td>双精度右移：将 <code>DEST</code> 的内容右移 <code>COUNT</code> 次，同时将 <code>SRC</code> 的低位移入 <code>DEST</code> 的高位，<code>SRC</code> 保持不变</td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>80386及其后继机型可用</li>
+<li><img src="assets/2024-11-22-15-22-06.png" alt="双精度移位指令图解" /></li>
+<li>DEST：字或双字操作数，不允许立即数，REG 或 MEM</li>
+<li>SRC：只能使用寄存器寻址方式且与 DEST目的操作数 相同长度的字或双字</li>
+<li>COUNT：移位次数，它可以是一个8位的立即数或 CL移位次数的范围应为1～31，对于大于31的数，机器则自动取模32的值来取代。
+<ul>
+<li>COUNT ＝0，不影响标志位；</li>
+<li>COUNT ≠ 0，根据移位后结果设置SF、ZF、PF、CF;
+<ul>
+<li>COUNT＝1，移位后符号位改变，OF＝1；否则为0</li>
+<li>COUNT&gt;1, OF无定义</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="串操作指令"><a class="header" href="#串操作指令">串操作指令</a></h3>
+<h4 id="串传送指令"><a class="header" href="#串传送指令">串传送指令</a></h4>
+<p>$$MOVS DST，SRC$$</p>
+<ul>
+<li>DST、SRC提供类型(字节or字)</li>
+<li>源串首址DS：SI→目的首址ES：DI</li>
+<li>SI±1 →SI，DI±1 →DI(字节操作+1，字操作+2;DF＝0时用＋，DF＝1用－)</li>
+<li>不影响标志位</li>
+</ul>
+<p>MOVSB
+(已指明是字节)
+MOVSW
+(已指明是字）</p>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>格式</th><th>操作描述</th></tr></thead><tbody>
+<tr><td><strong>串传送</strong></td><td><code>MOVS DST, SRC</code></td><td>将<code>SRC</code>的数据传送到<code>DST</code>，通过<code>DS:SI</code>指向源地址，<code>ES:DI</code>指向目标地址。</td></tr>
+<tr><td></td><td></td><td><code>SI</code>和<code>DI</code>根据方向标志<code>DF</code>调整：字节操作±1，字操作±2。</td></tr>
+<tr><td></td><td></td><td>不影响标志位。</td></tr>
+<tr><td><strong>存入串</strong></td><td><code>STOS DST</code></td><td>将累加器（字节: <code>AL</code>，字: <code>AX</code>）存入由<code>ES:DI</code>指向的地址。</td></tr>
+<tr><td></td><td></td><td><code>DI</code>根据<code>DF</code>调整：字节操作±1，字操作±2。</td></tr>
+<tr><td></td><td></td><td>不影响标志位。</td></tr>
+<tr><td><strong>从串取</strong></td><td><code>LODS SRC</code></td><td>将<code>DS:SI</code>指向的值加载到累加器（字节: <code>AL</code>，字: <code>AX</code>）。</td></tr>
+<tr><td></td><td></td><td><code>SI</code>根据<code>DF</code>调整：字节操作±1，字操作±2。</td></tr>
+<tr><td></td><td></td><td>不影响标志位。</td></tr>
+<tr><td><strong>串比较</strong></td><td><code>CMPS DST, SRC</code></td><td>比较<code>DS:SI</code>指向的值和<code>ES:DI</code>指向的值(相减)，并影响标志位（<code>OF/SF/ZF/CF/PF/AF</code>）。</td></tr>
+<tr><td></td><td></td><td><code>SI</code>和<code>DI</code>根据<code>DF</code>调整：字节操作±1，字操作±2。</td></tr>
+<tr><td><strong>串扫描</strong></td><td><code>SCAS DST</code></td><td>比较累加器（字节: <code>AL</code>，字: <code>AX</code>）与<code>ES:DI</code>指向的值(相减)，影响标志位（<code>OF/SF/ZF/CF/PF/AF</code>）。</td></tr>
+<tr><td></td><td></td><td><code>DI</code>根据<code>DF</code>调整：字节操作±1，字操作±2。</td></tr>
+<tr><td><strong>方向标志</strong></td><td><code>CLD</code></td><td>设置方向标志<code>DF=0</code>，用于递增操作。</td></tr>
+<tr><td></td><td><code>STD</code></td><td>设置方向标志<code>DF=1</code>，用于递减操作。</td></tr>
+</tbody></table>
+</div><!-- TODO: 到这里有点累了，歇歇 -->
+<h3 id="程序转移类指令"><a class="header" href="#程序转移类指令">程序转移类指令</a></h3>
+<p>执行指令的地址由CS:IP决定</p>
+<ul>
+<li>顺序执行时，IP的值根据指令的长度依次递增</li>
+<li>转移时
+<ul>
+<li>若在同一段中，改变IP的值，CS不变；</li>
+<li>若转向不同的段，改变CS和IP的值</li>
+</ul>
+</li>
+</ul>
+<h4 id="无条件转移"><a class="header" href="#无条件转移">无条件转移</a></h4>
+<p>JMP 目标；转到目标处执行程序, 对标志位无影响</p>
+<ul>
+<li>标号</li>
+<li>标会+常数</li>
+<li>寄存器</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>类型</th><th>指令格式</th><th>功能描述</th></tr></thead><tbody>
+<tr><td>段内直接短转移</td><td><code>JMP SHORT OPR</code></td><td>(IP)+由OPR决定的8位位移量→(IP)</td></tr>
+<tr><td>段内直接近转移</td><td><code>JMP NEAR PTR OPR</code></td><td>(IP)+由OPR决定的16位位移量→(IP)</td></tr>
+<tr><td>段内间接近转移</td><td><code>JMP WORD PTR OPR</code></td><td>由OPR寻址方式决定的有效地址→(IP)</td></tr>
+<tr><td>段间直接远转移</td><td><code>JMP FAR PTR OPR</code></td><td>OPR在段内的偏移量→(IP);OPR所在的段地址→(CS)</td></tr>
+<tr><td>段间间接远转移</td><td><code>JMP DWORD PTR OPR</code></td><td>(EA)→(IP)(EA+2)→(CS) EA由OPR决定</td></tr>
+</tbody></table>
+</div>
+<h4 id="条件转移"><a class="header" href="#条件转移">条件转移</a></h4>
+<p>$$JXX \quad 目标$$</p>
+<ul>
+<li>条件XX满足，转到目标处执行程序；</li>
+<li>条件XX不满足，顺序执行程序。</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>格式</th><th>等效助记符</th><th>测试条件</th></tr></thead><tbody>
+<tr><td>结果为0或相等</td><td><code>JZ OPR</code></td><td><code>JE</code></td><td><code>ZF=1</code> 转移</td></tr>
+<tr><td>结果为负</td><td><code>JS OPR</code></td><td>无</td><td><code>SF=1</code> 转移</td></tr>
+<tr><td>溢出</td><td><code>JO OPR</code></td><td>无</td><td><code>OF=1</code> 转移</td></tr>
+<tr><td>有进位</td><td><code>JC OPR</code></td><td><code>JB, JNAE</code></td><td><code>CF=1</code> 转移</td></tr>
+<tr><td>奇数个1</td><td><code>JP OPR</code></td><td><code>JPE</code></td><td><code>PF=1</code> 转移</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>名称</th><th>格式</th><th>等效助记符</th><th>测试条件</th></tr></thead><tbody>
+<tr><td>非0或不等</td><td><code>JNZ OPR</code></td><td><code>JNE</code></td><td><code>ZF=0</code> 转移</td></tr>
+<tr><td>结果为正</td><td><code>JNS OPR</code></td><td>无</td><td><code>SF=0</code> 转移</td></tr>
+<tr><td>非溢出</td><td><code>JNO OPR</code></td><td>无</td><td><code>OF=0</code> 转移</td></tr>
+<tr><td>无进位</td><td><code>JNC OPR</code></td><td><code>JNB, JAE</code></td><td><code>CF=0</code> 转移</td></tr>
+<tr><td>偶数个1</td><td><code>JNP OPR</code></td><td><code>JPO</code></td><td><code>PF=0</code> 转移</td></tr>
+</tbody></table>
+</div><div class="table-wrapper"><table><thead><tr><th>名称</th><th>格式</th><th>等效助记符</th><th>测试条件</th></tr></thead><tbody>
+<tr><td>大于或不小于且≠转移</td><td><code>JA OPR</code></td><td><code>JNBE</code></td><td><code>CF=0 且 ZF=0</code></td></tr>
+<tr><td>大于等于或不小于转移</td><td><code>JAE OPR</code></td><td><code>JNB</code></td><td><code>CF=0 或 ZF=0</code></td></tr>
+<tr><td>小于或不大于且≠转移</td><td><code>JB OPR</code></td><td><code>JNAE</code></td><td><code>CF=1 且 ZF=0</code></td></tr>
+<tr><td>小于等于或不大于转移</td><td><code>JBE OPR</code></td><td><code>JNA</code></td><td><code>CF=1 或 ZF=0</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>比较两个无符号数，并根据结果转移</li>
+</ul>
+<div class="table-wrapper"><table><thead><tr><th>名称</th><th>格式</th><th>等效助记符</th><th>测试条件</th></tr></thead><tbody>
+<tr><td>大于或不小于且≠转移</td><td><code>JG OPR</code></td><td><code>JNLE</code></td><td><code>ZF=0 且 SF⊕OF=0</code></td></tr>
+<tr><td>大于等于或不小于转移</td><td><code>JGE OPR</code></td><td><code>JNL</code></td><td><code>ZF=1 或 SF⊕OF=0</code></td></tr>
+<tr><td>小于或不大于且≠转移</td><td><code>JL OPR</code></td><td><code>JNGE</code></td><td><code>ZF=0 且 SF⊕OF=1</code></td></tr>
+<tr><td>小于等于或不大于转移</td><td><code>JLE OPR</code></td><td><code>JNG</code></td><td><code>ZF=1 或 SF⊕OF=1</code></td></tr>
+</tbody></table>
+</div>
+<ul>
+<li>比较两个带符号数，并根据结果转移</li>
+</ul>
+<h4 id="循环控制"><a class="header" href="#循环控制">循环控制</a></h4>
+<ol>
+<li>LOOP</li>
+</ol>
+<p>$$LOOP \quad 标号$$</p>
+<ul>
+<li>(CX)－1→(CX)</li>
+<li>若(CX)≠0 ,从标号处继续循环;若(CX)＝0 , 退出循环</li>
+</ul>
+<p>相当于</p>
+<ul>
+<li>DEC CX</li>
+<li>JNZ 标号</li>
+</ul>
+<ol start="2">
+<li>为 0/ 相等时循环
+$$LOOPE \quad 标号$$</li>
+</ol>
+<ul>
+<li>(CX)－1→(CX)</li>
+<li>(CX)≠0且ZF＝1 ,转至标号处继续循环;若(CX)＝0 或ZF＝0, 顺序执行</li>
+</ul>
+<ol start="3">
+<li>非 0/ 不等时循环
+$$LOOPNE \quad 标号$$</li>
+</ol>
+<ul>
+<li>(CX)－1→(CX)</li>
+<li>(CX)≠0且ZF＝0 ,转至标号处继续循环;若(CX)＝0 或ZF＝1, 顺序执行</li>
+</ul>
+<ol start="4">
+<li>按 CX 循环</li>
+</ol>
+<p>$$JCXZ \quad 标号$$</p>
+<ul>
+<li>(CX)＝0 ,转至标号处继续循环</li>
+</ul>
+<ol start="5">
+<li>说明</li>
+</ol>
+<ul>
+<li>循环指令不影响标志位</li>
+<li>隐含(CX)－1操作</li>
+<li>LOOP指令按循环次数决定是否结束循环</li>
+<li>LOOPZ和LOOPNZ提供了提前结束循环的可能，常跟在比较指令之后</li>
+<li>JCXZ常用于循环初值为0而发生循环的情况</li>
+</ul>
+<h3 id="处理机控制类指令"><a class="header" href="#处理机控制类指令">处理机控制类指令</a></h3>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="3.CPU.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="5.assmbly.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="3.CPU.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="5.assmbly.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

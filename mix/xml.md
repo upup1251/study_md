@@ -578,7 +578,7 @@ getElementsByTagName("to")[0].childNodes[0].nodeValue
 ```
 
 
-    1. xmlns属性
+1. xmlns属性
 
 当在 XML 中使用前缀时，一个所谓的用于前缀的命名空间必须被定义。
 
