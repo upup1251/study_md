@@ -306,3 +306,22 @@ g?{motion}/{Visual}g?/g??
 
 
 
+
+# 复制并移动文本
+
+```lua
+"{a-zA-Z0-9.%:-"}       -- 指定下次删除、抽出和放置命令使用的寄存器
+                        -- 大写字符使得删除和抽出命令附加到该寄存器
+                        -- {.%#:} 只能用于放置命令
+
+:reg[isters]            -- 显示所有编号和命名寄存器的类型和内容
+                        -- 类型: c(harracterwise),l(inewise),b(blockwise-visual)
+:reg[isters]/di[splay] {arg}      -- 显示 {arg} 里提到的编号和命名寄存器的内容
+
+
+
+
+
+```
+
+

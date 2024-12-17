@@ -4859,7 +4859,282 @@ $$EVEN$$</p>
 <p>宏定义中如含有变量名或标号，且在同一源程序中又多次被宏调用，那么宏汇编程序在宏展开时，要产生多个相同的变量名或标号，这就不能满足变量名或标号在同一程序中必须唯一的要求，从而产生汇编出错。为避免这个错误，又要在宏定义中能使用变量名或标号，应使用局部符号伪指令LOCAL。</p>
 <p>宏汇编程序在宏展开时，对LOCAL伪指令指定的变量名和标号自动生成格式为<code>？？× × × ×</code>的符号，其中后4位顺序使用0000～FFFF的十六进制数字。</p>
 <h1 id="6-汇编语言程序设计基本技术"><a class="header" href="#6-汇编语言程序设计基本技术">6. 汇编语言程序设计基本技术</a></h1>
-<!-- NOTE: P480 -->
+<blockquote>
+<p>摘抄自ppt</p>
+</blockquote>
+<h2 id="顺序程序设计"><a class="header" href="#顺序程序设计">顺序程序设计</a></h2>
+<p>顺序结构程序: 按编写指令的顺序执行，无分支、循环、转移，且每条指令只执行一次</p>
+<ol>
+<li>用到的指令</li>
+</ol>
+<ul>
+<li>数据传送类: mov,xchg,push,pop,lea,lds,les,pushf,popf,lahf,sahf</li>
+<li>算数运算类: add,adc,inc,sub,sbb,dec,neg,cmp,mul,imul,div,idiv,cbw,cwd</li>
+<li>逻辑运算类: and,or,not,xor,test,shl,sal,shr,sar,rol,ror,rcl,rcr</li>
+</ul>
+<ol start="2">
+<li>查表举例</li>
+</ol>
+<ul>
+<li>将TABLE的偏移地址送进BX</li>
+<li>将需要查找的表内偏移地址加上BX的值后送回BX</li>
+<li>以BX作为间接寻址取出表中的数据送入AL</li>
+<li>将AL的值作为结果输出</li>
+</ul>
+<h2 id="分支程序设计"><a class="header" href="#分支程序设计">分支程序设计</a></h2>
+<p>分支程序: 指令的执行顺序和存储顺序不一致</p>
+<p>执行指令的地址由<code>CS:IP</code>决定</p>
+<ul>
+<li>顺序执行时，IP的值根据指令的长度依次递增</li>
+<li>转移时
+<ul>
+<li>若在同一段中，改变IP的值，CS不变</li>
+<li>若转向不同的段，改变CS和IP的值</li>
+</ul>
+</li>
+</ul>
+<h3 id="单分支结构"><a class="header" href="#单分支结构">单分支结构</a></h3>
+<ol>
+<li>无条件转移使用JMP指令</li>
+</ol>
+<p>$$JMP \quad 目标$$</p>
+<ul>
+<li>转到目标出执行程序，对标志位无影响</li>
+<li>目标可以是
+<ul>
+<li><code>标号</code></li>
+<li><code>标号+常数</code></li>
+<li><code>寄存器(或存储器)</code></li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>条件转移使用JXX指令</li>
+</ol>
+<p>$$JXX \quad 目标$$</p>
+<ul>
+<li>条件满足，转到目标处执行程序；条件不满足，顺序执行程序</li>
+<li>条件根据PSW中的条件码测试：ZF、SF、OF、CF、PF</li>
+</ul>
+<h3 id="多分支结构"><a class="header" href="#多分支结构">多分支结构</a></h3>
+<p>数据段定义一张跳转地址表TABLE，每个表项占两个单元(段内转移)，表示各个分支的目标标号，可通过<code>JMP 表中的偏移地址</code>实现多分支的跳转</p>
+<pre><code class="language-asm">data segment 
+    ...
+    TABLE dw addr0,addr1,...,addrn
+    ...
+data ends
+code segment 
+        ...
+        mov ah,0
+        mov al,NUM 
+        add ax,ax; AX*2
+        mov si,ax; 将si作为表中的偏移地址
+        mov bx,TABLE[si]; 偏移地址加上TABLE地址得到目标表项的内容
+        jmp near ptr bx; 跳转到目标表项代表的标号处
+    addr0:
+        ...
+        jmp end 
+    addr1:
+        ...
+        jump end 
+    ...
+    addrn:
+        ...
+        jump end 
+    end:
+        ...
+code ends
+</code></pre>
+<h2 id="循环程序设计"><a class="header" href="#循环程序设计">循环程序设计</a></h2>
+<h3 id="形式"><a class="header" href="#形式">形式</a></h3>
+<p><img src="assets/2024-12-04-14-45-12.png" alt="循环程序结构形式" /></p>
+<ol>
+<li>初始化：设置循环次数、循环初始状态值等</li>
+<li>循环体：循环的主体部分，分两部分
+<ul>
+<li>循环工作部分：完成程序功能的主要程序段</li>
+<li>循环调整部分：更新用于判断循环结束的数值</li>
+</ul>
+</li>
+<li>循环条件：判断循环是否结束</li>
+</ol>
+<h3 id="循环指令"><a class="header" href="#循环指令">循环指令</a></h3>
+<ol>
+<li>普通循环
+$$LOOP \quad 标号$$</li>
+</ol>
+<ul>
+<li>$(CX) - 1 \rightarrow (CX)$</li>
+<li>若$(CX) \ne 0$，从标号处继续循环</li>
+<li>若$(CX) = 0$，退出循环</li>
+</ul>
+<blockquote>
+<p>相当于两条指令：$DEC \quad CX,JNZ \quad 标号$</p>
+</blockquote>
+<ol start="2">
+<li>为0/相等时循环
+$$LOOPE/LOOPZ 标号$$</li>
+</ol>
+<ul>
+<li>$(CX) - 1 \rightarrow (CX)$</li>
+<li>若$(CX) \ne 0且ZF = 1$，从标号处继续循环</li>
+<li>若$(CX) = 0或ZF = 0$，顺序执行</li>
+</ul>
+<ol start="3">
+<li>非0/不等时循环
+$$LOOPNE/LOOPNZ 标号$$</li>
+</ol>
+<ul>
+<li>$(CX) - 1 \rightarrow (CX)$</li>
+<li>若$(CX) \ne 0且ZF = 0$，从标号处继续循环</li>
+<li>若$(CX) = 0或ZF = 1$，顺序执行</li>
+</ul>
+<ol start="4">
+<li>按CX循环
+$$JCXZ \quad 标号$$</li>
+</ol>
+<ul>
+<li>$(CX)=0$，转至标号处继续循环</li>
+<li>否则，顺序执行</li>
+</ul>
+<h3 id="使用"><a class="header" href="#使用">使用</a></h3>
+<ol>
+<li>注意</li>
+</ol>
+<ul>
+<li>循环指令不影响标志位</li>
+<li>隐含$(CX)－1$操作</li>
+<li>JCXZ常用于循环初值为0而发生循环的情况</li>
+<li>LOOP指令按循环次数决定是否结束循环</li>
+<li>LOOPZ和LOOPNZ提供了提前结束循环的可能，常跟在比较指令之后</li>
+</ul>
+<ol start="2">
+<li>循环的基本结构</li>
+</ol>
+<pre><code class="language-asm">code setment
+    ...
+    MOV CX,n; 给循环计数器赋初值
+AGAIN:
+    ...
+    ...;循环体
+    ...
+    LOOP AGAIN; 跳回开始处
+code ends
+</code></pre>
+<ol start="3">
+<li>循环的控制方法</li>
+</ol>
+<ul>
+<li>
+<p>用计数控制循环</p>
+<ul>
+<li>循环次数已知</li>
+<li>若选用CX做计数器，递减，可用LOOP,LOOPE,LOOPNE等</li>
+<li>选取其他寄存器或存储单元作计数器，可用INC/DEC指令和条件转移指令JNZ配合</li>
+</ul>
+</li>
+<li>
+<p>用条件控制循环</p>
+<ul>
+<li>循环次数不确定</li>
+<li>每循环一次，测试并判断循环终止条件是否成立</li>
+</ul>
+</li>
+</ul>
+<ol start="4">
+<li>多重循环程序设计</li>
+</ol>
+<p>利用标号进行程序的转移</p>
+<p><img src="assets/2024-12-04-15-00-16.png" alt="多重循环示意图" /></p>
+<h2 id="子程序的调用及返回"><a class="header" href="#子程序的调用及返回">子程序的调用及返回</a></h2>
+<h3 id="子程序的调用"><a class="header" href="#子程序的调用">子程序的调用</a></h3>
+<ol>
+<li>指令格式</li>
+</ol>
+<p>$$CALL \quad 过程名$$</p>
+<blockquote>
+<p>过程名类似与标号，用法类似与JMP</p>
+</blockquote>
+<ul>
+<li>段内调用（仅修改IP值）
+<ul>
+<li>直接调用: <code>call (near ptr)过程名</code></li>
+<li>间接调用: <code>call 寄存器名</code>,<code>call word ptr 字存储单元</code></li>
+</ul>
+<blockquote>
+<p>新IP值在寄存器或存储单元里</p>
+</blockquote>
+</li>
+<li>段间调用（修改CS和IP的值）
+<ul>
+<li>直接调用: <code>call (far ptrl)过程名</code></li>
+<li>间接调用: <code>call dword ptr 双字存储单元</code></li>
+</ul>
+<blockquote>
+<p>新段基值和偏移量在双字存储单元中</p>
+</blockquote>
+</li>
+</ul>
+<ol start="2">
+<li>执行的操作</li>
+</ol>
+<ul>
+<li>先将返回地址入栈(CALL命令后一条命令的逻辑地址)</li>
+<li>在转移到子程序的入口地址执行</li>
+</ul>
+<h3 id="子程序的返回"><a class="header" href="#子程序的返回">子程序的返回</a></h3>
+<p>$$RET$$</p>
+<ul>
+<li>从栈顶处弹出返回地址，并将其赋值给IP或IP、CS，取决于段间转移或段内转移</li>
+</ul>
+<p>$$RET \quad n$$</p>
+<ul>
+<li>从栈顶处弹出返回地址，并将其赋值给IP或IP、CS，取决于段间转移或段内转移</li>
+<li>再用n修改SP的值，即$(SP)+n \rightarrow (SP)$</li>
+</ul>
+<h3 id="传递参数"><a class="header" href="#传递参数">传递参数</a></h3>
+<ol>
+<li>
+<p>使用寄存器</p>
+</li>
+<li>
+<p>使用存储单元</p>
+</li>
+<li>
+<p>使用地址表
+参量较多时，先把参量所在的地址组成一个地址表，将地址表的首地址传递给子程序</p>
+</li>
+<li>
+<p>使用堆栈</p>
+</li>
+</ol>
+<h3 id="系统功能子程序调用"><a class="header" href="#系统功能子程序调用">系统功能子程序调用</a></h3>
+<ol>
+<li>系统子程序</li>
+</ol>
+<p>8086/8088向用户提供了十分有效的输入/输出基本子程序，这些子程序在DOS和BIOS中，用户可以用<strong>软中断INT n</strong>指令调用这些程序</p>
+<ul>
+<li>10H～1FH BIOS占用的类型码</li>
+<li>20H～2FH DOS占用的类型码</li>
+</ul>
+<ol start="2">
+<li>调用方法</li>
+</ol>
+<ul>
+<li>
+<p>置入口参数
+即传递给系统功能子程序的参数</p>
+</li>
+<li>
+<p>于AH中置功能号
+设置将要调用的子程序，不同的功能号对应不同的系统功能子程序</p>
+</li>
+<li>
+<p>INT XXH(中断类型码)
+调用子程序</p>
+</li>
+</ul>
+<p>出口参数一般在通用寄存器中，即该子程序进行的操作返回的值</p>
 <hr />
 <h1 id="debugexe用法"><a class="header" href="#debugexe用法">debug.exe用法</a></h1>
 <h2 id="注意"><a class="header" href="#注意">注意：</a></h2>

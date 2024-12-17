@@ -1,3 +1,9 @@
+<!-- ~/study_md/java/intellijIdea/tomcat.md -->
+
+# 在idea中添加tomcat集成
+
+
+
 [bilibili 参考视频](https://www.bilibili.com/video/BV11Z4y1r7ej/?spm_id_from=333.337.search-card.all.click)
 1. 新建一个java项目
 
@@ -20,8 +26,6 @@ p
 
 ![](assets/Lib.png)
 
-
-
 4. 编辑tomcat启动配置
 
 - 添加local tomcat配置
@@ -40,8 +44,6 @@ p
 
 
 5. 可在`/web/index.jsp`中编辑源代码
-
-
 
 
 
@@ -99,6 +101,5 @@ p
 - 添加工件
 
 ![](assets/addArticial.png)
-
 
 7. 可在`/web/index.jsp`中编辑源代码

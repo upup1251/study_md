@@ -128,3 +128,24 @@ start without `-`,for introduction,which not be numbered
 
 
 
+# 插件
+
+
+- installation
+
+```sh 
+cargo install mdbook-toc
+```
+
+
+Add it as a preprocessor to your book.toml
+
+
+```toml
+[preprocessor.toc]
+command = "mdbook-toc"  
+renderer = ["html"]
+marker = "[toc]"  # 目录占位符
+```
+
+

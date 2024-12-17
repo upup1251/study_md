@@ -96,12 +96,25 @@ return {
             hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
         end
     },
+    {
+        "utilyre/barbecue.nvim",
+        name = "barbecue",
+        version = "*",
+        dependencies = {
+            "SmiteshP/nvim-navic",
+            "nvim-tree/nvim-web-devicons", -- optional dependency
+        },
+        opts = {
+            show_dir = false
+        },
+    },
 
     { -- the scope of the place whre you are
         -- with the animation ,is vivid
         "echasnovski/mini.indentscope",
         version = false, -- wait till new 0.7.0 release to put it back on semver
-        lazy = true,
+        event = "VeryLazy",
+
         opts = {
             -- symbol = "▏",
             symbol = "│",
@@ -156,7 +169,7 @@ return {
                 options = {
                     offsets = {
                         { --设置nvim-tree打开时buffer偏移
-                            filetype = "NvimTree",
+                            filetype = "NvimTree", "dbee-drawer",
                             text = "File Explorer",
                             text_align = "left",
                             separator = true,
@@ -190,21 +203,25 @@ return {
                     -- theme = 'auto',
                     theme = {
                         normal = {
-                            a = { bg = "#007ACC", fg = "#ffffff" },
-                            b = { bg = "#007ACC", fg = "#ffffff" },
-                            c = { bg = "#007ACC", fg = "#ffffff" },
+                            -- nil 透明背景色
+                            a = { bg = nil, fg = nil, gui = 'bold' },
+                            b = { bg = nil, fg = nil },
+                            c = { bg = nil, fg = nil },
                         },
                         inactive = {
-                            a = { bg = "#a0a0a0", fg = "#ffffff" },
-                            b = { bg = "#a0a0a0", fg = "#ffffff" },
-                            c = { bg = "#a0a0a0", fg = "#ffffff" }
+                            a = { bg = nil, fg = nil },
+                            b = { bg = nil, fg = nil },
+                            c = { bg = nil, fg = nil }
                         },
                     },
                     component_separators = '',
                     section_separators = '',
+                    globalstatus = true,
                     disabled_filetypes = {
-                        statusline = { 'dashboard', 'NvimTree' },
-                    }
+                        -- statusline = { 'dashboard', 'NvimTree' },
+                        statusline = { 'dashboard' },
+                    },
+
                 },
                 sections = {
                     lualine_a = { { 'filetype', colored = false, icon_only = true },
@@ -213,9 +230,9 @@ return {
                         {
                             'diagnostics',
                             diagnostics_color = {
-                                error = { fg = '#ffffff' },
-                                warn = { fg = '#ffffff' },
-                                info = { fg = '#ffffff' },
+                                -- error = { fg = '#ffffff' },
+                                -- warn = { fg = '#ffffff' },
+                                -- info = { fg = '#ffffff' },
                             },
                         }
                     },
@@ -226,9 +243,9 @@ return {
                             colored = false,
                             diff_color = {
                                 -- Same color values as the general color option can be used here.
-                                added    = { fg = '#ffffff' }, -- Changes the diff's added color
-                                modified = { fg = '#ffffff' }, -- Changes the diff's modified color
-                                removed  = { fg = '#ffffff' }, -- Changes the diff's removed color you
+                                -- added    = { fg = '#ffffff' }, -- Changes the diff's added color
+                                -- modified = { fg = '#ffffff' }, -- Changes the diff's modified color
+                                -- removed  = { fg = '#ffffff' }, -- Changes the diff's removed color you
                             },
                         },
                         'branch'
@@ -316,7 +333,6 @@ return {
                     footer = function()
                         local quotes = {
                             "两情若是久长时 又岂在朝朝暮暮",
-                            "痛苦本身是可以被接纳、理解和化解的"
                         }
 
                         -- 随机选择一条名言
@@ -343,17 +359,17 @@ return {
         priority = 1000,
         opts = {},
         config = function()
+            -- 启用主题
             vim.cmd [[colorscheme tokyonight]]
         end
     },
     {
         "catppuccin/nvim",
         name = "catppuccin",
-        cond = false
+        lazy = true
     },
     {
         'shaunsingh/nord.nvim',
-        cond = false
-        
+        lazy = true
     }
 }

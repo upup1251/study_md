@@ -3,10 +3,9 @@
 
 # JSP标志标签库(JSTL)
 
-JSP标准标签库（JSTL）是一个JSP标签集合，它封装了JSP应用的通用核心功能。
 
+Java Server Pages Standard Tag Libray(JSTL)：JSP 标准标签库，是一个定制标签类库的集合，用于解决一些常见的问题，例如迭代一个映射或者集合、条件测试、XML 处理，甚至数据库和访问数据库操作等。
 
-JSTL支持通用的、结构化的任务，比如迭代，条件判断，XML文档操作，国际化标签，SQL标签。 除了这些，它还提供了一个框架来使用集成JSTL的自定义标签。
 
 
 根据JSTL标签所提供的功能，可以将其分为5个类别。
@@ -20,66 +19,44 @@ JSTL支持通用的、结构化的任务，比如迭代，条件判断，XML文�
 > 这里只做列举，各个标签的详细信息查看[菜鸟教程官网](https://www.runoob.com/jsp/jsp-jstl.html) 
 
 
-## JSTL库安装
+## JSTL库使用
 
-Apache Tomcat安装JSTL 库步骤如下：
-- 从Apache的标准标签库中下载二进包(jakarta-taglibs-standard-current.zip)。
-- 将jakarta-taglibs-standard-1.1.2/lib/下的两个jar文件：standard.jar 和 jstl.jar 文件拷贝到 /WEB-INF/lib/ 下。
-- 将 tld 下的需要引入的 tld 文件复制到 WEB-INF 目录下。
-- 接下来在 web.xml 文件中添加以下配置：
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.4" 
-    xmlns="http://java.sun.com/xml/ns/j2ee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee 
-        http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-    <jsp-config>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/fmt</taglib-uri>
-    <taglib-location>/WEB-INF/fmt.tld</taglib-location>
-    </taglib>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/fmt-rt</taglib-uri>
-    <taglib-location>/WEB-INF/fmt-rt.tld</taglib-location>
-    </taglib>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/core</taglib-uri>
-    <taglib-location>/WEB-INF/c.tld</taglib-location>
-    </taglib>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/core-rt</taglib-uri>
-    <taglib-location>/WEB-INF/c-rt.tld</taglib-location>
-    </taglib>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/sql</taglib-uri>
-    <taglib-location>/WEB-INF/sql.tld</taglib-location>
-    </taglib>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/sql-rt</taglib-uri>
-    <taglib-location>/WEB-INF/sql-rt.tld</taglib-location>
-    </taglib>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/x</taglib-uri>
-    <taglib-location>/WEB-INF/x.tld</taglib-location>
-    </taglib>
-    <taglib>
-    <taglib-uri>http://java.sun.com/jsp/jstl/x-rt</taglib-uri>
-    <taglib-location>/WEB-INF/x-rt.tld</taglib-location>
-    </taglib>
-    </jsp-config>
-</web-app>
-``` 
-- 使用任何库，你必须在每个 JSP 文件中的头部包含 \<taglib> 标签。
+为了在 JSP 页面使用 JSTL 类库，必须以下列格式使用 taglib 指令：
+
+```java
+<%@taglib uri="" prefix="" %>
+
+// 例如：
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+```
+
+前缀prefix可以是任意内容，遵循规范可以使团队中由不同人员编写的代码更加相似；所以，建议使用事先设计好的前缀
+
+
+此时需要导入两个jar 包
+- `jstl.jar`
+- `standard.jar`
+[download](http://archive.apache.org/dist/jakarta/taglibs/standard/binaries/) 
+
+下载 jakarta-taglibs-standard-1.1.2.zip 包并解压，将 jakarta-taglibs-standard-1.1.2/lib/ 下的两个 jar 文件：standard.jar 和 jstl.jar 文件拷贝到项目的/WEB-INF/lib/下
+
+
+
+
+
 
 
 ## 核心标签
 
 核心标签是最常用的 JSTL标签。引用核心标签库的语法如下：
+
 ```java
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 ```
+
+包含 Web 应用的常见工作，比如：循环、表达式赋值、基本输入输出等。
+
 | 标签         | 描述                                                                 |
 |--------------|--------------------|
 | `<c:out>`    | 用于在 JSP 中显示数据，就像 `<%= ... >`                               |
@@ -98,9 +75,114 @@ Apache Tomcat安装JSTL 库步骤如下：
 | `<c:url>`    | 使用可选的查询参数来创造一个 URL                                    |
 
 
+
+### 条件动作标签
+
+条件动作指令用于处理页面的输出结果依赖于某些输入值的情况
+1. if标签
+
+- if 标签先对某个条件进行测试，如果该条件运算结果为 true, 则处理它的主体内容
+- 测试结果保存在一个 Boolean 对象中，并创建一个限域变量来引用 Boolean 对象
+- 可以利用 var 属性设置限域变量名，利用 scope 属性来指定其作用范围。
+
+```html
+<c:if test="<boolean>" var="<string>" scope="<string>">
+    ...
+</c:if>
+```
+
+if 标签的属性:
+| 属性 | 描述 | 是否必要 | 默认值 |
+| --- | --- | --- | --- |
+| `test` | 条件 | 是 | 无 |
+| `var` | 存储条件结果的变量（限域变量名） | 否 | 无 |
+| `scope` | var属性的作用域（可取四大域对象） | 否 | page |
+
+
+> JSTL中没有else标签，为了模拟 else 的情景，需要使用两个 if 标签，并且这两个标签为相反的条件。
+
+
+示例：
+```html
+<%
+    request.setAttribute("flag",true);
+    request.setAttribute("num",1);
+%>
+<c:if test="${flag}">
+    <p>结果为true<p>
+</c:if>
+<c:if test="${num > 0}">
+    <p>num的值比0大<p>
+</c:if>
+```
+
+
+2. choose,when和otherwise标签
+
+choose 和 when 标签的作用与 Java 中的 switch 和 case 关键字相似，用于在众多选项中做出选择。也就是说：他们为相互排斥的条件式执行提供相关内容。
+
+```html
+<c:choose>
+
+    <c:when test="<boolean>">
+        ...
+    </c:when>
+
+    <c:when test="<boolean>">
+        ...
+    </c:when>
+
+    ...
+    ...
+
+    <c:otherwise>
+        ...
+    </c:otherwise>
+
+</c:choose>
+```
+
+- `choose`标签没有属性
+- `when`标签只有一个test属性
+- `otherwise`标签没有属性
+- choose标签中必须有至少一个when标签，可以没有otherwise标签
+- otherwise标签必须放在最后一个when标签之后
+- choose标签中只能有when标签和otherwise标签，when标签和otherwise标签可以嵌套其他标签
+
+
+### 循环标签
+
+```html
+<c:forEach
+    items="<object>"
+    begin="<int>"
+    end="<int>"
+    step="<int>"
+    var="<string>"
+    varStatus="<string>">
+</c:forEach>
+```
+
+| 属性 | 描述 | 是否必要 | 默认值 |
+| --- | --- | --- | --- |
+| `items` | 要被循环的数据 | 否 | 无 |
+| `begin` | 开始元素下标 | 否 | 0 |
+| `end` | 最后一个元素下表 | 否 | Last emelent |
+| `step` | 每次迭代的步长 | 否 | 1 |
+| `var` | 代表当前条目的变量名称 | 否 | 无 |
+| `varStatus` | 代表循环状态的变量名称 | 否 | 无 |
+
+
+for forEach varStatus 属性
+- index: 当前这次迭代从 0 开始的迭代索引
+- count: 当前这次迭代从 1 开始的迭代计数
+- first: 用来表明当前这轮迭代是否为第一次迭代的标志
+- last: 用来表明当前这轮迭代是否为最后一次迭代的标志
+
+
 ## 格式化标签
 
-JSTL格式化标签用来格式化并输出文本、日期、时间、数字。引用格式化标签库的语法如下：
+JSTL格式化标签提供了格式化和解析数字和日期的功能。引用格式化标签库的语法如下：
 ```java
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 ```
@@ -117,6 +199,105 @@ JSTL格式化标签用来格式化并输出文本、日期、时间、数字。�
 | `<fmt:setTimeZone>`    | 指定时区                                             |
 | `<fmt:message>`        | 显示资源配置文件信息                                 |
 | `<fmt:requestEncoding>`| 设置 request 的字符编码                               |
+
+
+
+### formatNumber标签
+
+formatNumber标签用于格式化数字，百分比，货币。该标签用指定的格式或精度来格式化数字。（将数值型数据转换成指定格式的字符串类型。）
+
+```html
+<fmt:formatNumber
+    value="<string>"
+    type="<string>"
+    var="<string>"
+    scope="<string>"/>
+```
+
+行数: 4
+| 属性 | 描述 | 是否必要 | 默认值 |
+| --- | --- | --- | --- |
+| `value` | 要显示的数字 | 是 | 无 |
+| `type` | NUMBER,CURRENCY,PERCENT | 否 | NUMBER |
+| `var` | 存储格式化数字的变量 | 否 | Print to page |
+| `scope` | var属性的作用域 | 否 | page |
+
+- 如果设置了var属性，则格式化后的结果不会输出，需要通过el表达式获取var对应的限域变量名
+- number数值型、percent百分比类型、currency货币型
+
+### formatDate标签
+
+formatDate标签用于使用不同的方式格式化日期。（将Date型数据转换成指定格式的字符串类型。）
+
+```java
+<fmt:formatDate
+    value="<string>"
+    type="<string>"
+    dateStyle="<string>"
+    timeStyle="<string>"
+    pattern="<string>"
+    timeZone="<string>"
+    var="<string>"
+    scope="<string>"/>
+```
+
+| 属性       | 描述                      | 是否必要 | 默认值       |
+|------------|--------------|----------|-------|
+| value      | 要显示的日期              | 是       | 无           |
+| type       | DATE, TIME, 或 BOTH       | 否       | date         |
+| dateStyle  | FULL, LONG, MEDIUM, SHORT, 或 DEFAULT | 否 | default      |
+| timeStyle  | FULL, LONG, MEDIUM, SHORT, 或 DEFAULT | 否 | default      |
+| pattern    | 自定义格式模式            | 否       | 无           |
+| timeZone   | 显示日期的时区            | 否       | 默认时区     |
+| var        | 存储格式化日期的变量名    | 否       | 显示在页面   |
+| scope      | 存储格式化日志变量的范围  | 否       | 页面         |
+
+
+### parseNumber标签
+
+parseNumber标签用来解析数字，百分数，货币。（parseNumber 标签可以将数字、货币或百分比类型的字符串转换成数值型。）
+
+```java
+<fmt:parseNumber
+    value="<string>"
+    type="<string>"
+    var="<string>"
+    scope="<string>"/>
+```
+
+| 属性 | 描述 | 是否必要 | 默认值 |
+| --- | --- | --- | --- |
+| `value` | 要解析的数字 | 否 | Body |
+| `type` | NUMBER,CURRENCY,PERCENT | 否 | number |
+| `var` | 存储待解析数字的变量 | 否 | Print to page |
+| `scope` | var属性的作用域 | 否 | page |
+
+
+### parseDate标签
+
+parseDate标签用于解析日期。（将指定格式的字符串转换成Date类型。）
+
+```java
+<fmt:parseDate
+    value="<string>"
+    type="<string>"
+    dateStyle="<string>"
+    timeStyle="<string>"
+    pattern="<string>"
+    var="<string>"
+    scope="<string>"/>
+```
+
+| 属性      | 描述                      | 是否必要 | 默认值       |
+|-----------|---------------------------|----------|--------------|
+| value     | 要显示的日期              | 是       | 无           |
+| type      | DATE, TIME, 或 BOTH       | 否       | date         |
+| dateStyle | FULL, LONG, MEDIUM, SHORT, 或 DEFAULT | 否 | default      |
+| timeStyle | FULL, LONG, MEDIUM, SHORT, 或 DEFAULT | 否 | default      |
+| pattern   | 自定义格式模式            | 否       | 无           |
+| var       | 存储格式化日期的变量名    | 否       | 显示在页面   |
+| scope     | 存储格式化日志变量的范围  | 否       | 页面         |
+
 
 ## SQL标签
 
@@ -187,18 +368,6 @@ JSTL包含一系列标准函数，大部分是通用的字符串处理函数。�
 | `fn:toLowerCase()`        | 将字符串中的字符转为小写                                     |
 | `fn:toUpperCase()`        | 将字符串中的字符转为大写                                     |
 | `fn:trim()`               | 移除首尾的空白符                                             |
-
-
-
-
-
-
-
- 
-
-
-
-
 
 
 
@@ -308,25 +477,35 @@ public class TagName extends SimpleTagSupport {
 
 
 
-# jsp表达式语言
+# jsp EL表达式语言
 
-JSP表达式语言（EL）使得访问存储在JavaBean中的数据变得非常简单。JSP EL既可以用来创建算术表达式也可以用来创建逻辑表达式。
+JSP表达式语言EL(Expression Language)
+- 使 JSP 写起来更加简单
+- 操作的都是域对象中的数据，操作不了局部变量。
+    - 当需要指定从某个特定的域对象中查找数据时可以使用四个域对象对应的空间对象，分别是：pageScope, requestScope, sessionScope, applicationScope。
+    - 而EL默认的查找方式为从小到大查找。当域对象全找完了还未找到则返回空字符串""
+- EL表达式支持大部分Java所提供的算术和逻辑操作符：
+
 
 JSP EL允许您指定一个表达式来表示标签中的属性值，或标签的模版文本中的值
 
 ```java
-${expr}
+${java_expression}
 ```
 
-expr指的是表达式。在JSP EL中通用的操作符是 . 和 {} 。这两个操作符允许您通过内嵌的JSP对象访问各种各样的JavaBean属性。
+> 当JSP编译器在属性中见到"${}"格式后，它会产生代码来计算这个表达式，并且产生一个替代品来代替表达式的值
+
+## empty
 
 
-当JSP编译器在属性中见到"${}"格式后，它会产生代码来计算这个表达式，并且产生一个替代品来代替表达式的值
+判断域对象是否为空
+- 为空，返回true
+- 不为空返回false；
 
+```java
+${empty variable}
+```
 
-## EL中的基础操作符
-
-EL表达式支持大部分Java所提供的算术和逻辑操作符：
 
 
 ## EL中的函数
@@ -402,4 +581,100 @@ header对象返回单一值，而headerValues则返回一个字符串数组。
 
 
 
+# 过滤器和监听器
+
+## 过滤器
+
+### 介绍
+
+
+Filter 即为过滤，用于在 Servlet 之外对 Request 或者 Response 进行修改。
+
+它主要用于对用户请求进行预处理，也可以对 HttpServletResponse 进行后处理。
+
+使用 Filter 的完整流程
+- Filter 对用户请求进行预处理
+- 接着将请求交给 Servlet 进行处理并生成响应
+- 最后 Filter 再 对服务器响应进行后处理  
+ 在一个 web 应用中，可以开发编写多个 Filter，这些 Filter 组合 起来称之为一个 Filter 链。
+
+
+若是一个过滤器链：先配置先执行(请求时的执行顺序)；响应时: 以相反的顺序执行。
+
+
+
+
+### 实现
+
+通过实现一个叫做javax.servlet.Fileter的接口来实现一个过滤器，其中定义了 三个方法，`init()`,`doFilter()`, `destroy()`分别在相应的时机执行
+
+Filter 的实现只需要两步：
+- 编写 java 类实现 Filter 接口，并实现其 doFilter 方法。
+- 通过@WebFilter注解设置它所能拦截的资源。
+
+```java
+@WebFilter("/*")
+public class Filter01 implements Filter {
+
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+            
+    }
+
+    @Override
+    public void destroy() {
+
+    }
+
+}
+```
+
+Filter 接口中有一个 doFilter 方法，当开发人员编写好 Filter，并配置对哪个 web 资源进行拦截后
+
+Web 服务器每次在调用 web 资源的 service 方法之前，都会先调用一下 filter 的 doFilter 方法
+
+因此可以达到如下效果
+- 调用目标资源之前，让一段代码执行
+- 是否调用目标资源（即是否让用户访问 web 资源）。
+
+
+web 服务器在调用 doFilter 方法时，会传递一个 filterChain 对象进来，filterChain 对象是 filter 接口中最重要的一个对象，它提供了一个 doFilter 方法，开发人员可以根据需求决定 是否调用此方法
+- 调用该方法，则 web 服务器就会调用 web 资源的 service 方法，即 web 资源就会被访问
+- 否则 web 资源不会被访问
+> 本质是放行，调用doFilter方法后，即请求可以到达资源
+
+
+## 监听器
+
+web 监听器是Servlet 中一种的特殊的类，能帮助开发者监听 web 中的特定事件， 比如ServletContext，HttpSession，ServletRequest 的创建和销毁；变量的创建、销毁和修改等。 可以在某些动作前后增加处理，实现监控。
+
+### 三种八类
+
+实现监听器的接口有三种八类
+
+- 监听生命周期
+    - `ServletRequestListener`
+    - `HttpSessionListener`
+    - `ServletContextListener`
+- 监听值的变化
+    - `ServletRequestAttributeListener`
+    - `HttpSessionAttributeListener`
+    - `ServletContextAttributeListener`
+- 针对session中的对象
+    - 监听 session 中的 java 对象(javaBean) ，是 javaBean 直接实现监听器 的接口。
+
+
+### 实现
+
+1. 创建一个监听器，需要实现某种接口
+    > 不同的接口实现了不同的方法，当监听对象发生变化时，会自动调用实现了该接口的实例的Override方法
+
+2. 重写接口中的方法
+
+2. 通过@WebListener注解配置该监听器
 
