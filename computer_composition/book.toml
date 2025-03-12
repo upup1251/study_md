@@ -8,4 +8,10 @@ title = "Computer composition principles and assembly"
 [output.html]
 right-sidebar = true
 
+[preprocessor.toc]
+command = "mdbook-toc"  
+renderer = ["html"]
+marker = "[toc]"  # 目录占位符
+
+[preprocessor.katex]
 

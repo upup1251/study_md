@@ -9,3 +9,5 @@ title = "Compilation principle"
 command = "mdbook-toc"
 renderer = ["html"]
 marker = '[toc]'
+
+[preprocessor.katex]

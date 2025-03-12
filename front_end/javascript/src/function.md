@@ -2,7 +2,7 @@
 [toc]
 
 
-# 1. 函数定义
+# 函数定义
 
 
 编程语言中的第一类值 (First-Class Values)  

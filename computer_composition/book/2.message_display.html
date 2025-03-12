@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>message display - Computer composition principles and assembly</title>
+        <title>信息展示 - Computer composition principles and assembly</title>
 
 
         <!-- Custom HTML head -->
@@ -152,8 +152,32 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>第二章、计算机中的信息表示</p>
-<p>[toc]</p>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<p>第二章、计算机中的信息表示</p>
+<ul>
+<li><a href="#%E6%95%B0%E5%80%BC%E5%9E%8B%E6%95%B0%E6%8D%AE%E7%9A%84%E8%A1%A8%E7%A4%BA">数值型数据的表示</a>
+<ul>
+<li><a href="#%E5%B8%A6%E7%AC%A6%E5%8F%B7%E6%95%B0%E7%9A%84%E8%A1%A8%E7%A4%BA">带符号数的表示</a></li>
+<li><a href="#%E5%AE%9A%E7%82%B9%E6%95%B0%E4%B8%8E%E6%B5%AE%E7%82%B9%E6%95%B0">定点数与浮点数</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E7%9A%84%E8%A1%A8%E7%A4%BA">字符的表示</a>
+<ul>
+<li><a href="#ascii%E7%A0%81">ASCII码</a></li>
+<li><a href="#unicode%E7%BC%96%E7%A0%81">Unicode编码</a></li>
+<li><a href="#%E6%B1%89%E5%AD%97%E7%BC%96%E7%A0%81%E7%AE%80%E4%BB%8B">汉字编码简介</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8C%87%E4%BB%A4%E4%BF%A1%E6%81%AF%E7%9A%84%E8%A1%A8%E7%A4%BA">指令信息的表示</a>
+<ul>
+<li><a href="#%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">指令格式</a></li>
+<li><a href="#%E5%B8%B8%E7%94%A8%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">常用寻址方式</a></li>
+<li><a href="#%E6%8C%87%E4%BB%A4%E7%B1%BB%E5%9E%8B">指令类型</a></li>
+<li><a href="#pentium2%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">Pentium2指令格式</a></li>
+<li><a href="#spaerc%E6%8C%87%E4%BB%A4%E6%A0%BC%E5%BC%8F">SPAERC指令格式</a></li>
+</ul>
+</li>
+</ul>
 <p>计算机内部所处理的信息必须是数字化信息，可分为两大类：</p>
 <ul>
 <li>数据：
@@ -179,7 +203,7 @@
 </ul>
 <p>两位8421码相加若结果大于9，则再加一个6，进行四位二进制数的进位。</p>
 <ul>
-<li>余3码：8421码+$(0011)_2$</li>
+<li>余3码：8421码+<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">0011</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></li>
 </ul>
 <p><strong>原码</strong></p>
 <p>用最高位表示符号，符号位为0表示该数为正，为1表示该数为负；有效数值部分则用二进制绝对值表示。</p>
@@ -207,7 +231,7 @@
 <p><strong>移码</strong></p>
 <p>补码的基础上将符号位取反。只能用于表示整数</p>
 <blockquote>
-<p>移码相当于把真值映射到正数域(+$2^n$)。若将移码视作无符号数，则移码的大小就反映了真值的大小，这将便于两个浮点数的阶码比较。</p>
+<p>移码相当于把真值映射到正数域(+<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6644em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.6644em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span>)。若将移码视作无符号数，则移码的大小就反映了真值的大小，这将便于两个浮点数的阶码比较。</p>
 </blockquote>
 <p><strong>比较与总结</strong></p>
 <p><img src="assets/all.png" alt="" /></p>
@@ -218,7 +242,7 @@
 <p><img src="assets/project.png" alt="" /></p>
 <blockquote>
 <p>为什么10000000表示-128?
-$$(-128)=(-1)=(-127)=[1000 0001]_原+[11111111]_原=[11111111]_补+[10000001]_补=[10000000]_补$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">128</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">127</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">10000001</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">原</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">11111111</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">原</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">11111111</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">补</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">10000001</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">补</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">[</span><span class="mord">10000000</span><span class="mclose"><span class="mclose">]</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord cjk_fallback mtight">补</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span></span></p>
 </blockquote>
 <h2 id="定点数与浮点数"><a class="header" href="#定点数与浮点数">定点数与浮点数</a></h2>
 <p><strong>定点数</strong></p>
@@ -235,7 +259,7 @@ $$(-128)=(-1)=(-127)=[1000 0001]_原+[11111111]_原=[11111111]_补+[10000001]_�
 </ul>
 <p>定点小数的小数点位置固定在符号位（最高位）之后</p>
 <blockquote>
-<p>对于绝对值小于定点小数分辨率$2^{-n}$的数，当机器数0处理</p>
+<p>对于绝对值小于定点小数分辨率<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7713em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7713em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span></span>的数，当机器数0处理</p>
 </blockquote>
 <p><em>溢出</em></p>
 <p>参加运算的数以及运算的结果必须在该定点数所能表示的数值范围之内。</p>
@@ -253,13 +277,13 @@ $$(-128)=(-1)=(-127)=[1000 0001]_原+[11111111]_原=[11111111]_补+[10000001]_�
 <p><strong>浮点数</strong></p>
 <p>计算机中也引入了类似于 <em>科学计数法</em> 的方法来表示实数，称为浮点数表示法，即小数点的位置可以根据需要而浮动。</p>
 <p>浮点数的代码由两部分组成：阶码E和尾数M。浮点数的真值表示为：
-$$N= \pm R^E·M$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord"> </span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">±</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8913em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right:0.05764em;">E</span></span></span></span></span></span></span></span><span class="mpunct">⋅</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">M</span></span></span></span></span></p>
 <ul>
 <li>R是阶码的底，机器中一般规定为2，8或16（进制），与尾数的基数（进制）相同</li>
 <li>E是阶码，即指数，为带符号整数，常用移码或补码表示</li>
-<li>$e_s$是阶符，表示指数的符号</li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是阶符，表示指数的符号</li>
 <li>M是尾数，通常是纯小数，常用原码或补码表示</li>
-<li>$M_s$是尾数的符号位，安排在最高位，也是整个浮点数的符号位
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.10903em;">M</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.109em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">s</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是尾数的符号位，安排在最高位，也是整个浮点数的符号位
 <img src="assets/float.png" alt="" /></li>
 </ul>
 <blockquote>
@@ -275,7 +299,7 @@ $$N= \pm R^E·M$$</p>
 <blockquote>
 <p>IEEE标准：
 尾数用原码表示，隐含最高位1，实际尾数为尾数+1(即1.M)
-阶码用移码表示，实际阶码需要减去偏移量$2^{|E|-1}-1$</p>
+阶码用移码表示，实际阶码需要减去偏移量<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.9713em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.888em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">∣</span><span class="mord mathnormal mtight" style="margin-right:0.05764em;">E</span><span class="mord mtight">∣</span><span class="mbin mtight">−</span><span class="mord mtight">1</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></p>
 <blockquote>
 <p>其中|E|为阶码的长度</p>
 </blockquote>

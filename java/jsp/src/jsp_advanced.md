@@ -1,16 +1,18 @@
 [toc]
 
 
-# JSP标志标签库(JSTL)
+# 1. JSP标志标签库(JSTL)
 
 
-Java Server Pages Standard Tag Libray(JSTL)：JSP 标准标签库，是一个定制标签类库的集合，用于解决一些常见的问题，例如迭代一个映射或者集合、条件测试、XML 处理，甚至数据库和访问数据库操作等。
+Java Server Pages Standard Tag Libray(JSTL)：JSP 标准标签库
+- 是一个定制标签类库的集合
+- 用于解决一些常见的问题，例如迭代一个映射或者集合、条件测试、XML 处理，甚至数据库和访问数据库操作等。
 
 
 
 根据JSTL标签所提供的功能，可以将其分为5个类别。
-- 核心标签
-- 格式化标签
+- 核心标签[jstl/core](http://java.sun.com/jsp/jstl/core) 
+- 格式化标签[jsp/jstl/fmt](http://java.sun.com/jsp/jstl/fmt) 
 - SQL 标签
 - XML 标签
 - JSTL 函数
@@ -19,7 +21,7 @@ Java Server Pages Standard Tag Libray(JSTL)：JSP 标准标签库，是一个定
 > 这里只做列举，各个标签的详细信息查看[菜鸟教程官网](https://www.runoob.com/jsp/jsp-jstl.html) 
 
 
-## JSTL库使用
+## 1.1 JSTL库使用
 
 
 为了在 JSP 页面使用 JSTL 类库，必须以下列格式使用 taglib 指令：
@@ -47,15 +49,19 @@ Java Server Pages Standard Tag Libray(JSTL)：JSP 标准标签库，是一个定
 
 
 
-## 核心标签
+## 1.2 核心标签
 
-核心标签是最常用的 JSTL标签。引用核心标签库的语法如下：
+核心标签是最常用的JSTL标签。包含Web应用的常见工作，比如
+- 循环
+- 表达式赋值
+- 基本输入输出等。
+
 
 ```java
+// 引用核心标签库的语法
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 ```
 
-包含 Web 应用的常见工作，比如：循环、表达式赋值、基本输入输出等。
 
 | 标签         | 描述                                                                 |
 |--------------|--------------------|
@@ -180,7 +186,7 @@ for forEach varStatus 属性
 - last: 用来表明当前这轮迭代是否为最后一次迭代的标志
 
 
-## 格式化标签
+## 1.3 格式化标签
 
 JSTL格式化标签提供了格式化和解析数字和日期的功能。引用格式化标签库的语法如下：
 ```java
@@ -299,7 +305,7 @@ parseDate标签用于解析日期。（将指定格式的字符串转换成Date�
 | scope     | 存储格式化日志变量的范围  | 否       | 页面         |
 
 
-## SQL标签
+## 1.4 SQL标签
 
 JSTL SQL标签库提供了与关系型数据库（Oracle，MySQL，SQL Server等等）进行交互的标签。引用SQL标签库的语法如下：
 ```java
@@ -314,7 +320,7 @@ JSTL SQL标签库提供了与关系型数据库（Oracle，MySQL，SQL Server等
 | `<sql:dateParam>`      | 将 SQL 语句中的日期参数设为指定的 `java.util.Date` 对象值        |
 | `<sql:transaction>`    | 在共享数据库连接中提供嵌套的数据库行为元素，将所有语句以一个事务的形式来运行 |
 
-## XML 标签
+## 1.5 XML 标签
 
 JSTL XML标签库提供了创建和操作XML文档的标签。引用XML标签库的语法如下：
 ```java
@@ -341,7 +347,7 @@ JSTL XML标签库提供了创建和操作XML文档的标签。引用XML标签库
 | `<x:param>`            | 与 `<x:transform>` 共同使用，用于设置 XSL 样式表             |
 
 
-## JSTL函数
+## 1.5 JSTL函数
 
 
 JSTL包含一系列标准函数，大部分是通用的字符串处理函数。引用JSTL函数库的语法如下：
@@ -374,7 +380,7 @@ JSTL包含一系列标准函数，大部分是通用的字符串处理函数。�
 
 
 
-# JavaBean
+# 2. JavaBean
 
 JavaBean 是特殊的 Java 类，使用 Java 语言书写，并且遵守 JavaBean API 规范。
 
@@ -420,7 +426,7 @@ id值可任意只要不和同一JSP文件中其它\<jsp:useBean>中i 值一样�
 
 
 
-# jsp自定义标签
+# 3. jsp自定义标签
 
 自定义标签是用户定义的JSP语言元素。
 
@@ -474,33 +480,27 @@ public class TagName extends SimpleTagSupport {
 
 
 
-
-
-
-# jsp EL表达式语言
+# 4. jsp EL表达式语言
 
 JSP表达式语言EL(Expression Language)
-- 使 JSP 写起来更加简单
 - 操作的都是域对象中的数据，操作不了局部变量。
     - 当需要指定从某个特定的域对象中查找数据时可以使用四个域对象对应的空间对象，分别是：pageScope, requestScope, sessionScope, applicationScope。
     - 而EL默认的查找方式为从小到大查找。当域对象全找完了还未找到则返回空字符串""
-- EL表达式支持大部分Java所提供的算术和逻辑操作符：
-
-
-JSP EL允许您指定一个表达式来表示标签中的属性值，或标签的模版文本中的值
+- EL表达式支持大部分Java所提供的算术和逻辑操作符
+- 允许指定一个表达式来表示标签中的属性值，或标签的模版文本中的值
 
 ```java
 ${java_expression}
 ```
 
-> 当JSP编译器在属性中见到"${}"格式后，它会产生代码来计算这个表达式，并且产生一个替代品来代替表达式的值
+> 当JSP编译器在属性中见到"${}"格式后，它会将该表达式的结构代替该EL表达式
 
-## empty
 
+## 4.1 empty
 
 判断域对象是否为空
-- 为空，返回true
-- 不为空返回false；
+- 为空: 返回true
+- 不为空: 返回false；
 
 ```java
 ${empty variable}
@@ -508,10 +508,15 @@ ${empty variable}
 
 
 
-## EL中的函数
+## 4.2 EL中的函数
 
-JSP EL允许您在表达式中使用函数。这些函数必须被定义在自定义标签库中。函数的使用语法如下：
+JSP EL允许您在表达式中使用定义在自定义标签库里的函数，要使用任何标签库中的函数，需要
+- 将这些库安装在服务器中
+- 然后使用\<taglib>标签在JSP文件中包含这些库
+
+
 ```java
+// 函数的使用语法
 ${ns:func(param1, param2, ...)}
 ```
 
@@ -519,84 +524,53 @@ ${ns:func(param1, param2, ...)}
 - func指的是函数的名称
 - param1指的是第一个参数，param2指的是第二个参数...
 
-要使用任何标签库中的函数，您需要将这些库安装在服务器中，然后使用\<taglib>标签在JSP文件中包含这些库。
 
 
-## EL隐含对象
-
-JSP EL支持下表列出的隐含对象：
-
-| 隐含对象        | 描述                              |
-|----------------|---------------------------------|
-| `pageScope`    | `page` 作用域                    |
-| `requestScope` | `request` 作用域                 |
-| `sessionScope` | `session` 作用域                 |
-| `applicationScope` | `application` 作用域         |
-| `param`        | `Request` 对象的参数，字符串       |
-| `paramValues`  | `Request` 对象的参数，字符串集合   |
-| `header`       | HTTP 信息头，字符串                |
-| `headerValues` | HTTP 信息头，字符串集合            |
-| `initParam`    | 上下文初始化参数                    |
-| `cookie`       | `Cookie` 值                       |
-| `pageContext`  | 当前页面的 `pageContext`          |
-
-
-您可以在表达式中使用这些对象，就像使用变量一样。
-
-接下来会给出几个例子来更好的理解这个概念。
+## 4.3 EL隐含对象
 
 1. pageContext对象
-
-pageContext对象是JSP中pageContext对象的引用。通过pageContext对象，您可以访问request对象。
-```java
-${pageContext.request.request_attritube}
-```
+当前页面的`pageContext`页面上下文
+- 通过pageContext对象，您可以访问request对象。
 
 
 2. Scope对象
+pageScope，requestScope，sessionScope，applicationScope变量
+- 用来访问存储在各个作用域层次的变量
 
-pageScope，requestScope，sessionScope，applicationScope变量用来访问存储在各个作用域层次的变量。
-
-举例来说，如果您需要显式访问在applicationScope层的box变量，可以这样来访问：applicationScope.box。
 
 
 3. param和paramValues对象
-
-param和paramValues对象用来访问参数值，通过使用request.getParameter方法和request.getParameterValues方法。
-
-举例来说，访问一个名为order的参数，可以这样使用表达式：${param.order}，或者${param\["order"]}。
-
-param对象返回单一的字符串，而paramValues对象则返回一个字符串数组。
+param和paramValues对象用来访问参数值
+- 通过使用request.getParameter方法和request.getParameterValues方法。
+- param对象返回单一的字符串，而paramValues对象则返回一个字符串数组。
 
 
 4. header和headerValues对象
+header和headerValues对象用来访问信息头
+- 通过使用 request.getHeader方法和request.getHeaders方法。
+- header对象返回单一值，而headerValues则返回一个字符串数组。
 
-header和headerValues对象用来访问信息头，通过使用 request.getHeader方法和request.getHeaders方法。
-
-举例来说，要访问一个名为user-agent的信息头，可以这样使用表达式：${header.user-agent}，或者${header\["user-agent"]}。
-
-header对象返回单一值，而headerValues则返回一个字符串数组。
-
-
+5. initParam对象: 获取上下文初始化参数
+6. cookie: 获取Cookie
 
 
 
-# 过滤器和监听器
+# 5. 过滤器和监听器
 
-## 过滤器
+## 5.1 过滤器
 
 ### 介绍
 
 
-Filter 即为过滤，用于在 Servlet 之外对 Request 或者 Response 进行修改。
 
-它主要用于对用户请求进行预处理，也可以对 HttpServletResponse 进行后处理。
+用于对用户请求request进行预处理，也可以对响应response进行后处理。
 
-使用 Filter 的完整流程
-- Filter 对用户请求进行预处理
-- 接着将请求交给 Servlet 进行处理并生成响应
-- 最后 Filter 再 对服务器响应进行后处理  
- 在一个 web 应用中，可以开发编写多个 Filter，这些 Filter 组合 起来称之为一个 Filter 链。
+使用Filter的完整流程
+- Filter对用户请求进行预处理
+- 接着将请求交给Servlet进行处理并生成响应
+- 最后Filter再对服务器响应进行后处理  
+
+在一个 web 应用中，可以开发编写多个 Filter，这些 Filter 组合 起来称之为一个 Filter 链。
 
 
 若是一个过滤器链：先配置先执行(请求时的执行顺序)；响应时: 以相反的顺序执行。
@@ -606,8 +580,6 @@ Filter 即为过滤，用于在 Servlet 之外对 Request 或者 Response 进行
 
 ### 实现
 
-通过实现一个叫做javax.servlet.Fileter的接口来实现一个过滤器，其中定义了 三个方法，`init()`,`doFilter()`, `destroy()`分别在相应的时机执行
-
 Filter 的实现只需要两步：
 - 编写 java 类实现 Filter 接口，并实现其 doFilter 方法。
 - 通过@WebFilter注解设置它所能拦截的资源。
@@ -615,43 +587,45 @@ Filter 的实现只需要两步：
 ```java
 @WebFilter("/*")
 public class Filter01 implements Filter {
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
+        ...
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-            
+        ...
     }
 
     @Override
     public void destroy() {
-
+        ...
     }
 
 }
 ```
 
-Filter 接口中有一个 doFilter 方法，当开发人员编写好 Filter，并配置对哪个 web 资源进行拦截后
 
-Web 服务器每次在调用 web 资源的 service 方法之前，都会先调用一下 filter 的 doFilter 方法
+Web服务器每次在调用web资源的service方法之前，都会先调用一下filter的doFilter方法
 
 因此可以达到如下效果
 - 调用目标资源之前，让一段代码执行
 - 是否调用目标资源（即是否让用户访问 web 资源）。
 
 
-web 服务器在调用 doFilter 方法时，会传递一个 filterChain 对象进来，filterChain 对象是 filter 接口中最重要的一个对象，它提供了一个 doFilter 方法，开发人员可以根据需求决定 是否调用此方法
-- 调用该方法，则 web 服务器就会调用 web 资源的 service 方法，即 web 资源就会被访问
+web服务器在调用doFilter方法时，会传递一个filterChain对象进来，filterChain对象是filter 接口中最重要的一个对象
+- 提供了一个 doFilter 方法
+- 调用该方法，则web服务器就会调用web资源的service方法，即web资源就会被访问
 - 否则 web 资源不会被访问
 > 本质是放行，调用doFilter方法后，即请求可以到达资源
 
 
-## 监听器
+## 5.2 监听器
 
-web 监听器是Servlet 中一种的特殊的类，能帮助开发者监听 web 中的特定事件， 比如ServletContext，HttpSession，ServletRequest 的创建和销毁；变量的创建、销毁和修改等。 可以在某些动作前后增加处理，实现监控。
+web监听器是Servlet中一种的特殊的类，能帮助开发者监听web中的特定事件， 比如
+- ServletContext，HttpSession，ServletRequest 的创建和销毁
+- 变量的创建、销毁和修改等  
+可以在某些动作前后增加处理，实现监控。
 
 ### 三种八类
 
@@ -672,9 +646,8 @@ web 监听器是Servlet 中一种的特殊的类，能帮助开发者监听 web 
 ### 实现
 
 1. 创建一个监听器，需要实现某种接口
-    > 不同的接口实现了不同的方法，当监听对象发生变化时，会自动调用实现了该接口的实例的Override方法
-
+    - 不同的接口实现了不同的方法
+    - 当监听对象发生变化时，会自动调用实现了该接口的实例的指定方法
 2. 重写接口中的方法
-
 2. 通过@WebListener注解配置该监听器
 

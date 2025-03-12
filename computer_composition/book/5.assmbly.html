@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>assembly - Computer composition principles and assembly</title>
+        <title>汇编 - Computer composition principles and assembly</title>
 
 
         <!-- Custom HTML head -->
@@ -152,8 +152,143 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>第五章、汇编语言层</p>
-<p>[toc]</p>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<p>第五章、汇编语言层</p>
+<ul>
+<li><a href="#1-%E6%A6%82%E8%BF%B0">1. 概述</a></li>
+<li><a href="#2-%E6%B1%87%E7%BC%96%E8%AF%AD%E5%8F%A5%E6%A0%BC%E5%BC%8F">2. 汇编语句格式</a>
+<ul>
+<li><a href="#%E6%8C%87%E4%BB%A4%E4%B8%8E%E4%BC%AA%E6%8C%87%E4%BB%A4">指令与伪指令</a>
+<ul>
+<li><a href="#%E5%90%8D%E5%AD%97%E5%AD%97%E6%AE%B5name-field">名字字段(Name Field)</a></li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E7%AC%A6%E5%AD%97%E6%AE%B5operator-field">操作符字段(Operator Field)</a></li>
+<li><a href="#%E6%93%8D%E4%BD%9C%E6%95%B0%E5%AD%97%E6%AE%B5operand-field">操作数字段(Operand Field)</a></li>
+<li><a href="#%E6%B3%A8%E9%87%8A%E5%AD%97%E6%AE%B5comment-field">注释字段(Comment Field)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3-80x86%E5%AE%8F%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E6%95%B0%E6%8D%AE">3. 80x86宏汇编语言数据</a>
+<ul>
+<li><a href="#31-%E5%B8%B8%E6%95%B0">3.1 常数</a>
+<ul>
+<li><a href="#%E6%95%B0%E5%80%BC%E5%B8%B8%E6%95%B0">数值常数</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E5%B8%B8%E6%95%B0">字符常数</a></li>
+</ul>
+</li>
+<li><a href="#32-%E5%8F%98%E9%87%8F">3.2 变量</a>
+<ul>
+<li><a href="#321-%E5%8F%98%E9%87%8F%E7%9A%84%E5%AE%9A%E4%B9%89%E4%B8%8E%E9%A2%84%E7%BD%AE">3.2.1 变量的定义与预置</a></li>
+<li><a href="#322-%E5%8F%98%E9%87%8F%E7%9A%84%E4%BD%BF%E7%94%A8">3.2.2 变量的使用</a></li>
+</ul>
+</li>
+<li><a href="#33-%E7%BC%96%E5%8F%B7">3.3 编号</a></li>
+<li><a href="#34-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6">3.4 表达式与运算符</a>
+<ul>
+<li><a href="#%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6">算数运算符</a></li>
+<li><a href="#%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6">逻辑运算符</a></li>
+<li><a href="#%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6">关系运算符</a></li>
+<li><a href="#%E6%95%B0%E5%80%BC%E8%BF%94%E5%9B%9E%E8%BF%90%E7%AE%97%E7%AC%A6">数值返回运算符</a></li>
+<li><a href="#%E5%B1%9E%E6%80%A7%E4%BF%AE%E6%94%B9%E8%BF%90%E7%AE%97%E7%AC%A6">属性修改运算符</a></li>
+<li><a href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E7%9A%84%E4%BC%98%E5%85%88%E7%BA%A7">运算符的优先级</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#4-80x86%E5%AE%8F%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E4%BC%AA%E6%8C%87%E4%BB%A4">4. 80x86宏汇编语言伪指令</a>
+<ul>
+<li><a href="#41-%E7%AC%A6%E5%8F%B7%E5%AE%9A%E4%B9%89%E8%AF%AD%E5%8F%A5">4.1 符号定义语句</a>
+<ul>
+<li><a href="#411-%E7%AD%89%E5%80%BC%E8%AF%AD%E5%8F%A5">4.1.1 等值语句</a></li>
+<li><a href="#412-%E7%AD%89%E5%8F%B7%E8%AF%AD%E5%8F%A5">4.1.2 等号语句</a></li>
+</ul>
+</li>
+<li><a href="#42-%E5%A4%84%E7%90%86%E5%99%A8%E9%80%89%E6%8B%A9%E4%BC%AA%E6%8C%87%E4%BB%A4">4.2 处理器选择伪指令</a></li>
+<li><a href="#43-%E6%AE%B5%E7%BB%93%E6%9E%84%E4%BC%AA%E6%8C%87%E4%BB%A4segmentends">4.3 段结构伪指令（SEGMENT/ENDS）</a>
+<ul>
+<li><a href="#431-%E6%AE%B5%E5%AE%9A%E4%B9%89%E4%BC%AA%E6%8C%87%E4%BB%A4">4.3.1 段定义伪指令</a></li>
+<li><a href="#432-%E6%AE%B5%E5%AF%BB%E5%9D%80%E4%BC%AA%E6%8C%87%E4%BB%A4assume">4.3.2 段寻址伪指令（ASSUME）</a></li>
+<li><a href="#433-%E6%AE%B5%E5%AF%84%E5%AD%98%E5%99%A8%E7%9A%84%E8%A3%85%E8%BD%BD">4.3.3 段寄存器的装载</a></li>
+</ul>
+</li>
+<li><a href="#%E6%AE%B5%E7%BB%84%E4%BC%AA%E6%8C%87%E4%BB%A4group">段组伪指令（GROUP）</a></li>
+<li><a href="#45-%E5%86%85%E5%AD%98%E6%A8%A1%E5%BC%8F%E5%92%8C%E7%AE%80%E5%8C%96%E6%AE%B5%E5%AE%9A%E4%B9%89%E4%BC%AA%E6%8C%87%E4%BB%A4">4.5 内存模式和简化段定义伪指令</a>
+<ul>
+<li><a href="#%E5%86%85%E5%AD%98%E6%A8%A1%E5%BC%8F%E4%BC%AA%E6%8C%87%E4%BB%A4model">内存模式伪指令(MODEL)</a></li>
+<li><a href="#%E7%AE%80%E5%8C%96%E6%AE%B5%E5%AE%9A%E4%B9%89%E4%BC%AA%E6%8C%87%E4%BB%A4">简化段定义伪指令</a></li>
+<li><a href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E7%AC%A6%E5%8F%B7">预定义符号</a></li>
+</ul>
+</li>
+<li><a href="#46-%E5%AE%9A%E4%B9%89%E4%B8%8E%E5%AF%B9%E5%87%86%E4%BC%AA%E6%8C%87%E4%BB%A4">4.6 定义与对准伪指令</a>
+<ul>
+<li><a href="#%E5%AE%9A%E4%B9%89%E4%BC%AA%E6%8C%87%E4%BB%A4org%E5%92%8C%E4%BD%8D%E7%BD%AE%E6%8A%80%E6%9C%AF%E5%99%A8%E6%B1%87%E7%BC%96%E7%A8%8B%E5%BA%8F%E6%9C%89%E4%B8%80%E4%B8%AA%E4%BD%8D%E7%BD%AE%E8%AE%A1%E6%95%B0%E5%99%A8%E7%94%A8%E6%9D%A5%E8%AE%B0%E8%BD%BD%E6%AD%A3%E5%9C%A8%E6%B1%87%E7%BC%96%E7%9A%84%E6%95%B0%E6%8D%AE%E6%88%96%E6%8C%87%E4%BB%A4%E7%9A%84%E7%9B%AE%E6%A0%87%E4%BB%A3%E7%A0%81%E5%9C%A8%E5%BD%93%E5%89%8D%E6%AE%B5%E5%86%85%E7%9A%84%E5%81%8F%E7%A7%BB%E5%9C%B0%E5%9D%80%E7%AC%A6%E5%8F%B7%E8%A1%A8%E7%A4%BA%E4%BD%8D%E7%BD%AE%E8%AE%A1%E6%95%B0%E5%99%A8%E7%9A%84%E5%BD%93%E5%89%8D%E5%80%BC">定义伪指令(ORG)和位置技术器()汇编程序有一个位置计数器，用来记载正在汇编的数据或指令的目标代码在当前段内的偏移地址，符号“”表示位置计数器的当前值。</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AF%B9%E5%87%86%E4%BC%AA%E6%8C%87%E4%BB%A4">对准伪指令</a></li>
+<li><a href="#47-%E8%BF%87%E7%A8%8B%E5%AE%9A%E4%B9%89%E4%BC%AA%E6%8C%87%E4%BB%A4procendp">4.7 过程定义伪指令(PROC/ENDP)</a></li>
+<li><a href="#48-%E5%8C%85%E5%90%AB%E4%BC%AA%E6%8C%87%E4%BB%A4include">4.8 包含伪指令(INCLUDE)</a></li>
+<li><a href="#49-%E6%A0%87%E9%A2%98%E4%BC%AA%E6%8C%87%E4%BB%A4title">4.9 标题伪指令(TITLE)</a></li>
+</ul>
+</li>
+<li><a href="#5-%E5%AE%8F%E5%91%BD%E4%BB%A4">5. 宏命令</a>
+<ul>
+<li><a href="#%E5%AE%8F%E5%91%BD%E4%BB%A4%E7%9A%84%E4%BD%BF%E7%94%A8%E8%BF%87%E7%A8%8B">宏命令的使用过程</a>
+<ul>
+<li><a href="#%E5%AE%8F%E5%AE%9A%E4%B9%89">宏定义</a></li>
+<li><a href="#%E5%AE%8F%E8%B0%83%E7%94%A8">宏调用</a></li>
+<li><a href="#%E5%AE%8F%E5%B1%95%E5%BC%80">宏展开</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%8F%E6%93%8D%E4%BD%9C%E7%AC%A6">宏操作符</a>
+<ul>
+<li><a href="#%E8%BF%9E%E6%8E%A5%E6%93%8D%E4%BD%9C%E7%AC%A6">连接操作符&amp;</a></li>
+<li><a href="#%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%93%8D%E4%BD%9C%E7%AC%A6">表达式操作符%</a></li>
+<li><a href="#%E6%96%87%E6%9C%AC%E6%93%8D%E4%BD%9C%E7%AC%A6">文本操作符&lt;&gt;</a></li>
+<li><a href="#%E5%AD%97%E7%AC%A6%E6%93%8D%E4%BD%9C%E7%AC%A6">字符操作符！</a></li>
+</ul>
+</li>
+<li><a href="#local%E4%BC%AA%E6%8C%87%E4%BB%A4">LOCAL伪指令</a></li>
+</ul>
+</li>
+<li><a href="#6-%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E5%9F%BA%E6%9C%AC%E6%8A%80%E6%9C%AF">6. 汇编语言程序设计基本技术</a>
+<ul>
+<li><a href="#%E9%A1%BA%E5%BA%8F%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">顺序程序设计</a></li>
+<li><a href="#%E5%88%86%E6%94%AF%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">分支程序设计</a>
+<ul>
+<li><a href="#%E5%8D%95%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84">单分支结构</a></li>
+<li><a href="#%E5%A4%9A%E5%88%86%E6%94%AF%E7%BB%93%E6%9E%84">多分支结构</a></li>
+</ul>
+</li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1">循环程序设计</a>
+<ul>
+<li><a href="#%E5%BD%A2%E5%BC%8F">形式</a></li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E6%8C%87%E4%BB%A4">循环指令</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8">使用</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AD%90%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%B0%83%E7%94%A8%E5%8F%8A%E8%BF%94%E5%9B%9E">子程序的调用及返回</a>
+<ul>
+<li><a href="#%E5%AD%90%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%B0%83%E7%94%A8">子程序的调用</a></li>
+<li><a href="#%E5%AD%90%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%BF%94%E5%9B%9E">子程序的返回</a></li>
+<li><a href="#%E4%BC%A0%E9%80%92%E5%8F%82%E6%95%B0">传递参数</a></li>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD%E5%AD%90%E7%A8%8B%E5%BA%8F%E8%B0%83%E7%94%A8">系统功能子程序调用</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#debugexe%E7%94%A8%E6%B3%95">debug.exe用法</a>
+<ul>
+<li><a href="#%E6%B3%A8%E6%84%8F">注意：</a></li>
+<li><a href="#-r">-r</a></li>
+<li><a href="#-d">-d</a></li>
+<li><a href="#-e">-e</a></li>
+<li><a href="#-a">-a</a></li>
+<li><a href="#-t">-t</a></li>
+<li><a href="#-u">-u</a></li>
+<li><a href="#-g">-g</a></li>
+</ul>
+</li>
+</ul>
 <p>在第3章中介绍的微体系结构层，可看作是为第四章的指令系统层提供了一个解释器，使指令系统的功能得以实现。</p>
 <p>但是，直接用机器指令代码编程是非常困难的，而让微体系结构层直接执行高级语言也不是好办法。因此，人们为所有的计算机都设计了一个汇编语言层，它位于指令系统层、操作系统层与面向问题语言层之间。</p>
 <p>从这一层看去，每一种计算机都有一套自己的汇编语言和解释它的汇编器，以及相应的程序设计及开发方法。</p>
@@ -177,7 +312,7 @@
 <p>指令语句就是第4章中所述的80x86 CPU指令系统中的各条指令。每一条指令语句在源程序汇编时都要产生相应的、可供计算机执行的指令代码（即目标代码），所以这种语句又称为可执行语句。</p>
 <p>伪指令语句用于指示（命令）汇编程序对源程序如何汇编，除其所定义的具体数据要生成目标代码外，其他项均没有对应的目标代码。</p>
 <p>指令语句和伪指令语句有相同的语句格式，每条语句均由如下4个字段（Fields）组成：
-$$名字 \quad 操作符 \quad 操作数 \quad ; \quad 注释$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord cjk_fallback">名字</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">操作符</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">操作数</span><span class="mspace" style="margin-right:1em;"></span><span class="mpunct">;</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">注释</span></span></span></span></span></p>
 <h3 id="名字字段name-field"><a class="header" href="#名字字段name-field">名字字段(Name Field)</a></h3>
 <ul>
 <li>指令语句中: 这个字段叫标号，用冒号<code>:</code>作为名字字段的结束符
@@ -245,7 +380,7 @@ $$名字 \quad 操作符 \quad 操作数 \quad ; \quad 注释$$</p>
 <p>变量代表存放在存储单元中的数据，并作为存储数据单元的符号地址。</p>
 <h3 id="321-变量的定义与预置"><a class="header" href="#321-变量的定义与预置">3.2.1 变量的定义与预置</a></h3>
 <p>定义变量就是分配存储单元，这些存储单元可以预置数据初值或仅保留若干存储单元。定义与预置变量的语句格式如下：</p>
-<p>$$变量名 \quad &lt;数据定义伪指令&gt; \quad &lt;表达式1&gt;,&lt;表达式2&gt;,...$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">变量名</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">数据定义伪指令</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.7335em;vertical-align:-0.1944em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:0.3em;vertical-align:-0.1944em;"></span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">...</span></span></span></span></span></p>
 <ol>
 <li>变量名是任选的</li>
 </ol>
@@ -347,7 +482,7 @@ $$名字 \quad 操作符 \quad 操作数 \quad ; \quad 注释$$</p>
 <p>带DUP表达式</p>
 <ul>
 <li>重复数据操作符DUP（Duplication），其格式如下
-$$变量名 \quad &lt;数据定义伪指令&gt; \quad &lt;表达式1&gt; \quad DUP \quad (&lt;表达式2&gt;)$$
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">变量名</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">数据定义伪指令</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:1em;"></span><span class="mopen">(</span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span></span></span></span></span>
 <ul>
 <li>表达式1是重复的次数</li>
 <li>表达式2是重复数据的内容。</li>
@@ -409,7 +544,7 @@ $$变量名 \quad &lt;数据定义伪指令&gt; \quad &lt;表达式1&gt; \quad D
 <p>使用LABEL伪命令</p>
 <ul>
 <li>LABEL伪指令语句格式如下：
-$$名字 \quad LABEL \quad 类型$$</li>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">名字</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05764em;">BE</span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">类型</span></span></span></span></span></li>
 <li>与指令语句连用时，LABEL语句中的名字就是一个新的标号，其类型可选择NEAR或FAR</li>
 <li>当与数据定义语句连用时，LABEL语句中的名字就是一个新的变量名，其类型可选择BYTE，WORD或DWORD。</li>
 <li>这个新的标号或变量名，与它们连用的指令语句的标号或数据定义语句的变量名有相同的段和偏移地址属性，即与它连用的语句有相同的逻辑地址。只是类型不同，存取控制方式不同</li>
@@ -462,8 +597,8 @@ $$名字 \quad LABEL \quad 类型$$</li>
 <li>XOR（逻辑异或）</li>
 </ul>
 <p>运算符格式：
-$$&lt;表达式1&gt; \quad &lt;逻辑运算符&gt; \quad &lt;表达式2&gt;$$
-$$NOT \quad &lt;表达式&gt;$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">逻辑运算符</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">NOT</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <blockquote>
 <p>逻辑运算符是按位进行逻辑运算的。</p>
 </blockquote>
@@ -476,13 +611,13 @@ $$NOT \quad &lt;表达式&gt;$$</p>
 <li>GT（大于）</li>
 <li>GE（大于等于）</li>
 </ul>
-<p>$$&lt;表达式1&gt; \quad &lt;关系运算符&gt; \quad &lt;表达式2&gt;$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">关系运算符</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <p>如果比较关系成立，则用全1表示真，否则用全0表示假。</p>
 <p>如果比较的是数值表达式，则按无符号数比较；</p>
 <p>如果比较的是同段内的地址表达式，则比较它们的偏移地址。</p>
 <h3 id="数值返回运算符"><a class="header" href="#数值返回运算符">数值返回运算符</a></h3>
 <p>这种运算符的运算对象必须是存储器操作数，即由变量名或标号组成的地址表达式。运算的结果是一个纯数值，这个数值表示该存储器操作数地址的组成部分及其某些特征。数值返回运算符的格式如下：
-$$&lt;数值返回运算符&gt; \quad &lt;地址表达式&gt;$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">数值返回运算符</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span></span><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">地址表达式</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <ol>
 <li>SEG运算符和OFFSET运算符</li>
 </ol>
@@ -499,7 +634,7 @@ $$&lt;数值返回运算符&gt; \quad &lt;地址表达式&gt;$$</p>
 <p>而运算符SIZE是LENGTH和TYPE两个运算结果的乘积。</p>
 <h3 id="属性修改运算符"><a class="header" href="#属性修改运算符">属性修改运算符</a></h3>
 <p>这种运算符用来对变量、标号或存储器操作数的类型属性进行说明和设定。
-$$类型 \quad PTR \quad &lt;地址表达式&gt;$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">类型</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">PTR</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">地址表达式</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <p>把PTR运算符右边地址表达式所确定的存储单元<strong>临时</strong>设定为PTR运算符左边的“类型”（BYTE、WORD、DWORD或NEAR、FAR）。</p>
 <h3 id="运算符的优先级"><a class="header" href="#运算符的优先级">运算符的优先级</a></h3>
 <p><img src="assets/2024-11-16-12-47-38.png" alt="运算符的优先级表" /></p>
@@ -507,7 +642,7 @@ $$类型 \quad PTR \quad &lt;地址表达式&gt;$$</p>
 <h2 id="41-符号定义语句"><a class="header" href="#41-符号定义语句">4.1 符号定义语句</a></h2>
 <p>把某些常数或表达式用一个特定符号表示</p>
 <h3 id="411-等值语句"><a class="header" href="#411-等值语句">4.1.1 等值语句</a></h3>
-<p>$$符号 \quad EQU \quad &lt;表达式&gt;$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord cjk_fallback">符号</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal">EQ</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <p>EQU是等值伪指令，把表达式的值或符号赋给EQU左边的符号。</p>
 <p>表达式可以是以下三种之一：</p>
 <ul>
@@ -520,7 +655,7 @@ $$类型 \quad PTR \quad &lt;地址表达式&gt;$$</p>
 <p>同一符号不能用EQU伪指令重新定义</p>
 </blockquote>
 <h3 id="412-等号语句"><a class="header" href="#412-等号语句">4.1.2 等号语句</a></h3>
-<p>$$符号 \quad = \quad 表达式$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">符号</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">表达式</span></span></span></span></span></p>
 <p>这种语句的含义和表达式的内容都与等值语句相同，不同的是等号语句</p>
 <ul>
 <li>可以重新定义符号</li>
@@ -532,7 +667,7 @@ $$类型 \quad PTR \quad &lt;地址表达式&gt;$$</p>
 <p>缺省默认只使用8086/8088指令系统和8087协处理器指令集。</p>
 </blockquote>
 <p>处理器选择伪指令通常是放在源程序的开头位置，格式：
-$$. \quad 目标处理器代号$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">.</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">目标处理器代号</span></span></span></span></span></p>
 <blockquote>
 <p>在程序中某处要使用一条286，386，486或586所增加的指令，那么可以在这条指令语句前加上处理器选择伪指令。</p>
 </blockquote>
@@ -629,7 +764,7 @@ $$. \quad 目标处理器代号$$</p>
 <p>ASSUME伪指令就是告诉汇编程序，在下面程序中哪些段是当前段，它们分别由哪个段寄存器指向。</p>
 <p>ASSUME伪指令只影响汇编源程序时的设定，而不影响程序运行时段寄存器的设置。</p>
 <p>ASSUME伪指令格式如下:
-$$ASSUME \quad 段寄存器名:段名,段寄存器名:段名...$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.05764em;">SS</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">ME</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">段寄存器名</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord cjk_fallback">段名</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord cjk_fallback">段寄存器名</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">段名</span><span class="mord">...</span></span></span></span></span></p>
 <ul>
 <li>段寄存器名是指CS、SS、DS和ES（对于80386及其后续机型还有FS和GS）中的一个</li>
 <li>段名是指在SEGMENT/ENDS伪指令语句中定义的段名</li>
@@ -667,7 +802,7 @@ $$ASSUME \quad 段寄存器名:段名,段寄存器名:段名...$$</p>
 <ul>
 <li>
 <p>使用结束伪指令<br />
-$$END \quad &lt;地址表达式&gt;$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">EN</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">地址表达式</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <ul>
 <li>
 <p>地址表达式一般是一个已定义的标号，也可以是一个标号加或减一个常数。地址表达式的值是这个程序要执行的第1条指令语句的地址。</p>
@@ -684,13 +819,13 @@ $$END \quad &lt;地址表达式&gt;$$</p>
 </ul>
 <h2 id="段组伪指令group"><a class="header" href="#段组伪指令group">段组伪指令（GROUP）</a></h2>
 <p>把程序中若干不同段名的段组成一个段组，在目标程序装入内存时，一个段组的若干段都装在一个≤64KB的物理段中。段组伪指令GROUP的格式如下：
-$$&lt;段组名&gt; \quad GROUP \quad &lt;段名1，短命2，...&gt;$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5782em;vertical-align:-0.0391em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">段组名</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">GRO</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:1em;"></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">段名</span><span class="mord">1</span><span class="mord cjk_fallback">，短命</span><span class="mord">2</span><span class="mord cjk_fallback">，</span><span class="mord">...</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <p>此时，对段组的引用就是使用段组名</p>
 <h2 id="45-内存模式和简化段定义伪指令"><a class="header" href="#45-内存模式和简化段定义伪指令">4.5 内存模式和简化段定义伪指令</a></h2>
 <h3 id="内存模式伪指令model"><a class="header" href="#内存模式伪指令model">内存模式伪指令(MODEL)</a></h3>
 <p>内存模式伪指令MODEL用于确定用户程序中代码和数据如何安排和存放，以及其占用内存的大小。</p>
 <p>内存模式伪指令MODEL的格式如下：
-$$. /quad&gt; MODEL &lt;内存模式&gt;$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">./</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mord mathnormal">u</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">MO</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">L</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">内存模式</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <ol>
 <li>
 <p>Tiny(最小型模式)</p>
@@ -795,10 +930,9 @@ $$. /quad&gt; MODEL &lt;内存模式&gt;$$</p>
 </li>
 </ol>
 <h2 id="46-定义与对准伪指令"><a class="header" href="#46-定义与对准伪指令">4.6 定义与对准伪指令</a></h2>
-<h3 id="定义伪指令org和位置技术器"><a class="header" href="#定义伪指令org和位置技术器">定义伪指令(ORG)和位置技术器($)</a></h3>
-<p>汇编程序有一个位置计数器，用来记载正在汇编的数据或指令的目标代码在当前段内的偏移地址，符号“$”表示位置计数器的当前值。</p>
+<h3 id="定义伪指令org和位置技术器汇编程序有一个位置计数器用来记载正在汇编的数据或指令的目标代码在当前段内的偏移地址符号表示位置计数器的当前值"><a class="header" href="#定义伪指令org和位置技术器汇编程序有一个位置计数器用来记载正在汇编的数据或指令的目标代码在当前段内的偏移地址符号表示位置计数器的当前值">定义伪指令(ORG)和位置技术器(<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mclose">)</span><span class="mord cjk_fallback">汇编程序有一个位置计数器，用来记载正在汇编的数据或指令的目标代码在当前段内的偏移地址，符号</span><span class="mord">“</span></span></span></span>”表示位置计数器的当前值。</a></h3>
 <p>定位伪指令ORG是对位置计数器设置、修改的控制命令。ORG伪指令语句格式如下：
-$$ORG /quad &lt;表达式&gt;$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">ORG</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="mord mathnormal">u</span><span class="mord mathnormal">a</span><span class="mord mathnormal">d</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7224em;vertical-align:-0.0391em;"></span><span class="mord cjk_fallback">表达式</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">&gt;</span></span></span></span></span></p>
 <p>ORG伪指令语句把表达式的值赋给位置计数器，即ORG语句后面的目标代码（指令代码或数据）由表达式给定的值作为起始偏移地址。</p>
 <blockquote>
 <p>且表达式中可以包含位置计数器的现行值＄。</p>
@@ -806,7 +940,7 @@ $$ORG /quad &lt;表达式&gt;$$</p>
 <h2 id="对准伪指令"><a class="header" href="#对准伪指令">对准伪指令</a></h2>
 <p>对准伪指令EVEN也是对位置计数器的一个控制命令，它把位置计数器的值调整为偶数。</p>
 <p>对准伪指令EVEN语句格式如下:
-$$EVEN$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord mathnormal" style="margin-right:0.10903em;">EN</span></span></span></span></span></p>
 <p>在存储器中，对字单元（包括双字等多字单元）进行存取操作时，如是偶地址，那么存取速度较快。所以对准伪指令EVEN主要应用在定义字数据（包括多字数据）前，用以对位置计数器进行调整。</p>
 <h2 id="47-过程定义伪指令procendp"><a class="header" href="#47-过程定义伪指令procendp">4.7 过程定义伪指令(PROC/ENDP)</a></h2>
 <p>在程序设计中，我们常把具有一定功能的程序段组织成一个子程序。MASM宏汇编程序用“过程”来构造子程序。过程定义伪指令语句的格式如下：</p>
@@ -924,7 +1058,7 @@ $$EVEN$$</p>
 <ol>
 <li>无条件转移使用JMP指令</li>
 </ol>
-<p>$$JMP \quad 目标$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal" style="margin-right:0.13889em;">MP</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">目标</span></span></span></span></span></p>
 <ul>
 <li>转到目标出执行程序，对标志位无影响</li>
 <li>目标可以是
@@ -938,7 +1072,7 @@ $$EVEN$$</p>
 <ol start="2">
 <li>条件转移使用JXX指令</li>
 </ol>
-<p>$$JXX \quad 目标$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal" style="margin-right:0.07847em;">XX</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">目标</span></span></span></span></span></p>
 <ul>
 <li>条件满足，转到目标处执行程序；条件不满足，顺序执行程序</li>
 <li>条件根据PSW中的条件码测试：ZF、SF、OF、CF、PF</li>
@@ -988,40 +1122,40 @@ code ends
 <h3 id="循环指令"><a class="header" href="#循环指令">循环指令</a></h3>
 <ol>
 <li>普通循环
-$$LOOP \quad 标号$$</li>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.13889em;">OOP</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">标号</span></span></span></span></span></li>
 </ol>
 <ul>
-<li>$(CX) - 1 \rightarrow (CX)$</li>
-<li>若$(CX) \ne 0$，从标号处继续循环</li>
-<li>若$(CX) = 0$，退出循环</li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span></span></span></span></li>
+<li>若<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，从标号处继续循环</li>
+<li>若<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，退出循环</li>
 </ul>
 <blockquote>
-<p>相当于两条指令：$DEC \quad CX,JNZ \quad 标号$</p>
+<p>相当于两条指令：<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.07153em;">EC</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal" style="margin-right:0.07153em;">NZ</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">标号</span></span></span></span></p>
 </blockquote>
 <ol start="2">
 <li>为0/相等时循环
-$$LOOPE/LOOPZ 标号$$</li>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.05764em;">OOPE</span><span class="mord">/</span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.07153em;">OOPZ</span><span class="mord cjk_fallback">标号</span></span></span></span></span></li>
 </ol>
 <ul>
-<li>$(CX) - 1 \rightarrow (CX)$</li>
-<li>若$(CX) \ne 0且ZF = 1$，从标号处继续循环</li>
-<li>若$(CX) = 0或ZF = 0$，顺序执行</li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span></span></span></span></li>
+<li>若<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">0</span><span class="mord cjk_fallback">且</span><span class="mord mathnormal" style="margin-right:0.13889em;">ZF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，从标号处继续循环</li>
+<li>若<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">0</span><span class="mord cjk_fallback">或</span><span class="mord mathnormal" style="margin-right:0.13889em;">ZF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，顺序执行</li>
 </ul>
 <ol start="3">
 <li>非0/不等时循环
-$$LOOPNE/LOOPNZ 标号$$</li>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.05764em;">OOPNE</span><span class="mord">/</span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.07153em;">OOPNZ</span><span class="mord cjk_fallback">标号</span></span></span></span></span></li>
 </ol>
 <ul>
-<li>$(CX) - 1 \rightarrow (CX)$</li>
-<li>若$(CX) \ne 0且ZF = 0$，从标号处继续循环</li>
-<li>若$(CX) = 0或ZF = 1$，顺序执行</li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span></span></span></span></li>
+<li>若<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel"><span class="mord vbox"><span class="thinbox"><span class="rlap"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="inner"><span class="mord"><span class="mrel"></span></span></span><span class="fix"></span></span></span></span></span><span class="mrel">=</span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">0</span><span class="mord cjk_fallback">且</span><span class="mord mathnormal" style="margin-right:0.13889em;">ZF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，从标号处继续循环</li>
+<li>若<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord">0</span><span class="mord cjk_fallback">或</span><span class="mord mathnormal" style="margin-right:0.13889em;">ZF</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>，顺序执行</li>
 </ul>
 <ol start="4">
 <li>按CX循环
-$$JCXZ \quad 标号$$</li>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal" style="margin-right:0.07153em;">CXZ</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">标号</span></span></span></span></span></li>
 </ol>
 <ul>
-<li>$(CX)=0$，转至标号处继续循环</li>
+<li><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，转至标号处继续循环</li>
 <li>否则，顺序执行</li>
 </ul>
 <h3 id="使用"><a class="header" href="#使用">使用</a></h3>
@@ -1030,7 +1164,7 @@ $$JCXZ \quad 标号$$</li>
 </ol>
 <ul>
 <li>循环指令不影响标志位</li>
-<li>隐含$(CX)－1$操作</li>
+<li>隐含<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07847em;">CX</span><span class="mclose">)</span><span class="mord cjk_fallback">－</span><span class="mord">1</span></span></span></span>操作</li>
 <li>JCXZ常用于循环初值为0而发生循环的情况</li>
 <li>LOOP指令按循环次数决定是否结束循环</li>
 <li>LOOPZ和LOOPNZ提供了提前结束循环的可能，常跟在比较指令之后</li>
@@ -1078,7 +1212,7 @@ code ends
 <ol>
 <li>指令格式</li>
 </ol>
-<p>$$CALL \quad 过程名$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal">A</span><span class="mord mathnormal">LL</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">过程名</span></span></span></span></span></p>
 <blockquote>
 <p>过程名类似与标号，用法类似与JMP</p>
 </blockquote>
@@ -1110,14 +1244,14 @@ code ends
 <li>在转移到子程序的入口地址执行</li>
 </ul>
 <h3 id="子程序的返回"><a class="header" href="#子程序的返回">子程序的返回</a></h3>
-<p>$$RET$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">RET</span></span></span></span></span></p>
 <ul>
 <li>从栈顶处弹出返回地址，并将其赋值给IP或IP、CS，取决于段间转移或段内转移</li>
 </ul>
-<p>$$RET \quad n$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">RET</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal">n</span></span></span></span></span></p>
 <ul>
 <li>从栈顶处弹出返回地址，并将其赋值给IP或IP、CS，取决于段间转移或段内转移</li>
-<li>再用n修改SP的值，即$(SP)+n \rightarrow (SP)$</li>
+<li>再用n修改SP的值，即<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">SP</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.13889em;">SP</span><span class="mclose">)</span></span></span></span></li>
 </ul>
 <h3 id="传递参数"><a class="header" href="#传递参数">传递参数</a></h3>
 <ol>
@@ -1287,6 +1421,9 @@ code ends
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
+                            <a rel="next prefetch" href="6.storage_system.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -1298,6 +1435,9 @@ code ends
                         <i class="fa fa-angle-left"></i>
                     </a>
 
+                    <a rel="next prefetch" href="6.storage_system.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
             </nav>
 
         </div>

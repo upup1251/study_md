@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>instruction system - Computer composition principles and assembly</title>
+        <title>指令系统 system - Computer composition principles and assembly</title>
 
 
         <!-- Custom HTML head -->
@@ -152,7 +152,8 @@
 
                 <div id="content" class="content">
                     <main>
-                        <p>第四章、指令系统层</p>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<p>第四章、指令系统层</p>
 <p>计算机的基本工作主要体现为执行指令。</p>
 <p>指令系统(指令集)：指令格式、寻址方式、指令类型与功能。</p>
 <p>相对微体系结构层，是一个抽象的层次，它是硬件和软件之间的接口（硬件和编译器都能理解的语言）</p>
@@ -166,6 +167,104 @@
 <li>80x86系列cpu的结构</li>
 <li>80x86主存储器和寄存器</li>
 <li>80x86指令系统</li>
+</ul>
+<ul>
+<li><a href="#1-80x86cpu">1. 80x86CPU</a>
+<ul>
+<li><a href="#11-80868088cpu">1.1 8086/8088cpu</a>
+<ul>
+<li><a href="#%E6%8C%87%E4%BB%A4%E6%B5%81%E6%B0%B4%E7%BA%BF%E7%BB%93%E6%9E%84">指令流水线结构</a></li>
+<li><a href="#%E5%86%85%E9%83%A8%E6%9E%B6%E6%9E%84">内部架构</a></li>
+<li><a href="#8086%E4%B8%BB%E5%AD%98%E5%9C%B0%E5%9D%80%E7%9A%84%E5%BD%A2%E6%88%90">8086主存地址的形成</a>
+<ul>
+<li><a href="#%E6%AE%B5%E5%AF%84%E5%AD%98%E5%99%A8">段寄存器</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#12-8038680486cpu">1.2 80386/80486cpu</a></li>
+<li><a href="#3-pentium%E7%B3%BB%E5%88%97cpu">3. Pentium系列cpu</a>
+<ul>
+<li><a href="#pentium-cpu">Pentium cpu</a></li>
+<li><a href="#pentium-pro-cpu">Pentium Pro cpu</a></li>
+<li><a href="#pentium2-cpu">Pentium2 cpu</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#2-80x86-cpu%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8%E5%92%8C%E4%B8%BB%E5%AD%98%E5%82%A8%E5%99%A8">2. 80x86 cpu的寄存器和主存储器</a>
+<ul>
+<li><a href="#21-80x86-cpu%E7%9A%84%E5%AF%84%E5%AD%98%E5%99%A8">2.1 80x86 cpu的寄存器</a>
+<ul>
+<li><a href="#211-%E5%9F%BA%E6%9C%AC%E7%BB%93%E6%9E%84%E5%AF%84%E5%AD%98%E5%99%A8%E7%BB%84">2.1.1 基本结构寄存器组</a>
+<ul>
+<li><a href="#%E9%80%9A%E7%94%A8%E5%AF%84%E5%AD%98%E5%99%A8">通用寄存器</a></li>
+<li><a href="#%E6%8C%87%E4%BB%A4%E6%8C%87%E9%92%88%E5%AF%84%E5%AD%98%E5%99%A8%E5%92%8C%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8">指令指针寄存器和标志寄存器</a></li>
+</ul>
+</li>
+<li><a href="#%E6%AE%B5%E5%AF%84%E5%AD%98%E5%99%A8-1">段寄存器</a></li>
+<li><a href="#212-%E7%B3%BB%E7%BB%9F%E7%BA%A7%E5%AF%84%E5%AD%98%E5%99%A8">2.1.2 系统级寄存器</a></li>
+</ul>
+</li>
+<li><a href="#22-80x86%E7%9A%84%E4%B8%BB%E5%AD%98%E5%82%A8%E5%99%A8">2.2 80x86的主存储器</a>
+<ul>
+<li><a href="#221-%E5%AD%98%E5%82%A8%E5%8D%95%E5%85%83%E7%9A%84%E5%9C%B0%E5%9D%80%E5%92%8C%E5%86%85%E5%AE%B9">2.2.1 存储单元的地址和内容</a></li>
+<li><a href="#222-%E5%AE%9E%E6%A8%A1%E5%BC%8F%E5%AD%98%E5%82%A8%E5%AF%BB%E5%9D%80">2.2.2 实模式存储寻址</a></li>
+<li><a href="#223-%E4%BF%9D%E6%8A%A4%E6%A8%A1%E5%BC%8F%E5%AD%98%E5%82%A8%E5%99%A8%E5%AF%BB%E5%9D%80">2.2.3 保护模式存储器寻址</a></li>
+<li><a href="#224-80x86%E9%80%BB%E8%BE%91%E5%9C%B0%E5%9D%80%E7%9A%84%E6%9D%A5%E6%BA%90">2.2.4 80x86逻辑地址的来源</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#3-80x86cpu%E7%9A%84%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F">3. 80x86cpu的指令系统</a>
+<ul>
+<li><a href="#31-80x86%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">3.1 80x86寻址方式</a>
+<ul>
+<li><a href="#311-%E7%AB%8B%E5%8D%B3%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F%E5%92%8C%E5%AF%84%E5%AD%98%E5%99%A8%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">3.1.1 立即寻址方式和寄存器寻址方式</a></li>
+<li><a href="#312-%E5%AD%98%E5%82%A8%E5%99%A8%E5%AF%BB%E5%9D%80">3.1.2 存储器寻址</a>
+<ul>
+<li><a href="#%E7%9B%B4%E6%8E%A5%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">直接寻址方式</a></li>
+<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8%E9%97%B4%E6%8E%A5%E5%AF%BB%E5%9D%80">寄存器间接寻址</a></li>
+<li><a href="#%E5%AF%84%E5%AD%98%E5%99%A8%E7%9B%B8%E5%AF%B9%E5%AF%BB%E5%9D%80">寄存器相对寻址</a></li>
+<li><a href="#%E5%9F%BA%E5%9D%80%E5%8F%98%E5%9D%80%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">基址变址寻址方式</a></li>
+<li><a href="#%E6%AF%94%E4%BE%8B%E5%8F%98%E5%9D%80%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">比例变址寻址方式</a></li>
+<li><a href="#%E5%9F%BA%E5%9D%80%E6%AF%94%E4%BE%8B%E5%8F%98%E5%9D%80%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">基址比例变址寻址方式</a></li>
+</ul>
+</li>
+<li><a href="#313-%E4%B8%B2%E6%93%8D%E4%BD%9C%E5%AF%BB%E5%9D%80%E6%96%B9%E5%BC%8F">3.1.3 串操作寻址方式</a></li>
+</ul>
+</li>
+<li><a href="#32-80x86cpu%E6%8C%87%E4%BB%A4%E7%B3%BB%E7%BB%9F">3.2 80x86cpu指令系统</a>
+<ul>
+<li><a href="#%E4%BC%A0%E9%80%81%E7%B1%BB%E6%8C%87%E4%BB%A4">传送类指令</a>
+<ul>
+<li><a href="#mov">MOV</a></li>
+<li><a href="#pushpop">PUSH/POP</a></li>
+<li><a href="#xchg">XCHG</a></li>
+<li><a href="#%E5%9C%B0%E5%9D%80%E4%BC%A0%E9%80%81%E7%B1%BB">地址传送类</a></li>
+<li><a href="#%E6%A0%87%E5%BF%97%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4">标志传送指令</a></li>
+<li><a href="#%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E6%8C%87%E4%BB%A4">类型转换指令</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AE%97%E6%95%B0%E8%BF%90%E7%AE%97%E7%B1%BB%E6%8C%87%E4%BB%A4">算数运算类指令</a></li>
+<li><a href="#%E9%80%BB%E8%BE%91%E7%B1%BB%E6%8C%87%E4%BB%A4">逻辑类指令</a></li>
+<li><a href="#%E4%B8%B2%E6%93%8D%E4%BD%9C%E6%8C%87%E4%BB%A4">串操作指令</a>
+<ul>
+<li><a href="#%E4%B8%B2%E4%BC%A0%E9%80%81%E6%8C%87%E4%BB%A4">串传送指令</a></li>
+</ul>
+</li>
+<li><a href="#%E7%A8%8B%E5%BA%8F%E8%BD%AC%E7%A7%BB%E7%B1%BB%E6%8C%87%E4%BB%A4">程序转移类指令</a>
+<ul>
+<li><a href="#%E6%97%A0%E6%9D%A1%E4%BB%B6%E8%BD%AC%E7%A7%BB">无条件转移</a></li>
+<li><a href="#%E6%9D%A1%E4%BB%B6%E8%BD%AC%E7%A7%BB">条件转移</a></li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E6%8E%A7%E5%88%B6">循环控制</a></li>
+</ul>
+</li>
+<li><a href="#%E5%A4%84%E7%90%86%E6%9C%BA%E6%8E%A7%E5%88%B6%E7%B1%BB%E6%8C%87%E4%BB%A4">处理机控制类指令</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 <h1 id="1-80x86cpu"><a class="header" href="#1-80x86cpu">1. 80x86CPU</a></h1>
 <p>目前，主要的CPU架构有四种</p>
@@ -255,7 +354,7 @@
 </li>
 </ul>
 <p>物理地址与逻辑地址的转换
-$$物理地址 = 段基址 x 2^4 + 偏移地址$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">物理地址</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.9474em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">段基址</span><span class="mord mathnormal">x</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8641em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">4</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">偏移地址</span></span></span></span></span></p>
 <p><img src="assets/2024-11-20-13-57-58.png" alt="8086主存地址的形成" /></p>
 <h4 id="段寄存器"><a class="header" href="#段寄存器">段寄存器</a></h4>
 <p>汇编语言源程序是分段结构（代码段、数据段...）</p>
@@ -724,7 +823,7 @@ $$物理地址 = 段基址 x 2^4 + 偏移地址$$</p>
 </blockquote>
 <h3 id="221-存储单元的地址和内容"><a class="header" href="#221-存储单元的地址和内容">2.2.1 存储单元的地址和内容</a></h3>
 <p>存储器里以字节为单位存储信息，每一个字节单元给予一个唯一的编号即存储器地址，称为物理地址。地址从0开始编号，也是用二进制数来表示的。书写格式为十六进制数。</p>
-<p>$$地址总线宽度n位 \Rightarrow^{可寻址} 寻址空间2^n$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8913em;"></span><span class="mord cjk_fallback">地址总线宽度</span><span class="mord mathnormal">n</span><span class="mord cjk_fallback">位</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel"><span class="mrel">⇒</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8913em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">可寻址</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7144em;"></span><span class="mord cjk_fallback">寻址空间</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7144em;"><span style="top:-3.113em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span></span></span></span></span></span></span></span></p>
 <p>字、双字存放：以低位地址作为整个字/双字的地址</p>
 <ul>
 <li>对准字：字地址为偶地址</li>
@@ -745,7 +844,7 @@ $$物理地址 = 段基址 x 2^4 + 偏移地址$$</p>
 <li>逻辑地址</li>
 </ol>
 <p>在保护模式存储器寻址中 ，程序员在程序中指定逻辑地址， CPU采用一种比较复杂的方法来求得相应的物理地址。</p>
-<p>$$逻辑地址 = 段选择器 + 偏移地址$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">逻辑地址</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">段选择器</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">偏移地址</span></span></span></span></span></p>
 <p>段选择器存放在段寄存器中，由CPU通过一定的方法利用段选择器取得段基址，再和偏移地址相加，从而求得所选存储单元的线性地址，线性地址再通过分页部件转换成物理地址。</p>
 <ol start="2">
 <li>描述符</li>
@@ -888,7 +987,7 @@ $$物理地址 = 段基址 x 2^4 + 偏移地址$$</p>
 </ul>
 <p>实际上段基值和选择器都是由段寄存器提供。</p>
 <p>在汇编语言程序中，逻辑地址可表示为：
-$$段基值（或段选择器）：偏移地址$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">段基值（或段选择器）：偏移地址</span></span></span></span></span></p>
 <p>在80x86 CPU中，逻辑地址的两个分量之间存在一种默认组合关系，可以不在程序中指明
 <img src="assets/2024-11-21-14-41-49.png" alt="80x86cpu逻辑地址两分量中的默认组合" /></p>
 <blockquote>
@@ -947,7 +1046,7 @@ $$段基值（或段选择器）：偏移地址$$</p>
 <p>在汇编指令中，寄存器地址直接用寄存器名表示，如用AX、BX、AL、BH、EAX、EBX、DS、ES等，这些寄存器可以是8位的、16位的或32位的。</p>
 <h3 id="312-存储器寻址"><a class="header" href="#312-存储器寻址">3.1.2 存储器寻址</a></h3>
 <p>在汇编语言程序中，一个存储单元的地址采用逻辑地址来表示，其形式为:
-$$段基址（或段选择器）: 偏移地址$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">段基址（或段选择器）</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">:</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">偏移地址</span></span></span></span></span></p>
 <ul>
 <li>操作数地址（物理地址）是根据段基值（或段选择器）和偏移地址通过一定的方法得到。
 <ul>
@@ -962,7 +1061,7 @@ $$段基址（或段选择器）: 偏移地址$$</p>
 <hr />
 <p>获得有效地址EA（偏移地址）的方法</p>
 <p>EA可由4个地址分量的某种组合求得
-$$EA = 基地址+（变址量 x 比例因子） + 位移量$$</p>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">基地址</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7667em;vertical-align:-0.0833em;"></span><span class="mord cjk_fallback">（变址量</span><span class="mord mathnormal">x</span><span class="mord cjk_fallback">比例因子）</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">位移量</span></span></span></span></span></p>
 <blockquote>
 <p>上式中的每一个地址分量均可空缺，但比例因子只能与变址寄存器同时使用。</p>
 </blockquote>
@@ -998,7 +1097,7 @@ $$EA = 基地址+（变址量 x 比例因子） + 位移量$$</p>
 <li>EA直接由指令代码中的位移量提供。
 即EA只包含位移量这一种地址分量</li>
 </ul>
-<p>$$EA = 位移量$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">位移量</span></span></span></span></span></p>
 <ol>
 <li>数值地址表示EA</li>
 </ol>
@@ -1022,7 +1121,7 @@ MOV BX,DS:[1000H]
 <li>EA直接从基址寄存器或变址寄存器中获得
 即EA是由基址（或变址）寄存器内容来提供的</li>
 </ul>
-<p>$$EA = 基地址/变地址$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord cjk_fallback">基地址</span><span class="mord">/</span><span class="mord cjk_fallback">变地址</span></span></span></span></span></p>
 <pre><code class="language-asm">MOV BX,[R_变址]/[R_基址]
 MOV BX,[BP]
 </code></pre>
@@ -1051,7 +1150,7 @@ MOV BX,[BP]
 </ul>
 </li>
 </ul>
-<p>$$EA = (R_{变址})/(R_{基址}) + 位移量$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">变址</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord">/</span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">基址</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">位移量</span></span></span></span></span></p>
 <pre><code class="language-asm">MOV BX,位移量[R_变址/R_基址]
 MOV BX,2[BX]
 MOV BX,VARIABLE_NAME[BX]
@@ -1062,7 +1161,7 @@ MOV BX,VARIABLE_NAME[BX]
 <li>指令所需的操作数在主存单元中</li>
 <li>EA是三个地址分量之和：基址寄存器内容、变址寄存器内容与指令中的位移量（0位、8位、16位或32位）之和</li>
 </ul>
-<p>$$EA = (R_{变址})+(R_{基址})+位移量$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">变址</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">基址</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">位移量</span></span></span></span></span></p>
 <pre><code class="language-asm">MOV BX,位移量[R_变址][R_基址]
 MOV BX,2[BX][SI]
 MOV BX,VARIABLE_NAME[BX][Si]
@@ -1073,7 +1172,7 @@ MOV BX,VARIABLE_NAME[BX][Si]
 <li>指令所需的操作数在主存单元中</li>
 <li>EA是变址寄存器的内容乘以指令中指定的比例因子再加上位移量之和</li>
 </ul>
-<p>$$EA = (R_{变址})X比例因子+位移量$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">变址</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mord cjk_fallback">比例因子</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">位移量</span></span></span></span></span></p>
 <pre><code class="language-asm">MOV BX,位移量[(R_{变址}) * 比例因子]
 MOV EAX，COUNT[ESI * 4]
 </code></pre>
@@ -1083,7 +1182,7 @@ MOV EAX，COUNT[ESI * 4]
 <li>指令所需的操作数在主存单元中</li>
 <li>EA由4种成分组成:变址寄存器的内容乘以比例因子，加上基址寄存器的内容，再加上位移量（0位、8位或32位）之和</li>
 </ul>
-<p>$$EA = (R_{变址})X比例因子+ (R_{基址}) + 位移量$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">变址</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mord mathnormal" style="margin-right:0.07847em;">X</span><span class="mord cjk_fallback">比例因子</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.00773em;">R</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3283em;"><span style="top:-2.55em;margin-left:-0.0077em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord cjk_fallback mtight">基址</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord cjk_fallback">位移量</span></span></span></span></span></p>
 <pre><code class="language-asm">MOV BX,位移量[(R_{基址})][(R_{变址}) * 比例因子]
 MOV BX,VARIABLE_NAME[BP][DI * 4]
 MOV BX,2[BP][DI * 2]
@@ -1100,7 +1199,7 @@ MOV BX,2[BP][DI * 2]
 <ol>
 <li>双操作数指令</li>
 </ol>
-<p>$$OPR \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.00773em;">OPR</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li><code>OPR</code>: 指令操作码</li>
 <li><code>DEST</code>: 目的操作数地址</li>
@@ -1112,7 +1211,7 @@ MOV BX,2[BP][DI * 2]
 <ol start="2">
 <li>单操作数指令</li>
 </ol>
-<p>$$ORP \quad DEST$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">ORP</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span></span></span></span></span></p>
 <ul>
 <li><code>OPR</code>: 指令操作码</li>
 <li><code>DEST</code>
@@ -1133,7 +1232,7 @@ MOV BX,2[BP][DI * 2]
 <h3 id="传送类指令"><a class="header" href="#传送类指令">传送类指令</a></h3>
 <p>把数据、地址送到寄存器或存储单元中</p>
 <h4 id="mov"><a class="header" href="#mov">MOV</a></h4>
-<p>$$MOV \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">MO</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li>操作：<code>(SRC) -&gt; DEST</code></li>
 <li>说明
@@ -1150,7 +1249,7 @@ MOV BX,2[BP][DI * 2]
 <blockquote>
 <p>MOVSX和MOVZX指令只支持386以后机型</p>
 </blockquote>
-<p>$$MOVSX \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">MO</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord mathnormal" style="margin-right:0.07847em;">SX</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li>操作：<code>符号扩展(SRC) -&gt; DEST</code></li>
 <li>说明
@@ -1165,7 +1264,7 @@ MOV BX,2[BP][DI * 2]
 </li>
 </ul>
 <h5 id="带零扩展传送指令"><a class="header" href="#带零扩展传送指令">带零扩展传送指令</a></h5>
-<p>$$MOVZX \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">MO</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord mathnormal" style="margin-right:0.07847em;">ZX</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li>操作：<code>零扩展(SRC) -&gt; DEST</code></li>
 <li>说明
@@ -1179,7 +1278,7 @@ MOV BX,2[BP][DI * 2]
 <ol>
 <li>PUSH</li>
 </ol>
-<p>$$PUSH \quad SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li><code>(SP)/(ESP) - 2 -&gt; (SP)/(ESP)</code></li>
 <li><code>16位SRC -&gt; (SP)/(ESP)</code>
@@ -1188,7 +1287,7 @@ MOV BX,2[BP][DI * 2]
 <ol start="2">
 <li>POP</li>
 </ol>
-<p>$$POP \quad DEST$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">POP</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span></span></span></span></span></p>
 <ul>
 <li>操作：</li>
 <li><code>(SP)/(ESP) -&gt; (DST)</code></li>
@@ -1209,7 +1308,7 @@ MOV BX,2[BP][DI * 2]
 <ol>
 <li>PUSHA</li>
 </ol>
-<p>$$PUSHA$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal">A</span></span></span></span></span></p>
 <ul>
 <li>16位通用寄存器依次进栈</li>
 <li>进栈次序为AX、CX、DX、BX,以及指令执⾏前的SP、BP、SI、DI</li>
@@ -1218,7 +1317,7 @@ MOV BX,2[BP][DI * 2]
 <ol start="2">
 <li>PUSHAD</li>
 </ol>
-<p>$$PUSHAD$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mord mathnormal" style="margin-right:0.10903em;">U</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span></span></p>
 <ul>
 <li>32位通用寄存器依次进栈</li>
 <li>进栈次序为EAX、ECX、EDX、EBX，以及指令执⾏前的ESP、EBP、ESI和EDI</li>
@@ -1228,7 +1327,7 @@ MOV BX,2[BP][DI * 2]
 <ol>
 <li>POPA</li>
 </ol>
-<p>$$POPA$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">POP</span><span class="mord mathnormal">A</span></span></span></span></span></p>
 <ul>
 <li>16位通用寄存器依次出栈</li>
 <li>出栈次序为DI、SI、BP、SP、BX、DX、CX、AX</li>
@@ -1240,14 +1339,14 @@ MOV BX,2[BP][DI * 2]
 <ol start="2">
 <li>POPAD</li>
 </ol>
-<p>$$POPAD$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.13889em;">POP</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span></span></span></span></span></p>
 <ul>
 <li>32位通用寄存器依次出栈 (ESP的伪出栈)</li>
 <li>出栈次序为EDI、ESI、EBP、ESP、EBX、EDX、ECX、EAX</li>
 <li>指令执⾏后<code>（ESP）&lt;-（ESP）＋ 32</code></li>
 </ul>
 <h4 id="xchg"><a class="header" href="#xchg">XCHG</a></h4>
-<p>$$XCHG \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">XC</span><span class="mord mathnormal" style="margin-right:0.08125em;">H</span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li>
 <p>操作</p>
@@ -1274,7 +1373,7 @@ MOV BX,2[BP][DI * 2]
 <li>LSS（Load SS with pointer） 地址指针送寄存器和SS</li>
 </ul>
 <h5 id="lea"><a class="header" href="#lea">LEA</a></h5>
-<p>$$LEA \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li><code>DEST &lt;- SRC的偏移地址</code></li>
 <li>DEST不允许是段寄存器，只能是16位或32位通用寄存器</li>
@@ -1288,7 +1387,7 @@ MOV BX,2[BP][DI * 2]
 <ol>
 <li>LDS</li>
 </ol>
-<p>$$LDS \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li><code>(SRC) -&gt; DEST</code></li>
 <li>偏移地址送至DEST通用寄存器</li>
@@ -1298,7 +1397,7 @@ MOV BX,2[BP][DI * 2]
 <ol start="2">
 <li>LES</li>
 </ol>
-<p>$$LES \quad DEST,SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.05764em;">ES</span><span class="mspace" style="margin-right:1em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">EST</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li><code>(SRC) -&gt; DEST</code></li>
 <li><code>(SRC + 2/4) -&gt; ES</code></li>
@@ -1337,7 +1436,7 @@ MOV BX,2[BP][DI * 2]
 <ol>
 <li>CBW（Convert Byte to Word）</li>
 </ol>
-<p>$$CBW$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05017em;">CB</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span></span></span></span></span></p>
 <ul>
 <li>字节转换为字</li>
 <li>AL最高位置入AH的所有位，AL扩为AX</li>
@@ -1345,7 +1444,7 @@ MOV BX,2[BP][DI * 2]
 <ol start="2">
 <li>CWD/CWDE(Convert Word to Double Word）</li>
 </ol>
-<p>$$CWD/CWDE$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord">/</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.05764em;">E</span></span></span></span></span></p>
 <ul>
 <li>字转换为双字</li>
 <li>CWD
@@ -1362,7 +1461,7 @@ MOV BX,2[BP][DI * 2]
 <ol start="3">
 <li>CDQ（Convert Double to Quad）</li>
 </ol>
-<p>$$CDQ$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal">Q</span></span></span></span></span></p>
 <ul>
 <li>双字转换为4字</li>
 <li>EAX扩展成EDX：EAX</li>
@@ -1370,7 +1469,7 @@ MOV BX,2[BP][DI * 2]
 <ol start="4">
 <li>BSWAP（Byte SWAP）</li>
 </ol>
-<p>$$BSWAP REG32$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">BS</span><span class="mord mathnormal" style="margin-right:0.13889em;">W</span><span class="mord mathnormal">A</span><span class="mord mathnormal">PREG</span><span class="mord">32</span></span></span></span></span></p>
 <ul>
 <li>使指令指定的32位寄存器的字节次序变反</li>
 <li>具体操作为：1，4字节互换；2，3字节互换。</li>
@@ -1627,7 +1726,7 @@ MOV BX,2[BP][DI * 2]
 </ul>
 <h3 id="串操作指令"><a class="header" href="#串操作指令">串操作指令</a></h3>
 <h4 id="串传送指令"><a class="header" href="#串传送指令">串传送指令</a></h4>
-<p>$$MOVS DST，SRC$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">MO</span><span class="mord mathnormal" style="margin-right:0.22222em;">V</span><span class="mord mathnormal" style="margin-right:0.05764em;">S</span><span class="mord mathnormal" style="margin-right:0.02778em;">D</span><span class="mord mathnormal" style="margin-right:0.13889em;">ST</span><span class="mord cjk_fallback">，</span><span class="mord mathnormal" style="margin-right:0.07153em;">SRC</span></span></span></span></span></p>
 <ul>
 <li>DST、SRC提供类型(字节or字)</li>
 <li>源串首址DS：SI→目的首址ES：DI</li>
@@ -1683,7 +1782,7 @@ MOVSW
 </tbody></table>
 </div>
 <h4 id="条件转移"><a class="header" href="#条件转移">条件转移</a></h4>
-<p>$$JXX \quad 目标$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal" style="margin-right:0.07847em;">XX</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">目标</span></span></span></span></span></p>
 <ul>
 <li>条件XX满足，转到目标处执行程序；</li>
 <li>条件XX不满足，顺序执行程序。</li>
@@ -1726,7 +1825,7 @@ MOVSW
 <ol>
 <li>LOOP</li>
 </ol>
-<p>$$LOOP \quad 标号$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.13889em;">OOP</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">标号</span></span></span></span></span></p>
 <ul>
 <li>(CX)－1→(CX)</li>
 <li>若(CX)≠0 ,从标号处继续循环;若(CX)＝0 , 退出循环</li>
@@ -1738,7 +1837,7 @@ MOVSW
 </ul>
 <ol start="2">
 <li>为 0/ 相等时循环
-$$LOOPE \quad 标号$$</li>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.05764em;">OOPE</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">标号</span></span></span></span></span></li>
 </ol>
 <ul>
 <li>(CX)－1→(CX)</li>
@@ -1746,7 +1845,7 @@ $$LOOPE \quad 标号$$</li>
 </ul>
 <ol start="3">
 <li>非 0/ 不等时循环
-$$LOOPNE \quad 标号$$</li>
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span><span class="mord mathnormal" style="margin-right:0.05764em;">OOPNE</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">标号</span></span></span></span></span></li>
 </ol>
 <ul>
 <li>(CX)－1→(CX)</li>
@@ -1755,7 +1854,7 @@ $$LOOPNE \quad 标号$$</li>
 <ol start="4">
 <li>按 CX 循环</li>
 </ol>
-<p>$$JCXZ \quad 标号$$</p>
+<p><span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.09618em;">J</span><span class="mord mathnormal" style="margin-right:0.07153em;">CXZ</span><span class="mspace" style="margin-right:1em;"></span><span class="mord cjk_fallback">标号</span></span></span></span></span></p>
 <ul>
 <li>(CX)＝0 ,转至标号处继续循环</li>
 </ul>

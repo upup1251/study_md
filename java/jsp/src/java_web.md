@@ -1,33 +1,29 @@
+本节主要设计Java及web端的知识
 
-# JavaEE的介绍
+[toc]
 
+# 1. Java版本
 
-我们前面介绍的所有基于标准JDK的开发都是JavaSE，即Java Platform Standard Edition
+$$JavaME \subset JavaSE \subset JavaEE$$
 
-Java Web开发正式进入到JavaEE的领域，JavaEE
-- 是Java Platform Enterprise Edition的缩写，即Java企业平台
-- 实际上是完全基于JavaSE，只是多了一大堆服务器相关的库以及API接口
-> 所有的JavaEE程序，仍然是运行在标准的JavaSE的虚拟机上的。
-- JavaEE并不是一个软件产品，它更多的是一种软件架构和设计思想。我们可以把JavaEE看作是在JavaSE的基础上，开发的一系列基于服务器的组件、API标准和通用架构。
-- JavaEE最核心的组件就是基于Servlet标准的Web服务器，开发者编写的应用程序是基于Servlet API并运行在Web服务器内部的：
+1. JavaME(Java Platform Micro Edition)
+- Java移动开发平台（非Android）
+- 小众不太常用
 
+1. JavaSE(Java Platform Standard Edition) 
 
-此外，还有一个小众不太常用的JavaME：Java Platform Micro Edition，是Java移动开发平台（非Android）
+- 基于标准JDK的开发
 
-它们三者关系如下：
-
-┌────────────────┐
-│     JavaEE     │
-│┌──────────────┐│
-││    JavaSE    ││
-││┌────────────┐││
-│││   JavaME   │││
-││└────────────┘││
-│└──────────────┘│
-└────────────────┘
+3. JavaEE(Java Platform Enterprise Edition)
+Java Web开发正式进入到JavaEE的领域
+- Java企业平台
+- 在JavaSE基础上添加了一大堆服务器相关的库以及API接口
+    > 所有的JavaEE程序，仍然是运行在标准的JavaSE的虚拟机上的。
+- JavaEE最核心的组件就是基于Servlet标准的Web服务器，开发者编写的应用程序是基于Servlet API并运行在Web服务器内部的
 
 
-# 编写简单的HTTP Server
+
+# 2. 简单的HTTP Server
 
 一个HTTP Server本质上是一个TCP服务器，我们先用TCP编程的多线程实现的服务器端框架: 
 > 我去，不就和我之前实现的owo通信软件一样的，使用socket套接字进行通信。本质上使用socket进行通信的连接，使用连接对象socket的输入和输出流实现客户端和服务器间请求`request`的发送和响应`response`的回传
@@ -178,51 +174,10 @@ class Handler extends Thread {
 ```
 
 
-# servlet入门
 
-上一节中可以看到，编写HTTP服务器其实是非常简单的，只需要先编写基于多线程的TCP服务，然后在一个TCP连接中读取HTTP请求，发送HTTP响应即可。
+# 3. 运行web应用
 
-但是，要编写一个完善的HTTP服务器，需要考虑的很多，需要耗费大量的时间，并且经过长期测试才能稳定运行。
-
-因此，在JavaEE平台上，处理TCP连接，解析HTTP协议这些底层工作统统扔给现成的Web服务器去做，我们只需要把自己的应用程序跑在Web服务器上。为了实现这一目的，JavaEE提供了Servlet API，我们使用Servlet API编写自己的Servlet来处理HTTP请求，Web服务器实现Servlet API接口，实现底层功能:
-                 ┌───────────┐
-                 │My Servlet │
-                 ├───────────┤
-                 │Servlet API│
-┌───────┐  HTTP  ├───────────┤
-│Browser│◀──────▶│Web Server │
-└───────┘        └───────────┘
-
-
-
-一个Servlet总是继承自HttpServlet，然后覆写doGet()或doPost()方法。
-- 注意到doGet()方法传入了HttpServletRequest和HttpServletResponse两个对象，分别代表HTTP请求和响应。
-- 我们使用Servlet API时，并不直接与底层TCP交互，也不需要解析HTTP协议，因为HttpServletRequest和HttpServletResponse就已经封装好了请求和响应。
-- 以发送响应为例，我们只需要设置正确的响应类型，然后获取PrintWriter，写入响应即可。
-
-
-
-## 项目目录
-
-web-servlet-hello/
-├── pom.xml
-└── src/
-    └── main/
-        ├── java/
-        │   └── com/
-        │       └── itranswarp/
-        │           └── learnjava/
-        │               └── servlet/
-        │                   └── HelloServlet.java
-        ├── resources/
-        └── webapp/
-
-
-- 目录webapp目前为空，如果我们需要存放一些资源文件，则需要放入该目录
-- webapp目录下是否需要一个/WEB-INF/web.xml配置文件？这个配置文件是低版本Servlet必须的，但是高版本Servlet已不再需要，所以无需该配置文件
-
-
-## 运行web应用
+将写好的Servlet项目运行的过程即为运行web应用
 
 1. 获得war文件
 
@@ -234,83 +189,143 @@ web-servlet-hello/
 
 普通的Java程序是通过启动JVM，然后执行main()方法开始运行。但是Web应用程序有所不同，我们无法直接运行war文件
 
-必须先启动Web服务器，再由Web服务器加载我们编写的HelloServlet，这样就可以让HelloServlet处理浏览器发送的请求
-
-要运行我们的hello.war
+要运行我们的war文件
 - 首先要下载Tomcat服务器
-- 把hello.war复制到Tomcat的webapps目录下
-- 然后切换到bin目录，执行startup.sh或startup.bat启动Tomcat服务器
-- 在浏览器输入http://localhost:8080/hello/即可看到HelloServlet的输出
+- 把hello.war文件复制到Tomcat的webapps目录下
+- 切换到bin目录，执行startup.sh启动Tomcat服务器
+    类似Tomcat这样的服务器也是Java编写的，启动Tomcat服务器实际上是
+    - 启动Java虚拟机
+    - 执行Tomcat的main()方法
+    - 由Tomcat负责加载我们的.war文件
+    - 并创建一个HelloServlet实例，最后以多线程的模式来处理HTTP请求
+- 在浏览器输入http://localhost:8080/hello/即可看到Servlet的的响应
 
-
-
-实际上，类似Tomcat这样的服务器也是Java编写的，启动Tomcat服务器实际上是
-- 启动Java虚拟机
-- 执行Tomcat的main()方法
-- 由Tomcat负责加载我们的.war文件
-- 并创建一个HelloServlet实例，最后以多线程的模式来处理HTTP请求
 
 因为我们编写的Servlet并不是直接运行，而是由Web服务器加载后创建实例运行，所以，类似Tomcat这样的Web服务器也称为Servlet容器。
 
 
 
-# servlet开发
-
-在上一节中，我们看到，一个完整的Web应用程序的开发流程如下：
-
-1. 编写Servlet；
-2. 打包为war文件；
-3. 复制到Tomcat的webapps目录下；
-4. 启动Tomcat。
+# 4. TomcaT服务器
 
 
-这个过程是不是很繁琐？如果我们想在IDE中断点调试，还需要打开Tomcat的远程调试端口并且连接上去。
+Tomcat 是一个符合 JavaEE WEB 标准的最小的**WEB容器**，所有的 JSP 程序一定要有 WEB 容器的支持才能运行，而且在给定的 WEB 容器里面都会支持事务处理操作。
 
 
-直接在IDE中启动并调试webapp的方法: 因为Tomcat实际上也是一个Java程序，我们看看Tomcat的启动流程：
-1. 启动JVM并执行Tomcat的main()方法；
-2. 加载war并初始化Servlet；
-3. 正常服务。
+Tomcat简单的说就是一个运行Java的网络服务器，底层是Socket的一个程序，它也是JSP和Servlet 的一个容器。
 
-启动Tomcat无非就是设置好classpath并执行Tomcat某个jar包的main()方法
+实际上 Tomcat 部分是 Apache 服务器的扩展，但它是独立运行的，所以当你运行tomcat时，它实际上作为一个与 Apache 独立的进程单独运行的
 
-我们完全可以把Tomcat的jar包全部引入进来，然后自己编写一个main()方法，先启动Tomcat，然后让它加载我们的webapp就行。
-> 此时，不必引入Servlet API，因为引入Tomcat依赖后自动引入了Servlet API
 
-```java
-public class Main {
-    public static void main(String[] args) throws Exception {
-        // 启动Tomcat:
-        Tomcat tomcat = new Tomcat();
-        tomcat.setPort(Integer.getInteger("port", 8080));
-        tomcat.getConnector();
-        // 创建webapp:
-        Context ctx = tomcat.addWebapp("", new File("src/main/webapp").getAbsolutePath());
-        WebResourceRoot resources = new StandardRoot(ctx);
-        resources.addPreResources(
-                new DirResourceSet(resources, "/WEB-INF/classes", new File("target/classes").getAbsolutePath(), "/"));
-        ctx.setResources(resources);
-        tomcat.start();
-        tomcat.getServer().await();
-    }
-}
+## Tomcat目录结构
+
+- `bin`: 存放启动和关闭Tomcat的脚本文件
+- `conf`: 存放Tomcat服务器的配置文件
+- `lib`: 存放Tomcat服务器的支持jar包
+- `logs`: 存放Tomcat的日志文件
+- `temp`: 存放Tomcat运行时产生的临时文件
+- `webapps`: web应用所在的目录，即外界访问的web资源存放目录
+- `work`: Tomcat的工作目录
+
+
+
+# 5. HTTP协议
+
+HTTP协议(Hypertext Transfer Protocol，超文本传输协议)
+- 是一个客户端请求和响应的标准协议
+- 详细规定了浏览器和万维网服务器之间互相通信的规则
+    - 客户端发送给服务器的格式叫"请求协议"
+    - 服务器发送给客户端的格式叫"响应协议"
+- 用户输入地址和端口号之后就可以从服务器上取得所需要的网页信息。
+
+
+## 特点
+
+1. 支持客户/服务器模式
+2. 简单快速: 客户端向服务端请求服务时，只需传送请求方法(`post`/`get`)和路径
+3. 灵活：允许传输任意类型的数据对象，传输的类型由`Content-Type`标记
+4. 无连接：每次连接只处理一个请求。服务器处理完客户的请求，并收到客户的应答后，即断开连接
+> HTTP1.1 版本后支持可持续连接
+5. 无状态：指协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息，则它必须重传
+
+
+## url 
+
+HTTP URL (URL 是一种特殊类型的 URI，包含了用于查找某个资源的足够的信息)的格式 如下：
+```http 
+http://host[:port]/[path]
 ```
-- 运行main()方法，即可启动嵌入式Tomcat服务器
-- 然后，通过预设的tomcat.addWebapp("", new File("src/main/webapp")，Tomcat会自动加载当前工程作为根webapp
-- 可直接在浏览器访问http://localhost:8080/
+- http: 表示要通过HTTP协议来定位网络资源；
+- host: 表示合法的Internet主机域名或者IP 地址；
+- port: 指定一个端口号，为空则使用缺省端口 80；
+- path: 指定请求资源的 URI；
+> 如果 URL 中没有给出 abs_path，那么当它作为请求 URI 时，必须以“/”的形式给出，通常 这个工作浏览器自动帮我们完成。
 
 
+## HTTP请求
+
+```http
+请求行
+请求头1
+请求头2
+...
+请求空行
+请求正文
+```
+
+1. 请求行: `Method Request-URI HTTP-Version CRLF`
+- `Method`: 请求方法
+    - `Get`: 没有请求体
+    - `Post`
+- `Request-URI`: 统一资源标识符
+- `HTTP-Version`: 表示请求的HTTP协议版本 
+- `CRLF`: 回车和换行
+
+2. 请求头: 请求报头允许客户端向服务器端传递请求的附加信息以及客户端自身的信息
+
+3. 请求正文
 
 
+### 请求方法
+
+在浏览网页的时候，经常需要向服务器提交信息，并让后台程序处理。浏览器中使用 GET 和 POST 方法向服务器提交数据。
+
+1. `GET`方法
+
+GET方法将请求的编码信息添加在网址后面，网址与编码信息通过"?"号分隔。如下所示：
+```
+http://www.runoob.com/hello?key1=value1&key2=value2
+```
+- GET方法是浏览器默认传递参数的方法，一些敏感信息，如密码等建议不使用GET方法。
+- 用get时，传输数据的大小有限制 （注意不是参数的个数有限制），最大为1024字节。
 
 
+2. `POST`方法
+
+一些敏感信息，如密码等我们可以通过POST方法传递，POST提交数据是隐式的。
+
+不同于GET，POST提交数据是不可见的
+
+JSP使用getParameter()来获得传递的参数，getInputStream()方法用来处理客户端的二进制数据流的请求。
 
 
+## HTTP响应
 
 
+```http
+状态行
+响应头1
+响应头2
+...
+响应空行
+响应正文
+```
 
+1. 状态行
 
+2. 响应头: 响应报头允许服务器传递不能放在状态行中的附加响应信息
+- Location：Location响应报头域用于重定向接受者到一个新的位置
+- Refresh：自动跳转（单位是秒）
 
-
+3. 响应正文
 
 

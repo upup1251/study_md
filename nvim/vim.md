@@ -248,5 +248,5 @@ q (while recording)    停止记录
 - 内部命令：`:w !cmd`：将缓冲区内容输入给该命令cmd
 - 执行外部命令：`! cmd`：执行命令cmd
 
-![](assets/vim-command.png)
+![vi/vim键位图](assets/vim-command.png)
 

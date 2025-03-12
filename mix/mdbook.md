@@ -146,6 +146,10 @@ Add it as a preprocessor to your book.toml
 command = "mdbook-toc"  
 renderer = ["html"]
 marker = "[toc]"  # 目录占位符
+
+[preprocessor.katex]
+
 ```
+
 
 

@@ -1,0 +1,1451 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>I/O系统 - Computer composition principles and assembly</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Computer composition principles and assembly</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css">
+<p>第七章、IO系统</p>
+<ul>
+<li><a href="#%E6%A6%82%E8%BF%B0">概述</a>
+<ul>
+<li><a href="#%E4%B8%BB%E6%9C%BA%E4%B8%8E%E5%A4%96%E5%9B%B4%E8%AE%BE%E5%A4%87%E9%97%B4%E7%9A%84%E8%BF%9E%E6%8E%A5%E6%96%B9%E5%BC%8F">主机与外围设备间的连接方式</a></li>
+<li><a href="#io%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%8A%9F%E8%83%BD%E4%B8%8E%E5%88%86%E7%B1%BB">I/O接口的功能与分类</a></li>
+<li><a href="#%E6%8E%A5%E5%8F%A3%E7%9A%84%E7%BC%96%E5%9D%80%E5%92%8Cio%E6%8C%87%E4%BB%A4">接口的编址和I/O指令</a>
+<ul>
+<li><a href="#io%E6%8E%A5%E5%8F%A3%E7%BC%96%E7%BB%87">I/O接口编织</a></li>
+<li><a href="#io%E5%91%BD%E4%BB%A4">I/O命令</a></li>
+<li><a href="#%E9%80%9A%E9%81%93%E6%8C%87%E4%BB%A4">通道指令</a></li>
+<li><a href="#iop%E6%8C%87%E4%BB%A4">IOP指令</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%9B%B4%E6%8E%A5%E7%A8%8B%E5%BA%8F%E6%8E%A7%E5%88%B6%E6%96%B9%E5%BC%8F">直接程序控制方式</a>
+<ul>
+<li><a href="#%E7%AB%8B%E5%8D%B3%E7%A8%8B%E5%BA%8F%E4%BC%A0%E9%80%81%E6%96%B9%E5%BC%8F">立即程序传送方式</a></li>
+<li><a href="#%E7%A8%8B%E5%BA%8F%E6%9F%A5%E8%AF%A2%E6%96%B9%E5%BC%8F">程序查询方式</a></li>
+</ul>
+</li>
+<li><a href="#%E7%A8%8B%E5%BA%8F%E4%B8%AD%E6%96%AD%E6%96%B9%E5%BC%8F">程序中断方式</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5">基本概念</a>
+<ul>
+<li><a href="#%E4%B8%AD%E6%96%AD%E6%96%B9%E5%BC%8F%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8">中断方式及其应用</a></li>
+<li><a href="#%E4%B8%AD%E6%96%AD%E6%BA%90">中断源</a></li>
+<li><a href="#%E4%B8%AD%E6%96%AD%E5%90%91%E9%87%8F">中断向量</a></li>
+</ul>
+</li>
+<li><a href="#%E4%B8%AD%E6%96%AD%E7%9A%84%E8%BF%87%E7%A8%8B">中断的过程</a></li>
+<li><a href="#%E4%B8%AD%E6%96%AD%E6%8E%A5%E5%8F%A3%E6%A8%A1%E5%9E%8B">中断接口模型</a></li>
+<li><a href="#%E4%B8%AD%E6%96%AD%E8%AF%B7%E6%B1%82%E4%BC%98%E5%85%88%E7%BA%A7">中断请求优先级</a>
+<ul>
+<li><a href="#%E5%B9%B6%E8%A1%8C%E4%BC%98%E5%85%88%E7%BA%A7%E6%8E%92%E9%98%9F">并行优先级排队</a></li>
+<li><a href="#%E4%B8%B2%E8%A1%8C%E4%BC%98%E5%85%88%E7%BA%A7%E6%8E%92%E9%98%9F">串行优先级排队</a></li>
+<li><a href="#%E5%A4%9A%E9%87%8D%E4%B8%AD%E6%96%AD">多重中断</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#dma%E6%96%B9%E5%BC%8F">DMA方式</a>
+<ul>
+<li><a href="#%E6%A6%82%E5%BF%B5">概念</a></li>
+<li><a href="#dma%E8%BF%87%E7%A8%8B">DMA过程</a>
+<ul>
+<li><a href="#%E5%88%9D%E5%A7%8B%E5%8C%96">初始化</a></li>
+<li><a href="#dma%E8%AF%B7%E6%B1%82">DMA请求</a></li>
+<li><a href="#dma%E5%93%8D%E5%BA%94">DMA响应</a></li>
+<li><a href="#dma%E4%BC%A0%E9%80%81">DMA传送</a></li>
+<li><a href="#%E7%BB%93%E6%9D%9F%E5%A4%84%E7%90%86">结束处理</a></li>
+</ul>
+</li>
+<li><a href="#dma%E6%8E%A5%E5%8F%A3%E7%BB%84%E6%88%90">DMA接口组成</a>
+<ul>
+<li><a href="#%E6%A6%82%E5%BF%B5%E6%A8%A1%E5%9E%8B">概念模型</a></li>
+<li><a href="#%E5%8D%95%E5%AD%97%E4%BC%A0%E9%80%81%E5%92%8C%E6%88%90%E7%BB%84%E4%BC%A0%E9%80%81">单字传送和成组传送</a></li>
+<li><a href="#%E5%A4%9A%E4%B8%AAdma%E6%8E%A7%E5%88%B6%E5%99%A8%E7%9A%84%E8%BF%9E%E6%8E%A5">多个DMA控制器的连接</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%80%9A%E9%81%93%E4%B8%8Eiop">通道与IOP</a>
+<ul>
+<li><a href="#%E9%80%9A%E9%81%93">通道</a></li>
+<li><a href="#iop%E4%B8%8E%E5%A4%96%E5%9B%B4%E5%A4%84%E7%90%86%E6%9C%BA">IOP与外围处理机</a>
+<ul>
+<li><a href="#%E6%9C%AC%E5%9C%B0%E6%96%B9%E5%BC%8Flocal">本地方式(LOCAL)</a></li>
+<li><a href="#%E8%BF%9C%E7%A8%8B%E6%96%B9%E5%BC%8Fremote">远程方式(REMOTE)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BA%BF">总线</a>
+<ul>
+<li><a href="#%E4%BB%8B%E7%BB%8D">介绍</a>
+<ul>
+<li><a href="#%E5%8A%9F%E8%83%BD%E5%92%8C%E5%AE%9A%E4%B9%89">功能和定义</a></li>
+<li><a href="#%E7%BB%84%E6%88%90">组成</a></li>
+<li><a href="#%E5%88%86%E7%B1%BB">分类</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BA%BF%E6%93%8D%E4%BD%9C%E6%97%B6%E5%BA%8F">总线操作时序</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="概述"><a class="header" href="#概述">概述</a></h1>
+<p>如前所述，我们可将计算机系统划分为</p>
+<ul>
+<li>CPU子系统</li>
+<li>存储子系统</li>
+<li>输入/输出子系统（简称I/O系统）三大部分</li>
+</ul>
+<p>其中输入/输出子系统的输入/输出就是外部设备与CPU或主存系统之间信息交换的过程</p>
+<p>为了实现数据的传输，通常的做法：</p>
+<ul>
+<li>以总线作为传送信息的枢纽</li>
+<li>并在主机与I/O设备之间设置输入/输出接口(简称I/O接口)</li>
+</ul>
+<p>本章将着重讨论I/O接口的几种控制方式：</p>
+<ul>
+<li>直接程序控制方式</li>
+<li>中断方式及DMA方式<br />
+还包括它们的基本结构、工作过程和程序设计方法等内容</li>
+</ul>
+<p>在这一章中，我们还要讨论I/O接口与主机的连接方式，重点介绍最常用的方式，即总线连接方式，包括</p>
+<ul>
+<li>总线的组成</li>
+<li>控制和操作方式</li>
+</ul>
+<p>最后，将简介几种最常用的I/O设备：键盘、鼠标器、打印机和液晶显示器，并以键盘为例阐述其驱动程序的设计。</p>
+<h2 id="主机与外围设备间的连接方式"><a class="header" href="#主机与外围设备间的连接方式">主机与外围设备间的连接方式</a></h2>
+<ol>
+<li>总线连接方式</li>
+</ol>
+<p>总线连接方式：CPU通过系统总线与存储器和各种I/O设备相连</p>
+<p><img src="assets/2024-12-18-15-12-22.png" alt="总线连接方式图解" /></p>
+<p>系统总线一半包括三组：</p>
+<ul>
+<li>地址总线</li>
+<li>数据总线</li>
+<li>控制总线，控制总线上的控制信号一般包括
+<ul>
+<li>同步时序信号或应答信号</li>
+<li>数据传送控制信号（如地址有效、读写控制、M/IO选择）</li>
+<li>中断请求及批准信号</li>
+<li>DMA请求及批准信号等。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>双总线连接方式</li>
+</ol>
+<p>为了提高信息传送率，有些系统中设置多组总线:</p>
+<ul>
+<li>其中一条高速的局部总线用来连接存储器和高速I/O设备</li>
+<li>另一条常规系统总线用来连接相对较慢的I/O设备<br />
+目前微机中的PCI总线体系与此类似。</li>
+</ul>
+<p><img src="assets/2024-12-18-15-14-35.png" alt="双总线方式示意图" /></p>
+<ol start="3">
+<li>局部总线连接方式</li>
+</ol>
+<p>还有些系统</p>
+<ul>
+<li>除了有功能完善的系统总线与局部总线之外</li>
+<li>还提供多条局部I/O总线。这种局部I/O总线一般是专用的，信号比较简单。</li>
+</ul>
+<p><img src="assets/2024-12-18-15-15-54.png" alt="Pentium系列CPU系统总线结构(带局部总线)" /></p>
+<p>总线连接方式具有结构简单、标准化、易于扩展等优点，对传输速度的限制则可通过增设局部总线或设置多组总线方法来解决。</p>
+<h2 id="io接口的功能与分类"><a class="header" href="#io接口的功能与分类">I/O接口的功能与分类</a></h2>
+<p>从广义上讲，接口是指两个相对独立子系统之间的相连部分，本章主要讨论主机与I/O设备之间的硬件接口，即I/O接口。</p>
+<ol>
+<li>I/O接口的定义</li>
+</ol>
+<p><img src="assets/2024-12-18-15-19-41.png" alt="主机、I/O接口、I/O设备的关系" /></p>
+<p>由于主机与各种I/O设备的相对独立性（即CPU和各种I/O设备在信息格式、信号电平、工作速度、时序上的差异），它们一般是无法直接相连的，而必须经过一个“转换”机构---I/O接口电路，简称I/O接口</p>
+<p>在具体的机器中，常将I/O接口设计成独立的电路板插入主机，一般称为I/O接口卡或I/O适配卡</p>
+<p>一般而言，我们把直接针对设备具体工作过程进行控制的那部分功能电路，称为该设备的“设备控制器”</p>
+<ol start="2">
+<li>I/O接口的功能</li>
+</ol>
+<p>I/O接口并非仅仅完成物理上的连接，一般讲它应具有下述主要功能：</p>
+<ul>
+<li>
+<p>寻址功能
+一台计算机系统中包含多台I/O设备，相应地就有不止一个I/O 接口
+I/O接口电路通过地址译码产生的片选信号实现主机访问不同I/O接口
+一个包含多个寄存器的I/O接口需要占用多个地址码</p>
+</li>
+<li>
+<p>输入/输出功能
+即在主机与I/O设备间交换数据、控制命令及状态信息等</p>
+</li>
+<li>
+<p>支持主机采取程序查询、中断、DMA等访问方式
+一个I/O接口往往具有多种访问方式</p>
+</li>
+<li>
+<p>提供主机和I/O设备所需的缓冲、暂存和驱动能力，满足一定的负载要求和时序要求</p>
+<p>为了协调主机和I/O设备间的信息交换，接口往往需要进行缓存、暂存，并满足各自的时序要求
+I/O接口的一侧通常与系统总线相连接，由于总线上连有许多的电路，且有一定传输距离，从而要求接口必须能提供足够的驱动能力，并且接口自身的负荷也应限制在一定的水平上。在I/O设备方面也有类似的要求。</p>
+</li>
+<li>
+<p>进行数据类型、格式等方面的转换</p>
+<p>由于外设支持的数据格式与主机CPU的并行数据格式往往不同，I/O接口应</p>
+<ul>
+<li>具有把CPU输出的并行数据转换成所接外设可接收的格式</li>
+<li>把从外设输入的数据信息转换成CPU可以接收的并行数据</li>
+</ul>
+</li>
+<li>
+<p>联络功能
+I/O接口和CPU，或者I/O接口和外设完成一次数据传送后</p>
+<ul>
+<li>接口应以适当的信号（如就绪信号）的方式通知CPU或外设</li>
+<li>以准备进行下一次传送</li>
+</ul>
+</li>
+<li>
+<p>复位功能
+接口应能接收复位信号，使接口本身以及所连的外设进行重新启动</p>
+</li>
+<li>
+<p>可编程功能
+为了实现对接口的灵活控制，需要用软件来对接口进行设置和控制，所以一个接口应该具有可编程功能。</p>
+</li>
+<li>
+<p>错误检测功能</p>
+<p>在接口设计中，常常要考虑对错误的检测问题，需要对两类错误进行检测</p>
+<ul>
+<li>
+<p>一类是传输错误</p>
+<ul>
+<li>这是由于接口和设备之间的连线受噪声干扰而引起的</li>
+<li>接口对传输错误大都采用奇/偶校验或冗余校验来进行检测</li>
+</ul>
+</li>
+<li>
+<p>另一类是覆盖错误</p>
+<ul>
+<li>这是由于在输入时</li>
+<li>接口的输入缓冲寄存器中的数据在没有被CPU取走前，由于某种原因又被装上了新的数据</li>
+<li>或者在输出时，输出缓冲寄存器中的数据在被外设取走以前又被CPU写入了一个新数据，则原来的数据就被覆盖了</li>
+<li>对覆盖错误，接口采用设置相应的状态寄存器标志位来标记。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li>I/O接口的类型</li>
+</ol>
+<ul>
+<li>
+<p>按数据传送的格式可分为串行接口和并行接口</p>
+<ul>
+<li>并行接口
+<ul>
+<li>主机与I/O接口、接口与I/O设备间均以并行方式传送数据</li>
+<li>适宜于传输距离较近、传输速度较高的场合，其接口电路相对简单</li>
+</ul>
+</li>
+<li>串行接口:
+<ul>
+<li>接口与I/O设备间采用串行方式传送数据，而串行接口与主机间的数据传送一般仍为并行方式</li>
+<li>适于传输距离较远、速度相对较低的场合，其传输线路成本较低，而接口电路较前者复杂</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>按主机访问I/O设备的控制方式，可分为</p>
+<ul>
+<li>程序查询接口: CPU通过程序来查询接口的状态寄存器，并执行相应动作</li>
+<li>中断接口: 接口向主机提出中断请求，主机响应后执行中断处理程序</li>
+<li>DMA接口: 接口与主存间采用DMA方式进行数据交换，比一般的接口更为复杂，可为CPU分担管理I/O功能</li>
+<li>通道控制器: 通过执行通道程序控制I/O操作的控制器</li>
+<li>I/O处理机: 通道的进一步发展<br />
+事实上，一个实际的接口往往具有多种控制方式</li>
+</ul>
+</li>
+<li>
+<p>按时序控制方式可分为</p>
+<ul>
+<li>同步接口: 与同步总线相连的接口，其信息传送由统一的时序信号同步控制</li>
+<li>异步接口: 与异步总线相连的接口，其信息传送采用异步应答方式控制</li>
+</ul>
+</li>
+</ul>
+<p>还需指出一点，一个完整的I/O接口不仅</p>
+<ul>
+<li>包括一些硬件电路</li>
+<li>还可能包括相关的软件驱动程序模块。这些软件模块
+<ul>
+<li>有的放在接口上的ROM中</li>
+<li>有的放在主机系统板上的ROM中</li>
+<li>也有的放在磁盘上<br />
+当需要时才装入内存</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>在微机系统中的ROM中，这些软件称为基本输入/输出系统（BIOS）</p>
+</blockquote>
+<h2 id="接口的编址和io指令"><a class="header" href="#接口的编址和io指令">接口的编址和I/O指令</a></h2>
+<h3 id="io接口编织"><a class="header" href="#io接口编织">I/O接口编织</a></h3>
+<ol>
+<li>与存储器统一编址</li>
+</ol>
+<p>将I/O接口中寄存器级部件看作存储器单元，与主存储器单元统一编址，给接口中各寄存器分配一些总线地址。这样，对I/O接口的访问就如同对主存单元的访问一样</p>
+<p>这种编址方法的优点是</p>
+<ul>
+<li>操作方式灵活</li>
+<li>不一定使用专门的I/O指令，使用通用的MOV指令或访存指令也可访问I/O接口</li>
+</ul>
+<p>其缺点是需占用小部分存储地址</p>
+<ol start="2">
+<li>I/O端口单独编织</li>
+</ol>
+<p>设置单独的I/O地址空间，为I/O接口中的寄存器级部件分配I/O端口地址，使用专门的I/O指令去访问</p>
+<p>一般来说，I/O地址线与存储器地址线公用，即分时共享地址总线，并设置专门的信号线来区分当前是存储器访问周期还是I/O访问周期</p>
+<ul>
+<li>如果是存储器访问周期，则地址总线送出存储器地址</li>
+<li>如果是I/O访问周期，则地址总线（通常是低位段）送出I/O端口地址</li>
+</ul>
+<p>采用I/O端口单独编址方式的优点是不占用存储地址；缺点是需使用专门的I/O指令，其寻址方式较简单，所以编程灵活性稍差。</p>
+<h3 id="io命令"><a class="header" href="#io命令">I/O命令</a></h3>
+<p>不同的CPU，其I/O指令的格式与功能差异较大，主要体现在寻址方式方面</p>
+<p>Intel 80x86 CPU采用I/O端口单独寻址方式寻址外设，其中所用到的专用指令只有两个：IN和OUT。这两个指令的</p>
+<ul>
+<li>目标寄存器（对IN指令）和源寄存器（对OUT指令）必须是AL（8位端口）、AX（16位端口）或EAX（32位端口）</li>
+<li>对端口地址在8位以下（即端口地址&lt;FFH）的，可以使用直接寻址方式寻址外设</li>
+<li>对端口地址是16位的，要用DX进行间接寻址，16位端口地址方式下可寻址216=64K个端口地址。</li>
+</ul>
+<h3 id="通道指令"><a class="header" href="#通道指令">通道指令</a></h3>
+<p>前面所说的I/O指令是CPU用来直接访问I/O端口的，而在具有通道的计算机系统中，用于I/O方面的指令格式一般包括</p>
+<ul>
+<li>操作码</li>
+<li>数据传输内存地址</li>
+<li>特征位</li>
+<li>计数器</li>
+</ul>
+<p>它包括两个层次：</p>
+<ol>
+<li>供主CPU执行的I/O指令</li>
+</ol>
+<p>用来访问通道。一般有</p>
+<ul>
+<li>通道启动</li>
+<li>通道道查询</li>
+<li>以及其他一些对通道进行特定操作的控制命令</li>
+</ul>
+<ol start="2">
+<li>供通道执行的通道指令</li>
+</ol>
+<p>用来编写通道程序，在主CPU启动指令通道后，由通道执行通道程序执行以实现I/O操作。在通道指令中，除了</p>
+<ul>
+<li>与CPU的I/O指令类似的输入、输出指令外</li>
+<li>还包括一些与设备特性有关的控制命令<br />
+与CPU指令相比，通道指令格式简单，功能专一，有很强的面向I/O设备的特征</li>
+</ul>
+<h3 id="iop指令"><a class="header" href="#iop指令">IOP指令</a></h3>
+<p>IOP</p>
+<ul>
+<li>在硬、软两方面都非常接近于普通的CPU</li>
+<li>但它是专用于I/O控制的处理器，因而在硬、软两方面增加了许多面向I/O的功能</li>
+<li>与通道相比，它的功能更强、更通用，一般不在指令级直接反映I/O设备的特征</li>
+</ul>
+<p>采用IOP后，有关I/O指令也分成两级：</p>
+<ul>
+<li>CPU执行与IOP联络的I/O指令</li>
+<li>IOP执行自身的IOP指令，具体控制I/O操作</li>
+</ul>
+<h1 id="直接程序控制方式"><a class="header" href="#直接程序控制方式">直接程序控制方式</a></h1>
+<p>直接程序控制方式的主要特点是：</p>
+<ul>
+<li>CPU直接通过I/O指令对I/O接口进行访问</li>
+<li>主机与外设交换信息的每一过程均在程序中表示出来</li>
+</ul>
+<h2 id="立即程序传送方式"><a class="header" href="#立即程序传送方式">立即程序传送方式</a></h2>
+<p>I/O接口</p>
+<ul>
+<li>总是准备好接收主机输出数据</li>
+<li>或总是准备好输入主机的数据</li>
+</ul>
+<p>因而CPU无需询问接口的状态，就可以直接利用I/O指令访问相应的I/O端口，输入或输出数据</p>
+<p>这种方式的局限性很大，它只有在无需了解外设的实时状态时才能有效地工作</p>
+<p><img src="assets/2024-12-18-16-07-49.png" alt="立即程序传送方式接口原理" /></p>
+<h2 id="程序查询方式"><a class="header" href="#程序查询方式">程序查询方式</a></h2>
+<p>许多外设的工作状态是很难事先预知的，这就要求CPU在程序中进行查询</p>
+<ul>
+<li>如果接口尚未准备好，CPU就等待</li>
+<li>如果已做好准备，CPU才能执行I/O指令<br />
+这就是程序查询方式</li>
+</ul>
+<p>首先</p>
+<ul>
+<li>在I/O接口中要设置状态位以表示外设的工作状态，可由CPU用输入指令读取
+<ul>
+<li>有些设备的状态信息较多，可组成一个或多个状态字，占用一个或多个I/O端口地址</li>
+</ul>
+</li>
+</ul>
+<p><img src="assets/2024-12-18-16-09-01.png" alt="程序查询方式模型" /></p>
+<p>在相应的I/O程序中必须进行下列3步操作：</p>
+<ul>
+<li>读取外设状态信息</li>
+<li>判断是否可进行新的操作
+<ul>
+<li>如果设备尚未准备好，则返回第1步</li>
+<li>若已准备好，就进行下一步。</li>
+</ul>
+</li>
+<li>执行所需的I/O操作</li>
+</ul>
+<h1 id="程序中断方式"><a class="header" href="#程序中断方式">程序中断方式</a></h1>
+<p>在程序查询方式中，CPU的利用率不高，这是因为CPU会对外设执行大量无效的查询，长期处于等待状态</p>
+<p>为此，在现代计算机系统中广泛采用了中断控制方式</p>
+<h2 id="基本概念"><a class="header" href="#基本概念">基本概念</a></h2>
+<h3 id="中断方式及其应用"><a class="header" href="#中断方式及其应用">中断方式及其应用</a></h3>
+<p>在接到随机请求后</p>
+<ul>
+<li>CPU响应该申请，暂停执行原来的程序
+<ul>
+<li>保存程序的当前位置（断点）</li>
+<li>保存被中断程序的寄存器内容</li>
+</ul>
+</li>
+<li>转去执行中断处理程序，为响应的随机事件服务</li>
+<li>处理完毕后CPU恢复原程序的继续执行
+<ul>
+<li>先恢复被保存的主程序的寄存器内容</li>
+<li>然后回到主程序的中断处</li>
+<li>继续执行原程序
+这种控制方式称为“程序中断控制方式”，简称为中断</li>
+</ul>
+</li>
+</ul>
+<p><img src="assets/2024-12-18-16-16-25.png" alt="生活中的中断" /></p>
+<p>中断有两个重要的特征：</p>
+<ul>
+<li>程序切换（控制权的转移）</li>
+<li>随机性（所谓随机性是相对于具体发生时刻而言的）</li>
+</ul>
+<p>中断过程的程序转移类似于子程序调用，但它们在实质上存在重大区别</p>
+<ul>
+<li>子程序调用是由主程序安排在特定位置上的，通常是完成主程序要求的功能</li>
+<li>而中断发生在随机的时刻，可以从主程序的任一位置进行程序切换，而且中断处理程序的功能往往与被打断的主程序没有直接关联</li>
+</ul>
+<p>中断方式不仅用于I/O设备的管理控制，还广泛地应用于各种带随机性质的事件处理上</p>
+<h3 id="中断源"><a class="header" href="#中断源">中断源</a></h3>
+<p>引起中断的原因或来源称为中断源</p>
+<ul>
+<li>内部中断(源): 中断原因来自CPU内部
+<ul>
+<li>软中断: 一类较特殊的内部中断源</li>
+</ul>
+<blockquote>
+<p>例如：除法出错、溢出，单步中断标志位，中断指令(INT n)等</p>
+</blockquote>
+</li>
+<li>外部中断(源): 中断原因赖在CPU外部</li>
+</ul>
+<ol>
+<li>非屏蔽中断和可屏蔽中断</li>
+</ol>
+<p>在CPU内部往往有一个“中断允许标志位”IF，相应地将中断源分为两类：</p>
+<ul>
+<li>非屏蔽中断: 不受IF控制 ，只要有非屏蔽中断产生，CPU可立即响应</li>
+<li>可屏蔽中断: 中断源受IF控制
+<ul>
+<li>IF=1，开中断状态，即CPU允许中断，若有可屏蔽中断产生，则CPU能够响应</li>
+<li>IF=0，关中断状态，对于可屏蔽中断请求CPU不响应</li>
+</ul>
+<blockquote>
+<p>对IF的设置分为显式（使用专门的开/关中断命令）和隐式设置两种方式</p>
+</blockquote>
+</li>
+</ul>
+<p>中断屏蔽保证CPU在执行一些重要程序段时不被打断，该特性称为操作的“原子性”，在执行操作系统的原语时就要求如此</p>
+<h3 id="中断向量"><a class="header" href="#中断向量">中断向量</a></h3>
+<p>一个系统往往具有多个中断源，每个中断源所需的中断处理程序各不相同，它们在主存中的位置也不一定连续，该存储位置称为中断处理程序的入口地址</p>
+<p>中断处理程序入口地址称为中断向量</p>
+<ol>
+<li>查询法</li>
+</ol>
+<p>CPU响应中断后</p>
+<ul>
+<li>转向某个固定的入口地址，执行公共服务程序（查询程序）</li>
+<li>依次查询各个中断源的中断请求标志“IRF”</li>
+<li>若遇到某个中断源的IRF=1，就转入该中断源的处理程序入口</li>
+</ul>
+<p><img src="assets/2024-12-19-14-37-04.png" alt="查询中断源程序框图" /></p>
+<p>软件查询法</p>
+<ul>
+<li>只需在中断接口中设置IRF标志，硬件要求最低</li>
+<li>实现最简单，易于动态改变各中断源的优先级（即改变查询顺序）</li>
+<li>但在执行查询程序时，如果中断源优先级低则响应速度较慢</li>
+</ul>
+<p>因此这种方法</p>
+<ul>
+<li>适用于低速、中断源较少的场合</li>
+<li>或作为一种辅助手段</li>
+</ul>
+<p>软件查询法又称为非向量中断法。</p>
+<ol start="2">
+<li>单独请求线编码法</li>
+</ol>
+<p>每个中断源有自己的中断请求信号线，在CPU内采用某种优先编码逻辑形成它们各自的入口地址</p>
+<p>这种方法</p>
+<ul>
+<li>响应速度快</li>
+<li>但连线多，硬件代价高</li>
+<li>而且不易于扩展</li>
+</ul>
+<p>仅适于中断源极少且固定的场合，如某些单片机中的集成I/O口中断请求。</p>
+<ol start="3">
+<li>向量中断法</li>
+</ol>
+<p>中断源</p>
+<ul>
+<li>通过有关控制逻辑给出一个相应的向量码</li>
+<li>CPU据此通过一系列变换得到中断处理程序的入口地址，无需软件查询</li>
+</ul>
+<p>早期的一些简单系统中，采用一级向量方式，即直接由中断源产生中断向量，但由于缺乏灵活性，对中断源的向量产生机构要求较高，现已较少采用</p>
+<p>现在常用的是二级向量或多级向量方式</p>
+<ul>
+<li>中断源向CPU提供一个中断类型码，可视为第一级向量编码</li>
+<li>其中内中断占用固定的类型码</li>
+<li>还有一部分是留待系统扩展时用的保留部分</li>
+<li>其余是用户可自由使用的类型码</li>
+</ul>
+<p><img src="assets/2024-12-19-14-41-17.png" alt="8086中断类型码分配表" /></p>
+<p>将各个中断处理程序的入口地址组织成一个中断向量表</p>
+<ul>
+<li>存放在地址0～3FFH区间</li>
+<li>每个中断源的处理程序入口地址在向量表中占4字节单元
+<ul>
+<li>其中2字节为偏移量IP</li>
+<li>2字节为段基值CS</li>
+</ul>
+</li>
+<li>设中断源提供的类型码为N ，则入口地址为
+<span class="katex-display"><span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">P</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.05764em;">CS</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8778em;vertical-align:-0.1944em;"></span><span class="mord">2</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord">4</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">3</span><span class="mclose">)</span></span></span></span></span></li>
+</ul>
+<blockquote>
+<p>在实际系统中，常将几种方法综合使用，此时称为综合法</p>
+</blockquote>
+<h2 id="中断的过程"><a class="header" href="#中断的过程">中断的过程</a></h2>
+<p>中断的过程一般可划分为几个阶段</p>
+<ul>
+<li>中断请求</li>
+<li>中断排优</li>
+<li>中断响应</li>
+<li>中断处理</li>
+<li>中断返回</li>
+</ul>
+<p>现以8086 CPU的向量中断为例介绍中断的过程</p>
+<ol>
+<li>中断请求</li>
+</ol>
+<p>如前所述，各种中断源提出中断请求的原因各不相同。有些是完全随机产生的；有些是程序有意安排的，它们通过各自的路径送往CPU，而内中断请求则通过内部逻辑电路提出。</p>
+<ol start="2">
+<li>中断排忧</li>
+</ol>
+<p>如果有几个请求同时提出，优先排队的一般原则是：</p>
+<ul>
+<li>由故障引起的中断优先于由I/O操作需要引起的中断</li>
+<li>非屏蔽中断优先于可屏蔽中断</li>
+<li>高速事件中断优先于低速事件中断</li>
+<li>输入信息所需的中断优先于输出信息所需的中断</li>
+</ul>
+<p>排优逻辑的实现方法将在后面介绍</p>
+<ol start="3">
+<li>中断响应</li>
+</ol>
+<ul>
+<li>
+<p>CPU每执行完一条指令后，通过有关控制逻辑判别是否有中断请求</p>
+</li>
+<li>
+<p>进入中断响应周期</p>
+<ul>
+<li>如果有中断请求，而CPU刚执行的不是停机指令，且无优先级更高的DMA请求</li>
+<li>则CPU在执行完一条指令后可以响应中断请求</li>
+<li>于是CPU进入一个过渡周期(位于原程序与中断处理程序之间)，称为“中断响应周期”，简称INTA周期</li>
+<li>除INTR以外的其他中断请求均属于非屏蔽中断，一旦它们提出中断请求，CPU将立即响应并得到其类型码</li>
+<li>如果在INTR线上发生请求，CPU首先要根据其内部的“中断允许位”IF状态，判别是否响应</li>
+<li>若IF=1，则响应中断请求
+<ul>
+<li>一方面进入INTA周期</li>
+<li>另一方面向外发出应答信号INTA</li>
+<li>外部的中断控制器收到该信号后，将发出请求的中断源的类型码送到CPU数据总线上</li>
+<li>CPU在撤销INTA信号前取走中断类型码</li>
+</ul>
+</li>
+<li>CPU在响应周期中由硬件自动完成以下操作
+<ul>
+<li>首先是保护断点，将代码段寄存器CS和指令指针IP的内容依次压入堆栈，此外还将标志位寄存器FLAG内容压栈</li>
+<li>中断允许标志清零，即IF=0（又称为关中断）</li>
+<li>单步中断标志TF清零，即TF=0</li>
+<li>然后CPU通过中断类型码在中断向量表中获得向量地址，读出中断服务程序入口地址，分别送入CS和IP寄存器</li>
+<li>转入取指周期，CPU开始执行中断处理程序。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="assets/2024-12-19-15-16-50.png" alt="8086 CPU中断响应时序" /></p>
+<ol start="4">
+<li>中断处理</li>
+</ol>
+<p>中断处理程序一般采用三段式结构：</p>
+<ul>
+<li>开头是保护现场: 将中断处理程序需要使用的CPU寄存器内容压栈保存</li>
+<li>中间是实质性中断处理: 功能因中断源的不同而不同</li>
+<li>结尾是恢复现场</li>
+</ul>
+<ol start="5">
+<li>中断返回</li>
+</ol>
+<p>在返回主程序前需要先恢复现场，即</p>
+<ul>
+<li>将保存现场时压入堆栈的寄存器内容从堆栈中弹出，送回原寄存器</li>
+<li>然后使用中断返回指令IRET，以恢复断点，返回被中断的主程序，继续执行</li>
+</ul>
+<p>在8086 CPU中，IRET完成下列功能</p>
+<ul>
+<li>IP出栈</li>
+<li>CS出栈</li>
+<li>FLAG出栈</li>
+</ul>
+<blockquote>
+<p>其弹出顺序正好与中断响应时压栈的顺序相反，即先进后出</p>
+</blockquote>
+<p>与普通RET指令相比，它仅仅多了一个FLAG出栈操作</p>
+<p>软中断形式实现的系统调用中</p>
+<ul>
+<li>常利用FLAG寄存器中的某些位来返回状态信息</li>
+<li>这可以通过修改堆栈中FLAG内容来实现，也可采用其他手段</li>
+<li>不采用IRET指令返回</li>
+</ul>
+<p>注意，此时软中断调用已失去一般中断“随机插入”的意义，仅相当于普通子程序调用，只是借用了软中断这一形式而已</p>
+<p>借用软中断形式实现功能调用，其优点是形式简单，不必知道程序的入口地址，因而当具体功能子程序发生变动后，主程序无需修改</p>
+<p>如果采用非向量中断形式，如查询式中断系统，中断响应和处理过程与向量中断方式稍有不同。在响应过程中，没有进行读取中断类型码以及查向量表这些操作，而是软件查询中断源，以得到具体处理程序的入口地址。</p>
+<p><img src="assets/2024-12-19-15-21-24.png" alt="中断响应和处理过程粗略图" /></p>
+<h2 id="中断接口模型"><a class="header" href="#中断接口模型">中断接口模型</a></h2>
+<p>中断接口</p>
+<ul>
+<li>一侧面向通用而标准化的系统总线</li>
+<li>另一侧面向各具特色的I/O设备</li>
+</ul>
+<ol>
+<li>查询式中断接口模型</li>
+</ol>
+<p>将程序查询接口模型的“状态字”中的状态位信号通过驱动器接到公共的中断请求线INT上即可</p>
+<p>当CPU响应中断请求时，可通过软件逐个查询接口的状态位，以确定中断源。</p>
+<ol start="3">
+<li>向量式中断接口模型</li>
+</ol>
+<p>当设备需要提出中断请求时</p>
+<ul>
+<li>其状态信息经过一定的逻辑综合，形成中断请求信号INTRQ</li>
+<li>该信号经过中断控制逻辑送入公共请求线INTR<br />
+CPU响应中断请求后</li>
+<li>发出中断应答信号INTA给中断控制逻辑</li>
+<li>然后，中断控制逻辑向量寄存器VR的内容通过缓冲器送入CPU数据总线</li>
+<li>CPU据此访问中断向量表，读出中断处理程序入口地址</li>
+<li>从而转向中断服务</li>
+</ul>
+<p>向量寄存器VR的内容可以是</p>
+<ul>
+<li>中断向量</li>
+<li>或是其他向量编码，如中断类型码</li>
+</ul>
+<p>这些内容可由主程序在进行中断接口初始化时写入。在某些早期的系统中，VR内容则由硬件逻辑产生，且固定不变。</p>
+<h2 id="中断请求优先级"><a class="header" href="#中断请求优先级">中断请求优先级</a></h2>
+<p>中断控制逻辑中一般采用优先排队逻辑</p>
+<h3 id="并行优先级排队"><a class="header" href="#并行优先级排队">并行优先级排队</a></h3>
+<p>中断请求信号并行输入</p>
+<p><img src="assets/2024-12-19-15-52-01.png" alt="并行中断排队逻辑" /></p>
+<ul>
+<li>当INTRi = 1时</li>
+<li>不论INTR(i+1)～INTR(i+n)为何值，74LS148的输出为i ，即按优先级高的决定输出值</li>
+<li>当INTA=1时，74LS138被选通，输出INTAi=0，以此打开对应的向量寄存器VRi</li>
+</ul>
+<p>并行优先排队的</p>
+<ul>
+<li>优点是响应速度很快，能满足高速CPU要求</li>
+<li>但扩展性稍差，在设计时须先考虑到最大的中断请求数目。</li>
+</ul>
+<h3 id="串行优先级排队"><a class="header" href="#串行优先级排队">串行优先级排队</a></h3>
+<ol>
+<li>介绍</li>
+</ol>
+<p>下图优先顺序为0→n</p>
+<ul>
+<li>第0级的排队输入信号INTI固定为1</li>
+<li>当INTR0=1时，0号门输出为0
+<ul>
+<li>一方面依次传递到CPU，使<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8833em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.00773em;">NTR</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span></span></span></span>=0，向CPU提出中断请求</li>
+<li>同时还依次封锁所有各级</li>
+</ul>
+</li>
+<li>当CPU发出应答信号INTA时
+<ul>
+<li>仅有优先级最高的输出<span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8833em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8833em;"><span style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.07847em;">I</span><span class="mord mathnormal" style="margin-right:0.13889em;">NT</span><span class="mord mathnormal">A</span><span class="mord">0</span></span></span><span style="top:-3.8033em;"><span class="pstrut" style="height:3em;"></span><span class="overline-line" style="border-bottom-width:0.04em;"></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">0</span></span></span></span>，输出有效</li>
+<li>而其他低级别即使也有INTRi请求，但应答信号INTAi 将被封锁而不能发出</li>
+</ul>
+</li>
+<li>若INTR0～INTR（i −1）无请求而INTRi 有请求</li>
+<li>则CPU发出应答信号INTA时，INTAi 有效</li>
+<li>比第i 级优先的各级，因未请求而INTR0～INTR（i −1）无效</li>
+<li>比第i 级优先级低的各级，因排队链上相应的门被封锁，所以INTA（i +1）～INTAn 无效。</li>
+</ul>
+<p><img src="assets/2024-12-20-09-36-05.png" alt="串行中断排队示意图" /></p>
+<ol start="2">
+<li>评价</li>
+</ol>
+<p>串行排队的优点是</p>
+<ul>
+<li>信号简单，易于扩展，因各级逻辑一致</li>
+<li>前级门的输出INTOi 就是后级门的输入INTI（i +1），可方便连接</li>
+</ul>
+<p>这种方式的缺点是</p>
+<ul>
+<li>当连接的级数很多时，由于时延增大使响应速度变慢</li>
+</ul>
+<p>串行排优和并行排优是优先级排队逻辑中的两种基本模式。当中断源数目很多时，也可以分组处理，如构成“组内并行、组间串行”、“组内并行、组间并行”等排队逻辑。</p>
+<h3 id="多重中断"><a class="header" href="#多重中断">多重中断</a></h3>
+<p>有时在同一时间会产生多个中断请求，有时正在处理一个中断时又发生了另一个中断请求</p>
+<p>如果在中断处理程序中允许再响应其他中断请求，就会出现多重中断嵌套</p>
+<p><img src="assets/2024-12-20-09-44-32.png" alt="中断嵌套和递归过程" /></p>
+<p>一般来说，当正在进行某个中断处理时</p>
+<ul>
+<li>与它同级或比它优先级低的中断请求不能被响应</li>
+<li>而比它优先级高的中断请求才可能被响应</li>
+</ul>
+<p>为实现中断嵌套，在中断处理程序中可以这样安排</p>
+<ul>
+<li>保护现场后，先做一些紧迫事件处理，如将接口中的数据取回主机</li>
+<li>然后开中断（使IF=1），允许响应其他中断</li>
+<li>若有其他优先级更高的请求发生，则保存原中断处理程序的断点和现场，转去处理新的请求</li>
+<li>若无其他优先级更高的请求，则继续执行处理程序，最后恢复现场、返回</li>
+</ul>
+<p>在许多中断系统中，都为每个中断请求设置了一个屏蔽字。在允许多重中断的方式中</p>
+<ul>
+<li>每当响应中断请求时，就在处理程序中先保存原屏蔽字，送出新的屏蔽字</li>
+<li>将与该请求同级的及优先级更低的请求屏蔽掉，并在中断处理程序结束时恢复原屏蔽字</li>
+</ul>
+<p>这样，在多重中断嵌套中，嵌入的只能是优先级更高的中断。还可由软件修改屏蔽字，暂时屏蔽某些请求，以便可以动态地修改各中断源的优先级</p>
+<p>总之，在中断优先顺序的控制上，有多种方法可用，也常采取软硬结合的策略</p>
+<h1 id="dma方式"><a class="header" href="#dma方式">DMA方式</a></h1>
+<p>如前所述，中断方式</p>
+<ul>
+<li>能提高CPU利用率，可处理随机性事件与实时性任务</li>
+<li>但一次中断处理过程一般只能传送一个字符
+<ul>
+<li>且需要经历保存现场、处理、恢复现场等阶段</li>
+<li>并需要执行若干条指令才能处理一次中断事件</li>
+</ul>
+</li>
+</ul>
+<p>所以对于高速的批量数据传输，程序中断方式就很难满足要求，又引入了“直接存储器传送”控制方式，简称DMA方式。</p>
+<h2 id="概念"><a class="header" href="#概念">概念</a></h2>
+<p>DMA方式是为在主存储器与I/O设备间进行高速批量数据交换而设置的</p>
+<p>它的基本思想是</p>
+<ul>
+<li>通过硬件控制实现主存与I/O设备间的直接数据传送</li>
+<li>在传送过程中无需CPU程序干预</li>
+</ul>
+<p>由于每次DMA传送的工作很简单，如从主存中读取一个字送到I/O口，或从I/O口读一个字送入主存，所以一次DMA传送过程是很快的，一般只占一个存储器读写周期。因此DMA方式适合于高速数据传送</p>
+<p>但是DMA方式主要是直接依靠硬件实现数据传送，它不执行程序，不能处理较复杂的事件。因此DMA方式并不能完全取代中断方式，如果某种事件处理已不只是单纯的数据传送时，还必须采用中断方式</p>
+<p>事实上，在以DMA方式传送一批数据后，往往采用中断方式通知CPU进行结束处理</p>
+<p>在不同的计算机系统中，DMA功能可能有所不同。最简单的系统仅能实现I/O口与主存之间的数据传送。较复杂的还可以实现I/O与I/O之间、主存单元与主存单元之间的数据传送，有的还能在传送时附加简单运算，如加1、减1、移位等</p>
+<p>典型的DMA方式是由DMA控制器进行控制的。在DMA控制电路中，一般需设置下列部件：</p>
+<ul>
+<li>数据源指针</li>
+<li>目的指针</li>
+<li>数据块计数器</li>
+<li>以及相应的控制逻辑</li>
+</ul>
+<p>如果DMA系统仅需完成I/O口与存储器之间的数据传送，则可以简化控制电路，只设置一个存储器指针，而对于I/O口的访问可通过单独的信号线实现</p>
+<p>在执行一次DMA传送时，CPU放弃对系统总线的控制，它对数据、地址、控制总线的输出端均呈高阻态，称为与总线脱钩。这时系统总线由DMA控制器进行控制（驱动），占用一个或几个CPU外部访问周期，完成一次DMA操作，这种方式又称为“周期窃取”方式。</p>
+<p>DMA的特点</p>
+<ul>
+<li>可在I/O设备与主存之间直接传送数据，以“周期窃取”方式暂停CPU对系统总线的控制，占用时间很少。</li>
+<li>传送时，源与目的均直接由硬件逻辑指定。</li>
+<li>主存中要开辟相应的数据缓冲区，指定数据块长，计数由硬件完成。</li>
+<li>在一批数据传送结束后，一般通过中断方式通知CPU进行后处理。</li>
+<li>CPU与I/O设备在一定程度上并行工作，效率很高。</li>
+<li>一般用于高速、批量数据的简单传送。</li>
+</ul>
+<p>在DMA控制器接管总线期间，CPU与总线脱钩因而不能访问主存。但是8086等CPU中采用了“指令预取”等缓冲技术，在80486、P5等CPU中更是采用了片内Cache技术，只要CPU内的指令预取队列或Cache中有可供执行的指令，它仍能继续工作，仅当需要进行外部访问时才会暂停，因而CPU工作与DMA传送间具有更高的并行度。鉴于DMA方式的特点，它一般用于主存与高速I/O设备之间的数据交换，例如与磁盘、磁带等设备的数据传送，以及高速通信口等。</p>
+<h2 id="dma过程"><a class="header" href="#dma过程">DMA过程</a></h2>
+<h3 id="初始化"><a class="header" href="#初始化">初始化</a></h3>
+<ol>
+<li>数据准备</li>
+</ol>
+<ul>
+<li>欲将主存中某数据块送往外围接口，则需先准备好数据</li>
+<li>欲从接口读数据块送入主存，则需在主存中设置相应的缓冲区。</li>
+</ul>
+<ol start="2">
+<li>初始化DMA接口的有关控制逻辑</li>
+</ol>
+<ul>
+<li>将主存缓冲区或数据块的首址送入“存储器指针</li>
+<li>将数据块长度送往“块长计数器”</li>
+<li>并送出有关命令字以确定传送方向等控制信息及I/O设备有关寻址信息等</li>
+</ul>
+<ol start="3">
+<li>结束准备</li>
+</ol>
+<ul>
+<li>由于在DMA传送结束后常以中断方式请求CPU进行后处理</li>
+<li>所以在DMA初始化阶段还应进行这方面的有关初始化工作。</li>
+</ul>
+<h3 id="dma请求"><a class="header" href="#dma请求">DMA请求</a></h3>
+<p>当接口已准备好输入数据可送入主存或已作好准备可从主存接收新的数据时（如接口中的缓冲存储器已空）</p>
+<ul>
+<li>接口通过有关逻辑向CPU发出DMA请求信号</li>
+<li>同中断信号一样，DMA请求也有单独请求、公共请求及排优等问题，我们将在后面章节讨论。</li>
+</ul>
+<h3 id="dma响应"><a class="header" href="#dma响应">DMA响应</a></h3>
+<p>CPU接到DMA请求，在当前总线周期操作结束后</p>
+<ul>
+<li>暂停CPU对系统总线的控制与使用</li>
+<li>发出DMA应答信号</li>
+<li>并将其对地址总线、数据总线、控制总线的输出端置成高阻态</li>
+<li>将总线控制权交给DMA控制器。</li>
+</ul>
+<h3 id="dma传送"><a class="header" href="#dma传送">DMA传送</a></h3>
+<p>DMA控制器接到应答信号后</p>
+<ul>
+<li>向I/O接口发出DMA请求的确认</li>
+<li>根据初始化布置的传送功能命令，发出相应的信号驱动总线</li>
+<li>将“地址指针”内容送上地址总线</li>
+<li>将存储器读/写与I/O读/写信号等送上控制总线，并与其他信号配合，完成一次总线传送
+<ul>
+<li>如一次主存单元与I/O接口寄存器间的数据传送。每次DMA传送后，“地址指针”拨动一次（加或减），块长 计数器减1</li>
+</ul>
+</li>
+<li>每完成一次DMA传送后，可以暂时清除DMA请求信号，接口再次具备传送条件时重新发出请求信号。如此重复进行，直至完成整个数据块的传送。</li>
+</ul>
+<h3 id="结束处理"><a class="header" href="#结束处理">结束处理</a></h3>
+<p>当数据块传送完毕后</p>
+<ul>
+<li>一般可由块长计数器的回零信号，或由接口产生中断请求，通知CPU进行后处理</li>
+<li>例如重新初始化，准备下一个数据块，或处理刚收到的数据块等。</li>
+</ul>
+<h2 id="dma接口组成"><a class="header" href="#dma接口组成">DMA接口组成</a></h2>
+<h3 id="概念模型"><a class="header" href="#概念模型">概念模型</a></h3>
+<p>在不同的系统中，DMA接口的功能和组织可能有所不同，主要涉及下述几个问题</p>
+<ul>
+<li>DMA控制逻辑与I/O接口是分离的，还是合并的</li>
+<li>DMA传送范围是局限于主存与I/O设备之间，还是更为广泛一些。</li>
+<li>DMA传送的数据是否需要经过DMA控制器。</li>
+<li>一个DMA控制器与多台设备之间的连接方式。</li>
+<li>多个DMA控制器的请求方式与判优方式。</li>
+</ul>
+<ol>
+<li>单通道合并型DMA接口</li>
+</ol>
+<p>DMA控制逻辑与I/O接口合并为一个整体，称为DMA接口</p>
+<ul>
+<li>一个DMA接口对应一台设备，称为单通道</li>
+<li>设备通过DMA接口与主存进行数据交换</li>
+</ul>
+<p><img src="assets/2024-12-20-10-24-38.png" alt="单通道合并型DMA接口模型图" /></p>
+<ul>
+<li>
+<p>地址寄存器/计数器
+主存缓冲区的地址指针</p>
+<ul>
+<li>初始化时由CPU程序设置，指向主存缓冲区首址</li>
+<li>每进行一次DMA传送后，指针拨动一次，加/减的增量取决于编址方法和每次传送的字长，一般可编程设定。</li>
+</ul>
+</li>
+<li>
+<p>块长计数器(交换量计数器)</p>
+<ul>
+<li>初始化时由CPU程序设置，装入数据块长度的初值</li>
+<li>每进行一次DMA传送后，计数器内容减1</li>
+<li>当数据块传送完毕，计数器回零并发出信号，可用来向CPU申请中断。</li>
+</ul>
+</li>
+<li>
+<p>控制字寄存器</p>
+<ul>
+<li>初始化时由CPU程序设置，决定将来的</li>
+<li>数据传送方向（主存→接口、 接口→主存）</li>
+<li>地址指针增量（如加1、减1、加2、减2等）</li>
+<li>以及DMA控制逻辑的有关工作方式等</li>
+</ul>
+</li>
+<li>
+<p>DMA控制与状态逻辑</p>
+<ul>
+<li>决定是否发出DMA请求</li>
+<li>参与各接口之间的排优</li>
+<li>获得响应后产生相应的时序信号以完成DMA传送</li>
+</ul>
+</li>
+<li>
+<p>数据缓冲寄存器</p>
+<p>提供传送数据的缓冲、锁存及总线的驱动能力。</p>
+</li>
+<li>
+<p>中断机构</p>
+<p>由于在数据块传送完毕后常以中断方式请求CPU进行后处理，所以DMA接口中常包含其他普通中断接口的功能。</p>
+</li>
+</ul>
+<ol start="2">
+<li>选择型DMA接口</li>
+</ol>
+<p>选择型DMA接口结构中</p>
+<ul>
+<li>DMA控制逻辑与I/O接口仍采取合并型结构</li>
+<li>但通过一个局部总线（I/O总线）连接多台I/O设备，使多个I/O设备可共享一个DMA控制器</li>
+</ul>
+<p>在工作的某一时段</p>
+<ul>
+<li>DMA接口只能选择其中的一台设备</li>
+<li>使它可通过I/O总线、接口与主存进行DMA传送</li>
+<li>在传送完一个数据块后才能重新设置，以选择另一台I/O设备</li>
+</ul>
+<p>在数据块传送过程中不允许切换设备，所以这种结构仅适于各设备分时工作的方式，而接口中的选择逻辑就像是一个切换开关。</p>
+<p><img src="assets/2024-12-20-11-43-14.png" alt="选择型DMA接口图示" /></p>
+<blockquote>
+<p>从逻辑组成看，选择型DMA接口可以看作是单通道型接口增加了I/O设备选择逻辑后，扩展而成</p>
+</blockquote>
+<ol start="3">
+<li>集中多路型DMA控制器</li>
+</ol>
+<p>如同集中型中断控制器一样</p>
+<ul>
+<li>我们可以将DMA控制逻辑中的公用部分从设备接口中分离出来</li>
+<li>利用集成电路技术将多个通道的DMA控制逻辑集成到一块芯片上，成为一种通用的集中多路型DMA控制器
+<ul>
+<li>DMA控制器部分与I/O设备的具体特性无关</li>
+<li>负责接受I/O设备提出的DMA请求</li>
+<li>然后向CPU申请控制系统总线</li>
+<li>以实现DMA传送</li>
+</ul>
+</li>
+</ul>
+<p>与I/O设备具体特性相关的部分留在I/O接口中，而与DMA有关的逻辑则尽可能地得到简化</p>
+<ul>
+<li>一般只负责向DMA控制器发出DMA请求</li>
+<li>以及在DMA控制器发回响应信号后进行数据传送</li>
+</ul>
+<p>由于采取DMA方式传送数据，这种I/O接口常被称为DMA接口</p>
+<p>数据可在I/O设备、接口、系统总线、主存之间直接传送，并不经过DMA控制器</p>
+<p>请注意</p>
+<ul>
+<li>在前述两种合并型结构模式中，DMA控制器与DMA接口是同一个实体</li>
+<li>在分离型结构模式中，DMA控制器是通用的、可公用的部分，而接口是针对某个具体设备的</li>
+</ul>
+<h3 id="单字传送和成组传送"><a class="header" href="#单字传送和成组传送">单字传送和成组传送</a></h3>
+<ol>
+<li>单字传送方式</li>
+</ol>
+<p>每次DMA请求得到响应后</p>
+<ul>
+<li>DMA控制器占用一个总线周期进行一次传送(按总线的数据通路宽度传送一个字)</li>
+<li>然后释放总线，将总线控制权交还给CPU，以进行新的一次总线控制权判别</li>
+</ul>
+<ol start="2">
+<li>成组传送</li>
+</ol>
+<p>每次DMA请求得到响应后</p>
+<ul>
+<li>DMA控制器连续占用多个总线周期，进行多次DMA传送</li>
+<li>直到一个数据块传送完毕，才将总线控制权交回给CPU</li>
+</ul>
+<p>在进行成组传送时</p>
+<ul>
+<li>由于CPU无法访问主存而可能暂停执行程序</li>
+<li>如果CPU具有指令Cache和数据Cache，而且当前所需执行的指令和数据都在Cache中，则CPU可以与DMA传送并行地工作</li>
+</ul>
+<p>在一般情况下，I/O设备的数据传输率比主存速度低，因此在DMA控制器连续占用总线期间，必然会有一些浪费，使系统的工作效率降低</p>
+<p>因此，实用的成组传送是这样工作的：</p>
+<ul>
+<li>当I/O设备需进行DMA传送时，就保持DMA请求信号，DMA控制器也就保持总线连续不断地进行DMA传送</li>
+<li>直到I/O设备暂不需传送时才撤销DMA请求，释放总线，允许CPU使用总线</li>
+</ul>
+<p>这样，DMA请求对于CPU来说具有更高的优先权，可以根据需要按成组传送方式或单字传送方式工作。这种方式也被称为请求方式。</p>
+<h3 id="多个dma控制器的连接"><a class="header" href="#多个dma控制器的连接">多个DMA控制器的连接</a></h3>
+<p>为了扩展通道数，稍具规模的系统往往需要多个DMA控制器</p>
+<p><img src="assets/2024-12-20-11-54-07.png" alt="几种DMA扩展方式" /></p>
+<ol>
+<li>独立请求方式</li>
+</ol>
+<p>每个DMA控制器与CPU间单独连接，即有独立的请求线与批准线</p>
+<p>在CPU内部通过硬件逻辑进行优先级判别，决定先响应哪一路请求</p>
+<p>显然，独立请求方式的扩展能力较差</p>
+<ol start="2">
+<li>公共请求方式</li>
+</ol>
+<p>CPU对外只有一根DMA请求线和一根DMA应答线</p>
+<p>各DMA控制器挂接在公共请求线与公共应答线之上，并另有判优逻辑来确定优先响应谁的请求</p>
+<p>判优逻辑与中断系统中的判优逻辑非常相似，也可分为</p>
+<ul>
+<li>串行判优</li>
+<li>并行判优</li>
+</ul>
+<p>有些DMA控制器芯片自身带有判优逻辑电路，可以很方便地连接成判优链。</p>
+<ol start="3">
+<li>级联方式</li>
+</ol>
+<p>从片将它的DMA请求信号输出送到主片的一个通道上(主片的一个请求信号输入端)，在初始化时编程设定为级联方式。</p>
+<h1 id="通道与iop"><a class="header" href="#通道与iop">通道与IOP</a></h1>
+<p>DMA控制器的出现已经减轻了CPU对数据输入/输出的控制，但DMA传送中对外围设备的管理和某些操作的控制仍需由CPU承担</p>
+<p>在大型计算机系统中，所连接的I/O设备数量多，输入/输出频繁，单纯依靠主CPU采取中断和DMA等管理方式已不能满足需要，于是通道和IOP方式被引入计算机系统</p>
+<ul>
+<li>其中通道的概念最早是由IBM公司提出的</li>
+<li>以后发展为输入/输出处理机IOP</li>
+<li>现在以协处理器形式应用于高档微型计算机系统中</li>
+</ul>
+<h2 id="通道"><a class="header" href="#通道">通道</a></h2>
+<p>通道是一种专用控制器，它</p>
+<ul>
+<li>通过执行通道程序进行I/O操作的管理</li>
+<li>为主机与I/O设备提供一种数据传输通道</li>
+</ul>
+<ol>
+<li>特点</li>
+</ol>
+<p>主机通过系统总线或其他方式连接多个通道，每个通道又通过局部I/O总线连接多台I/O设备</p>
+<ul>
+<li>通道间可以并行工作，各自管理其I/O设备</li>
+<li>但当通道需与主机交换数据时，每次只能连接一个通道</li>
+<li>通道有自己的通道指令，可用来编成通道程序，存放在存储器中</li>
+<li>当需要进行I/O操作时
+<ul>
+<li>CPU只要按约定格式准备好命令和数据，然后启动通道即可</li>
+<li>通道则执行相应的通道程序，完成所要求的操作</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>评价</li>
+</ol>
+<p>由于通道具有通道程序，可完成较复杂的I/O管理和预处理，从而在很大程度上将主CPU从繁重的I/O管理工作中解脱出来，提高了系统效率</p>
+<p>与中断方式相比</p>
+<ul>
+<li>两者都以程序方式进行I/O管理，因而功能强、灵活性高</li>
+<li>但通道方式无需CPU执行中断处理程序，几乎完全取代主CPU去管理I/O操作，使主CPU效率大大提高</li>
+</ul>
+<p>与DMA方式相比</p>
+<ul>
+<li>相同之处是两者在进行数据传送时都可直接访问主存，不需CPU程序干预</li>
+<li>不同之处是
+<ul>
+<li>DMA方式依靠纯硬件控制传送，只能实现简单的传送</li>
+<li>而通道则可通过通道程序实现复杂的操作<br />
+因此可以认为：通道方式是在DMA方式的基础上发展起来的、功能更强的一种I/O管理方式，它常常覆盖DMA方式。</li>
+</ul>
+</li>
+</ul>
+<h2 id="iop与外围处理机"><a class="header" href="#iop与外围处理机">IOP与外围处理机</a></h2>
+<p>随着通道的进一步发展，其结构越来越复杂，功能逐渐变得通用，发展为现在广泛使用的输入/输出处理机IOP</p>
+<p>现在一般认为，IOP是通道的进一步发展</p>
+<ul>
+<li>与传统意义上的通道相比，IOP的指令系统更丰富、更通用，因而功能更强；</li>
+<li>IOP的结构更接近于常规CPU，更具独立性，可有独立的局部存储器</li>
+<li>除了能够完成传统通道的数据输入/输出功能外，还能进行一些较复杂的预处理，如码制转换、格式变换、搜索、错误检测与纠错、字与字节的拼装/拆卸等</li>
+</ul>
+<p><img src="assets/2024-12-20-12-05-48.png" alt="8089 IOP内部结构" /></p>
+<p>如上图所示是8089IOP的内部结构框图。它</p>
+<ul>
+<li>结构与8086CPU非常相似，但稍稍简化些</li>
+<li>具有两个I/O通道，可执行各自的通道程序</li>
+<li>每个通道都有自己的寄存器组，可分别进行DMA传送</li>
+<li>指令系统也与8086 CPU非常相似，但
+<ul>
+<li>为实现I/O操作和通道管理，增加了一些面向I/O的指令</li>
+<li>而较复杂的数据处理指令则被省略</li>
+</ul>
+</li>
+</ul>
+<p>8089 IOP可访问1 MB的存储器空间和64 KB的I/O空间。它与系统的连接方式可分为两类：本地方式和远程方式。</p>
+<h3 id="本地方式local"><a class="header" href="#本地方式local">本地方式(LOCAL)</a></h3>
+<ol>
+<li>概念</li>
+</ol>
+<p>8089 IOP与主CPU共享系统总线和主存储器</p>
+<ul>
+<li>将IOP的地址线、数据线和一些控制信号线，直接与主CPU 8088并联</li>
+<li>CPU与IOP之间的通信，数据交换是通过共享主存来实现的</li>
+<li>CPU将通道程序存放在主存中，由硬件电路产生控制信号“通道注意”
+<ul>
+<li>通知8089 IOP去执行通道程序</li>
+<li>也可以在必要时终止8089 IOP的执行</li>
+</ul>
+</li>
+<li>当IOP需要使用总线访问主存或访问I/O接口时，向CPU提出申请
+<ul>
+<li>如果CPU不需占用总线，可将总线控制权让给IOP</li>
+<li>待8089 IOP使用完总线后，交回总线权</li>
+</ul>
+<blockquote>
+<p>在本地方式中，主CPU是总线的主控者</p>
+</blockquote>
+</li>
+</ul>
+<p><img src="assets/2024-12-20-14-01-22.png" alt="8089 IOP本地方式示意图" /></p>
+<ol start="2">
+<li>评价</li>
+</ol>
+<p>本地方式的优点是：</p>
+<ul>
+<li>IOP能与主CPU共享存储空间和I/O空间</li>
+<li>因而结构简单、编程方便<br />
+其缺点是：</li>
+<li>IOP与CPU之间可能存在较严重的总线使用冲突</li>
+<li>并行程度不高，使系统性能受到很大的制约</li>
+</ul>
+<h3 id="远程方式remote"><a class="header" href="#远程方式remote">远程方式(REMOTE)</a></h3>
+<p>远程方式是IOP与主CPU共享系统总线，但IOP另有自己的局部I/O总线，即</p>
+<ul>
+<li>IOP通过独立的局部总线连接其局部存储器与局部I/O设备</li>
+<li>并通过总线接口与CPU系统总线相连接</li>
+</ul>
+<p><img src="assets/2024-12-20-14-05-44.png" alt="8089 IOP远程方式示意图" /></p>
+<p>在远程方式中</p>
+<ul>
+<li>IOP与主CPU之间的通信仍通过共享主存（属于系统空间）来实现</li>
+<li>但IOP的程序存放在自己的局部存储器中，因此
+<ul>
+<li>IOP可通过自己的局部总线读取IOP程序或访问局部I/O设备</li>
+<li>仅当需要与共享主存交换数据时，IOP才使用系统总线</li>
+</ul>
+</li>
+<li>系统总线的使用冲突被减小到最低程度，并行程度大为提高</li>
+</ul>
+<h1 id="总线"><a class="header" href="#总线">总线</a></h1>
+<h2 id="介绍"><a class="header" href="#介绍">介绍</a></h2>
+<h3 id="功能和定义"><a class="header" href="#功能和定义">功能和定义</a></h3>
+<p>总线是一组能为多个部件分时共享的信息传送线</p>
+<ul>
+<li>用来连接多个部件并为之提供信息交换通路</li>
+<li>共享性，即总线所连接的部件都可通过它传送信息</li>
+<li>分时性，即在某一时刻总线只允许有一个部件送出数据到总线上</li>
+<li>共享是分时实现的</li>
+</ul>
+<p>总线不仅是一组信号线，从广义上讲，总线是</p>
+<ul>
+<li>一组传送线路</li>
+<li>及相关的总线协议</li>
+</ul>
+<p>因为要实现分时共享，必须定义相应的规则，称为总线协议，各个连到总线上的部件必须遵守这些协议，才能有序地分时共享该总线</p>
+<p>总线协议一般包括：</p>
+<ul>
+<li>信号线定义</li>
+<li>数据格式</li>
+<li>时序关系</li>
+<li>信号电平</li>
+<li>控制逻辑等<br />
+它确定了一个系统使用总线的方法。</li>
+</ul>
+<h3 id="组成"><a class="header" href="#组成">组成</a></h3>
+<p>总线包括一组物理信号线，按其功能可分为4组：数据线、地址线、控制信号线和电源线。</p>
+<ol>
+<li>数据线</li>
+</ol>
+<p>数据线用来实现数据传送，常称为数据总线</p>
+<ul>
+<li>双向传送</li>
+<li>分时共享</li>
+<li>数据总线的宽度即为数据通路宽度</li>
+</ul>
+<ol start="2">
+<li>地址总线</li>
+</ol>
+<p>地址线又称地址总线，用于</p>
+<ul>
+<li>传送地址信号</li>
+<li>以确定所访问的存储单元或某个I/O端口</li>
+</ul>
+<p>挂接在总线上的各部件都能从地址线上接收地址信号，并配合控制信号进行地址译码</p>
+<ul>
+<li>只有能掌管总线控制权的主控部件(如CPU、DMA控制器等)才能向地址线上发送地址码</li>
+<li>而不能掌管总线控制权的部件(如存储器)，不能发送地址码</li>
+</ul>
+<p>在微处理器中，由于一块芯片的引脚数有限，常采用复用技术以减少专用地址线的数目，例如在总线周期开始部分</p>
+<ul>
+<li>先用数据线传送地址码的高位部分，将它送入一个地址锁存器</li>
+<li>同时用地址线传送地址码的低位部分，两部分合成为完整的地址码</li>
+<li>然后再用数据线传送数据</li>
+</ul>
+<ol start="3">
+<li>控制总线</li>
+</ol>
+<p>用来传送各类控制/状态信号，控制总线的组成情况体现了不同总线的各自特点、运行方式及应用场合。</p>
+<p>按照各种控制信号的功用，我们将常见控制信号再细分为几组:</p>
+<ul>
+<li>数据传输控制信号</li>
+<li>总线请求与控制权交换信号</li>
+<li>其他控制信号</li>
+<li>电源线</li>
+</ul>
+<h3 id="分类"><a class="header" href="#分类">分类</a></h3>
+<ol>
+<li>内总线</li>
+</ol>
+<p>连接CPU内部各部件</p>
+<ol start="2">
+<li>系统总线</li>
+</ol>
+<p>连接计算机内各部件(CPU、主存、I/O接口)</p>
+<ul>
+<li>一般包括地址、数据和控制信号三类传输线，以及电源线</li>
+<li>内总线的连接距离较短，传输速度较快</li>
+</ul>
+<ol start="2">
+<li>外总线</li>
+</ol>
+<p>多台计算机系统之间的连接总线</p>
+<ul>
+<li>一般仅有数据线及少量简单的控制信号线，数据线的数据通路宽度较窄</li>
+<li>外总线的传输距离一般较远，速度较慢</li>
+</ul>
+<h2 id="总线操作时序"><a class="header" href="#总线操作时序">总线操作时序</a></h2>
+<ol>
+<li>同步控制方式</li>
+</ol>
+<p>采用同步控制方式的总线，称为同步总线</p>
+<p>在同步控制方式中，数据传输过程完全在主控部件的控制下进行，有着统一的时钟同步信号</p>
+<ul>
+<li>读数据的整个过程都是在时钟CLK的同步控制下进行的</li>
+<li>所有控制信号的产生与结束也是受CLK的同步控制。</li>
+</ul>
+<p>总线上各模块的工作速度往往是不一致的，采用统一的同步时序，在设计数据传送周期时需以总线上最慢的那个模块为依据。这样，在速度较快的模块间传送数据时，效率就被迫降低了，这是同步控制方式的不足。</p>
+<ol start="2">
+<li>扩展同步方式</li>
+</ol>
+<p>为了解决纯同步方式适应性差的问题，人们在同步方式中引入了异步控制的思想，称为扩展同步方式。此处，仍以PC总线为例，说明这种改进方式。</p>
+<p>如果从模块的速度较慢，不能在基本总线周期内完成操作</p>
+<ul>
+<li>就发出READY=0信号，表示尚未准备好</li>
+<li>主模块在脉冲的上升沿采样READY信号，决定是否加入“等待时钟周期”Tw</li>
+<li>在Tw脉冲的上升沿，再次采样READY，看是否需要插入更多的Tw
+<ul>
+<li>如果READY为低，于是插入Tw以延长操作时间</li>
+<li>如果从模块已准备好，READY=1，撤销等待请求
+<ul>
+<li>于是总线结束本次总线周期操作</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>扩展同步方式能灵活改变总线周期的长短，满足高速设备和低速设备的需要，既能提高效率，又保持了同步方式的优点</p>
+<ol start="3">
+<li>异步控制方式</li>
+</ol>
+<p>在异步控制方式中，没有固定的时钟周期，完全采用异步应答方式工作，总线周期的长短根据实际需要而定</p>
+<p>在以应答方式相关联的信号之间就存在一种互锁关系，相应地总线时序有全互锁、半互锁、不互锁之分</p>
+<p>一个典型的全互锁异步应答过程如下：</p>
+<ul>
+<li>主设备发送地址及“读/写”命令；</li>
+<li>从设备收到读命令后，执行相应操作；</li>
+<li>当从设备完成后，发出“应答”信号；</li>
+<li>主设备收到应答信号后，撤销读/写命令；</li>
+<li>从设备发现主设备撤销“读/写”命令后，撤销其应答信号。</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="6.storage_system.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="6.storage_system.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
